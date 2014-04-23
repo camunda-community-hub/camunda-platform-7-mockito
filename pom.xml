@@ -10,32 +10,41 @@
     <parent>
         <groupId>org.camunda.bpm</groupId>
         <artifactId>camunda-root</artifactId>
-        <version>7.0.0-Final</version>
+        <version>7.1.0-Final</version>
         <relativePath />
     </parent>
 
     <properties>
         <!-- Avoid the message "[WARNING] Using platform encoding (UTF-8 actually) ... also for the failsafe plugin -->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <camunda-bpm.version>${project.parent.version}</camunda-bpm.version>
 
-        <needle4j.version>2.3-SNAPSHOT</needle4j.version>
+        <needle4j.version>2.3</needle4j.version>
         <slf4j.version>1.7.2</slf4j.version>
         <guava.version>14.0.1</guava.version>
         <commons-lang3.version>3.1</commons-lang3.version>
 
         <!-- test tools -->
-        <junit.version>4.11</junit.version>
         <mockito.version>1.9.5</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
-        <junit-mockito.version>1.0</junit-mockito.version>
+        <assertj.version>1.5.0</assertj.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.camunda.bpm</groupId>
+                <artifactId>camunda-bom</artifactId>
+                <version>${parent.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine</artifactId>
-            <version>${camunda-bpm.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -48,7 +57,6 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
         </dependency>
 
         <dependency>
@@ -60,7 +68,7 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>1.5.0</version>
+            <version>${assertj.version}</version>
         </dependency>
 
         <dependency>
@@ -82,14 +90,6 @@
         <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine-cdi</artifactId>
-            <version>${camunda-bpm.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <!-- client for Java EE application server integration -->
-            <groupId>org.camunda.bpm.javaee</groupId>
-            <artifactId>camunda-ejb-client</artifactId>
-            <version>${camunda-bpm.version}</version>
             <scope>provided</scope>
         </dependency>
 
