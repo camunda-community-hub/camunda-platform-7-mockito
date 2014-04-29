@@ -1,0 +1,18 @@
+package org.camunda.bpm.extension.test.mockito.query;
+
+import org.camunda.bpm.engine.HistoryService;
+import org.camunda.bpm.engine.history.HistoricProcessInstance;
+import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery;
+import org.camunda.bpm.engine.history.HistoricTaskInstance;
+import org.camunda.bpm.engine.history.HistoricTaskInstanceQuery;
+
+/**
+ * @author Jan Galinski, Holisticon AG
+ */
+public class HistoricTaskInstanceQueryMock extends AbstractQueryMock<HistoricTaskInstanceQueryMock, HistoricTaskInstanceQuery, HistoricTaskInstance, HistoryService> {
+
+  public HistoricTaskInstanceQueryMock() {
+    super(HistoricTaskInstanceQuery.class, HistoryService.class);
+  }
+
+}

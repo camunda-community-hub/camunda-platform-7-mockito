@@ -10,19 +10,17 @@ import org.mockito.Mockito;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
- * Created by jangalinski on 06.03.14.
- *
  * @author Jan Galinski, Holisticon AG
  */
 public class TaskQueryMockTest {
 
-  private final TaskService taskService = Mockito.mock(TaskService.class);
+  private final TaskService taskService = mock(TaskService.class);
 
-
-  private final Task singleResult = Mockito.mock(Task.class);
+  private final Task singleResult = mock(Task.class);
 
   @Test
   public void should_mock_query_and_return_singleResult() {

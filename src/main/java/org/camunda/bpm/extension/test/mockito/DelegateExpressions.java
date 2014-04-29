@@ -1,7 +1,5 @@
 package org.camunda.bpm.extension.test.mockito;
 
-import com.google.common.collect.Multimap;
-import com.sun.imageio.plugins.bmp.BMPConstants;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.extension.test.mockito.function.ParseDelegateExpressions;
@@ -12,13 +10,12 @@ import org.camunda.bpm.extension.test.mockito.verify.ExecutionListenerVerificati
 import org.camunda.bpm.extension.test.mockito.verify.JavaDelegateVerification;
 import org.camunda.bpm.extension.test.mockito.verify.MockitoVerification;
 import org.camunda.bpm.extension.test.mockito.verify.TaskListenerVerification;
-import org.camunda.bpm.model.bpmn.impl.BpmnModelConstants;
 
+import javax.annotation.Nonnull;
 import java.net.URL;
 
 import static org.camunda.bpm.extension.test.mockito.Expressions.getRegistered;
 import static org.camunda.bpm.extension.test.mockito.Expressions.registerInstance;
-import static org.camunda.bpm.extension.test.mockito.function.NameForType.juelNameFor;
 
 /**
  * Util class for mocking DelegateExpressions as used in the modeller.
@@ -41,7 +38,8 @@ public final class DelegateExpressions {
    *
    * @param bpmnFile the BPMN resource to parse
    */
-  public static void registerDelegateExpressionMocks(final URL bpmnFile) {
+  @SuppressWarnings("ConstantConditions")
+  public static void registerDelegateExpressionMocks(final @Nonnull URL bpmnFile) {
     for (String name : ParseDelegateExpressions.EXECUTION_LISTENER.apply(bpmnFile)) {
       registerExecutionListenerMock(name);
     }

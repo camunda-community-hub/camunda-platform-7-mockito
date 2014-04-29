@@ -79,7 +79,7 @@ public final class Expressions {
           registerInstance(juelNameFor(field.getType()), value);
         }
       } catch (final Exception e) {
-        // fallthrough
+        // fallThrough
       }
     }
   }

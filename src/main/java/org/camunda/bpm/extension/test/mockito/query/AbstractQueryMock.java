@@ -6,8 +6,12 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.base.Throwables.propagate;
+import static org.mockito.Mockito.when;
 
 /**
  * @param <M> the type of the AbstractQueryMock (repeat the type of the class you are building). Used to "return this"
@@ -20,10 +24,11 @@ import java.util.List;
 abstract class AbstractQueryMock<M extends AbstractQueryMock<M, Q, R, S>, Q extends Query<?, R>, R extends Object, S> implements Supplier<Q> {
 
   private final Q query;
+  private final Method createMethod;
 
   /**
    * Creates a new query mock and mocks fluent api behavior by adding a default answer to the mock.
-   * Every method will return the mock itself, except
+   * Every createMethod will return the mock itself, except
    * <ul>
    * <li>list() - returns empty ArrayList</li>
    * <lI>singeResult() - returns null</lI>
@@ -31,34 +36,46 @@ abstract class AbstractQueryMock<M extends AbstractQueryMock<M, Q, R, S>, Q exte
    *
    * @param queryType the type of the query to mock.
    */
-  protected AbstractQueryMock(final Class<Q> queryType) {
+  protected AbstractQueryMock(final Class<Q> queryType, Class<S> serviceType) {
     query = Mockito.mock(queryType, new Answer<Q>() {
 
       @Override
       public Q answer(InvocationOnMock invocation) throws Throwable {
         if (queryType.equals(invocation.getMethod().getReturnType())) {
           return (Q) invocation.getMock();
-
         }
         return null;
       }
     });
 
-    Mockito.when(query.list()).thenReturn(new ArrayList<R>());
-    Mockito.when(query.singleResult()).thenReturn(null);
+    try {
+      createMethod = serviceType.getDeclaredMethod("create" + queryType.getSimpleName());
+    } catch (NoSuchMethodException e) {
+      throw propagate(e);
+    }
+
+    list(new ArrayList<R>());
+    singleResult(null);
   }
 
-  public final Q list(List<R> result) {
-    Mockito.when(query.list()).thenReturn(result);
+  public final Q list(final List<R> result) {
+    when(query.list()).thenReturn(result);
     return get();
   }
 
-  public final Q singleResult(R result) {
-    Mockito.when(query.singleResult()).thenReturn(result);
+  public final Q singleResult(final R result) {
+    when(query.singleResult()).thenReturn(result);
     return get();
   }
 
-  public abstract M forService(S service);
+  public M forService(S service) {
+    try {
+      when(createMethod.invoke(service)).thenReturn(get());
+    } catch (Exception e) {
+      propagate(e);
+    }
+    return (M) this;
+  }
 
   @Override
   public final Q get() {
