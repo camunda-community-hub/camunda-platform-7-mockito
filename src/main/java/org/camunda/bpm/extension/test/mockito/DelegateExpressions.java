@@ -1,10 +1,10 @@
 package org.camunda.bpm.extension.test.mockito;
 
+import com.google.common.collect.Multimap;
+import com.sun.imageio.plugins.bmp.BMPConstants;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.DelegateTask;
-import org.camunda.bpm.engine.delegate.ExecutionListener;
-import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.camunda.bpm.engine.delegate.TaskListener;
+import org.camunda.bpm.extension.test.mockito.function.ParseDelegateExpressions;
 import org.camunda.bpm.extension.test.mockito.mock.FluentExecutionListenerMock;
 import org.camunda.bpm.extension.test.mockito.mock.FluentJavaDelegateMock;
 import org.camunda.bpm.extension.test.mockito.mock.FluentTaskListenerMock;
@@ -12,6 +12,9 @@ import org.camunda.bpm.extension.test.mockito.verify.ExecutionListenerVerificati
 import org.camunda.bpm.extension.test.mockito.verify.JavaDelegateVerification;
 import org.camunda.bpm.extension.test.mockito.verify.MockitoVerification;
 import org.camunda.bpm.extension.test.mockito.verify.TaskListenerVerification;
+import org.camunda.bpm.model.bpmn.impl.BpmnModelConstants;
+
+import java.net.URL;
 
 import static org.camunda.bpm.extension.test.mockito.Expressions.getRegistered;
 import static org.camunda.bpm.extension.test.mockito.Expressions.registerInstance;
@@ -29,109 +32,154 @@ public final class DelegateExpressions {
     // do not instantiate
   }
 
+  /**
+   * Takes a BPMN file and registers TaskListener-, ExecutionListener and JavaDelegate-Mocks for every
+   * delegateExpression encountered.
+   *
+   * This is an auto-mock feature that allows the process to run. If you need to modify the behavior of the mock,
+   * you can use the getXXX() methods to access it by its name.
+   *
+   * @param bpmnFile the BPMN resource to parse
+   */
+  public static void registerDelegateExpressionMocks(final URL bpmnFile) {
+    for (String name : ParseDelegateExpressions.EXECUTION_LISTENER.apply(bpmnFile)) {
+      registerExecutionListenerMock(name);
+    }
+    for (String name : ParseDelegateExpressions.TASK_LISTENER.apply(bpmnFile)) {
+      registerTaskListenerMock(name);
+    }
+    for (String name : ParseDelegateExpressions.JAVA_DELEGATE.apply(bpmnFile)) {
+      registerJavaDelegateMock(name);
+    }
+  }
+
+  /**
+   * Registers a new FluentJavaDelegateMock instance for name.
+   *
+   * @param name the name under which the instance is registered
+   * @return new fluent-mock instance
+   * @see org.camunda.bpm.extension.test.mockito.Expressions#registerInstance(String, Object)
+   */
   public static FluentJavaDelegateMock registerJavaDelegateMock(final String name) {
-    final FluentJavaDelegateMock delegateMock = new FluentJavaDelegateMock();
-    registerInstance(name, delegateMock.getMock());
-    return delegateMock;
+    return registerInstance(name, new FluentJavaDelegateMock());
   }
 
+  /**
+   * Registers a new FluentExecutionListenerMock instance for name.
+   *
+   * @param name the name under which the instance is registered
+   * @return new fluent-mock instance
+   * @see org.camunda.bpm.extension.test.mockito.Expressions#registerInstance(String, Object)
+   */
   public static FluentExecutionListenerMock registerExecutionListenerMock(final String name) {
-    final FluentExecutionListenerMock delegateMock = new FluentExecutionListenerMock();
-    registerInstance(name, delegateMock.getMock());
-    return delegateMock;
+    return registerInstance(name, new FluentExecutionListenerMock());
   }
 
+  /**
+   * Registers a new FluentTaskListenerMock instance for name.
+   *
+   * @param name the name under which the instance is registered
+   * @return new fluent-mock instance
+   * @see org.camunda.bpm.extension.test.mockito.Expressions#registerInstance(String, Object)
+   */
   public static FluentTaskListenerMock registerTaskListenerMock(final String name) {
-    final FluentTaskListenerMock delegateMock = new FluentTaskListenerMock();
-    registerInstance(name, delegateMock.getMock());
-    return delegateMock;
+    return registerInstance(name, new FluentTaskListenerMock());
   }
 
-  public static JavaDelegate getRegisteredJavaDelegate(final String name) {
+  /**
+   * Returns the registered FluentJavaDelegateMock instance for name.
+   *
+   * @param name the name under which the instance is registered
+   * @return the registered fluent-mock instance
+   * @see org.camunda.bpm.extension.test.mockito.Expressions#getRegistered(String)
+   */
+  public static FluentJavaDelegateMock getJavaDelegateMock(final String name) {
     return getRegistered(name);
   }
 
   /**
-   * @param javaDelegateType type to get the name from
-   * @return the registered {@link org.camunda.bpm.engine.delegate.JavaDelegate}
-   * @see #getRegisteredJavaDelegate(String)
+   * Returns the registered FluentExecutionListenerMock instance for name.
+   *
+   * @param name the name under which the instance is registered
+   * @return the registered fluent-mock instance
+   * @see org.camunda.bpm.extension.test.mockito.Expressions#getRegistered(String)
    */
-  public static JavaDelegate getRegisteredJavaDelegate(final Class<JavaDelegate> javaDelegateType) {
-    return getRegisteredJavaDelegate(juelNameFor(javaDelegateType));
-  }
-
-  /**
-   * @param executionListenerType type to get the name from
-   * @return the registered {@link org.camunda.bpm.engine.delegate.ExecutionListener}
-   * @see #getRegisteredExecutionListener(String)
-   */
-  public static ExecutionListener getRegisteredExecutionListener(final Class<ExecutionListener> executionListenerType) {
-    return getRegisteredExecutionListener(juelNameFor(executionListenerType));
-  }
-
-  public static ExecutionListener getRegisteredExecutionListener(final String name) {
+  public static FluentExecutionListenerMock getExecutionListenerMock(final String name) {
     return getRegistered(name);
   }
 
   /**
-   * @param taskListenerType type to get the name from
-   * @return the registered {@link org.camunda.bpm.engine.delegate.TaskListener}
-   * @see #getRegisteredTaskListener(String)
+   * Returns the registered FluentTaskListenerMock instance for name.
+   *
+   * @param name the name under which the instance is registered
+   * @return the registered fluent-mock instance
+   * @see org.camunda.bpm.extension.test.mockito.Expressions#getRegistered(String)
    */
-  public static TaskListener getRegisteredTaskListener(final Class<TaskListener> taskListenerType) {
-    return getRegistered(juelNameFor(taskListenerType));
-  }
-
-  public static TaskListener getRegisteredTaskListener(final String name) {
+  public static FluentTaskListenerMock getTaskListenerMock(final String name) {
     return getRegistered(name);
   }
 
-  public static MockitoVerification<DelegateExecution> verifyJavaDelegate(final Class<? extends JavaDelegate> javaDelegateType) {
-    return verifyJavaDelegate(juelNameFor(javaDelegateType));
+  /**
+   * Gets the registered FluentJavaDelegateMock and creates a verification instance.
+   *
+   * @param name the name under which the instance is registered
+   * @return verification for JavaDelegate
+   * @see #verifyJavaDelegateMock(org.camunda.bpm.extension.test.mockito.mock.FluentJavaDelegateMock)
+   */
+  public static MockitoVerification<DelegateExecution> verifyJavaDelegateMock(final String name) {
+    return verifyJavaDelegateMock(getJavaDelegateMock(name));
   }
 
-  public static MockitoVerification<DelegateExecution> verifyJavaDelegate(final String name) {
-    return verifyJavaDelegate(getRegisteredJavaDelegate(name));
+  /**
+   * Creates a verification instance for JavaDelegate.
+   *
+   * @param fluentJavaDelegateMock the fluent-mock instance
+   * @return verification for JavaDelegate
+   */
+  public static MockitoVerification<DelegateExecution> verifyJavaDelegateMock(final FluentJavaDelegateMock fluentJavaDelegateMock) {
+    return new JavaDelegateVerification(fluentJavaDelegateMock.getMock());
   }
 
-  public static MockitoVerification<DelegateExecution> verifyJavaDelegate(final FluentJavaDelegateMock fluentJavaDelegateMock) {
-    return verifyJavaDelegate(fluentJavaDelegateMock.getMock());
+  /**
+   * Gets the registered FluentExecutionListenerMock and creates a verification instance.
+   *
+   * @param name the name under which the instance is registered
+   * @return verification for ExecutionListener
+   * @see #verifyJavaDelegateMock(org.camunda.bpm.extension.test.mockito.mock.FluentJavaDelegateMock)
+   */
+  public static MockitoVerification<DelegateExecution> verifyExecutionListenerMock(final String name) {
+    return verifyExecutionListenerMock(getExecutionListenerMock(name));
   }
 
-  public static MockitoVerification<DelegateExecution> verifyJavaDelegate(final JavaDelegate javaDelegateMock) {
-    return new JavaDelegateVerification(javaDelegateMock);
+  /**
+   * Creates a verification instance for ExecutionListener.
+   *
+   * @param fluentExecutionListenerMock the fluent-mock instance
+   * @return verification for JavaDelegate
+   */
+  public static MockitoVerification<DelegateExecution> verifyExecutionListenerMock(final FluentExecutionListenerMock fluentExecutionListenerMock) {
+    return new ExecutionListenerVerification(fluentExecutionListenerMock.getMock());
   }
 
-  public static MockitoVerification<DelegateExecution> verifyExecutionListener(final Class<? extends ExecutionListener> executionListenerType) {
-    return verifyExecutionListener(getRegisteredExecutionListener(juelNameFor(executionListenerType)));
+  /**
+   * Gets the registered FluentTaskListenerMock and creates a verification instance.
+   *
+   * @param name the name under which the instance is registered
+   * @return verification for TaskListener
+   * @see #verifyJavaDelegateMock(org.camunda.bpm.extension.test.mockito.mock.FluentJavaDelegateMock)
+   */
+  public static MockitoVerification<DelegateTask> verifyTaskListenerMock(final String name) {
+    return verifyTaskListenerMock(getTaskListenerMock(name));
   }
 
-  public static MockitoVerification<DelegateExecution> verifyExecutionListener(final String name) {
-    return verifyExecutionListener(getRegisteredExecutionListener(name));
-  }
-
-  public static MockitoVerification<DelegateExecution> verifyExecutionListener(final FluentExecutionListenerMock fluentExecutionListenerMock) {
-    return verifyExecutionListener(fluentExecutionListenerMock.getMock());
-  }
-
-  public static MockitoVerification<DelegateExecution> verifyExecutionListener(final ExecutionListener executionListenerMock) {
-    return new ExecutionListenerVerification(executionListenerMock);
-  }
-
-  public static MockitoVerification<DelegateTask> verifyTaskListener(final Class<? extends TaskListener> taskListenerType) {
-    return verifyTaskListener(getRegisteredTaskListener(juelNameFor(taskListenerType)));
-  }
-
-  public static MockitoVerification<DelegateTask> verifyTaskListener(final String name) {
-    return verifyTaskListener(getRegisteredTaskListener(name));
-  }
-
-  public static MockitoVerification<DelegateTask> verifyTaskListener(final FluentTaskListenerMock fluentTaskListenerMock) {
-    return verifyTaskListener(fluentTaskListenerMock.getMock());
-  }
-
-  public static MockitoVerification<DelegateTask> verifyTaskListener(final TaskListener taskListenerMock) {
-    return new TaskListenerVerification(taskListenerMock);
+  /**
+   * Creates a verification instance for TaskListener.
+   *
+   * @param fluentTaskListenerMock the fluent-mock instance
+   * @return verification for TaskListener
+   */
+  public static MockitoVerification<DelegateTask> verifyTaskListenerMock(final FluentTaskListenerMock fluentTaskListenerMock) {
+    return new TaskListenerVerification(fluentTaskListenerMock.getMock());
   }
 
 }

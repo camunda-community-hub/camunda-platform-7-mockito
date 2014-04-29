@@ -16,6 +16,11 @@ import static org.apache.commons.lang3.StringUtils.uncapitalize;
 public enum NameForType implements Function<Class<?>, String> {
   INSTANCE;
 
+  public static String juelNameFor(final Object instance) {
+    checkArgument(instance != null, "instance must not be null");
+    return juelNameFor(instance.getClass());
+  }
+
   public static String juelNameFor(final Class<?> type) {
     return INSTANCE.apply(type);
   }

@@ -100,6 +100,7 @@ public final class Expressions {
    * Creates and registers mock instance for every given type.
    *
    * @param types collection of types to mock and register
+   * @see #registerMockInstances(java.util.Collection)
    */
   public static void registerMockInstances(final Class<?>... types) {
     checkArgument(types != null, "types must not be null!");
@@ -170,7 +171,7 @@ public final class Expressions {
    * @return the registered instance
    */
   public static <T> T registerInstance(final T instance) {
-    return registerInstance(juelNameFor(instance.getClass()), instance);
+    return registerInstance(juelNameFor(instance), instance);
   }
 
   /**
@@ -184,7 +185,9 @@ public final class Expressions {
     checkArgument(isNotBlank(name), "name must not be blank!");
     checkArgument(instance != null, "instance must not be null!");
     LOG.debug(format("registered instance: name=%s, value=%s", name, instance));
+
     Mocks.register(name, instance);
+
     return instance;
   }
 
@@ -196,6 +199,7 @@ public final class Expressions {
   public static <T> T getRegistered(final String name) {
     final T mock = (T) Mocks.get(name);
     checkState(mock != null, "no instance registered for name=" + name);
+
     return mock;
   }
 

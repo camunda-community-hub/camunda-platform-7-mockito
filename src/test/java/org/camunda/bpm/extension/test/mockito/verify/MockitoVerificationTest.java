@@ -4,6 +4,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.extension.test.mockito.DelegateExpressions;
 import org.camunda.bpm.extension.test.mockito.Expressions;
+import org.camunda.bpm.extension.test.mockito.mock.FluentJavaDelegateMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -15,7 +16,7 @@ public class MockitoVerificationTest {
 
   private static final String JAVA_DELEGATE = "javaDelegate";
 
-  private JavaDelegate javaDelegate = Expressions.registerMockInstance(JavaDelegate.class);
+  private final FluentJavaDelegateMock javaDelegate = DelegateExpressions.registerJavaDelegateMock(JAVA_DELEGATE);
 
   @Mock
   private DelegateExecution delegateExecution;
@@ -29,7 +30,7 @@ public class MockitoVerificationTest {
   public void shouldVerifyExecuteCalled() throws Exception {
     javaDelegate.execute(delegateExecution);
 
-    DelegateExpressions.verifyJavaDelegate(JAVA_DELEGATE).executed();
+    DelegateExpressions.verifyJavaDelegateMock(JAVA_DELEGATE).executed();
   }
 
   @Test
@@ -37,11 +38,11 @@ public class MockitoVerificationTest {
     javaDelegate.execute(delegateExecution);
     javaDelegate.execute(delegateExecution);
 
-    DelegateExpressions.verifyJavaDelegate(JAVA_DELEGATE).executed(times(2));
+    DelegateExpressions.verifyJavaDelegateMock(JAVA_DELEGATE).executed(times(2));
   }
 
   @Test
   public void shouldVerifyExecuteNotCalled() throws Exception {
-    DelegateExpressions.verifyJavaDelegate(JAVA_DELEGATE).executedNever();
+    DelegateExpressions.verifyJavaDelegateMock(JAVA_DELEGATE).executedNever();
   }
 }

@@ -28,7 +28,7 @@ public class FluentJavaDelegateMockTest {
 
     DelegateExpressions.registerJavaDelegateMock(BEAN_NAME).onExecutionThrowBpmnError("code", MESSAGE);
 
-    final JavaDelegate registeredDelegate = DelegateExpressions.getRegisteredJavaDelegate(BEAN_NAME);
+    final JavaDelegate registeredDelegate = DelegateExpressions.getJavaDelegateMock(BEAN_NAME);
 
     // test succeeds when exception is thrown
     registeredDelegate.execute(mock(DelegateExecution.class));
