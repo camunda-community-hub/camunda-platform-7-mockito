@@ -2,10 +2,12 @@ package org.camunda.bpm.extension.test.mockito.query;
 
 import com.google.common.base.Supplier;
 import org.camunda.bpm.engine.query.Query;
+import org.camunda.bpm.extension.test.mockito.answer.FluentAnswer;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,48 +16,64 @@ import static com.google.common.base.Throwables.propagate;
 import static org.mockito.Mockito.when;
 
 /**
- * @param <M> the type of the AbstractQueryMock (repeat the type of the class you are building). Used to "return this"
- * @param <Q> the type of the query to mock (for example: TaskQuery).
- * @param <R> the type of the expected result (for example: Execution).
- * @param <S> the type of the service the query belongs to (used for "forService" binding), for Example: TaskService.
- *
+ * This looks more complicated than it actually is ... To easily mock the
+ * behaviour of queries, all common functionality is extracted to this abstract
+ * super class, the high level of Generics is needed for the fluent api pattern,
+ * so the abstract mock implementing the generic Query interface must also keep
+ * a reference to itself.
+ * 
+ * @param <M>
+ *          the type of the AbstractQueryMock (repeat the type of the class you
+ *          are building). Used to "return this"
+ * @param <Q>
+ *          the type of the query to mock (for example: TaskQuery).
+ * @param <R>
+ *          the type of the expected result (for example: Execution).
+ * @param <S>
+ *          the type of the service the query belongs to (used for "forService"
+ *          binding), for Example: TaskService.
+ * 
  * @author Jan Galinski
  */
 abstract class AbstractQueryMock<M extends AbstractQueryMock<M, Q, R, S>, Q extends Query<?, R>, R extends Object, S> implements Supplier<Q> {
 
+  /**
+   * The internally stored query instance.
+   */
   private final Q query;
+
+  /**
+   * Used for mocking the query creation via reflection.
+   */
   private final Method createMethod;
 
   /**
-   * Creates a new query mock and mocks fluent api behavior by adding a default answer to the mock.
-   * Every createMethod will return the mock itself, except
+   * Creates a new query mock and mocks fluent api behavior by adding a default
+   * answer to the mock. Every createMethod will return the mock itself, except
    * <ul>
    * <li>list() - returns empty ArrayList</li>
    * <lI>singeResult() - returns null</lI>
    * </ul>
-   *
-   * @param queryType the type of the query to mock.
+   * 
+   * @param queryType
+   *          the type of the query to mock.
+   * @param serviceType
+   *          the type of service that generates this query
    */
-  protected AbstractQueryMock(final Class<Q> queryType, Class<S> serviceType) {
-    query = Mockito.mock(queryType, new Answer<Q>() {
-
-      @Override
-      public Q answer(InvocationOnMock invocation) throws Throwable {
-        if (queryType.equals(invocation.getMethod().getReturnType())) {
-          return (Q) invocation.getMock();
-        }
-        return null;
-      }
-    });
-
-    try {
-      createMethod = serviceType.getDeclaredMethod("create" + queryType.getSimpleName());
-    } catch (NoSuchMethodException e) {
-      throw propagate(e);
-    }
+  protected AbstractQueryMock(@Nonnull final Class<Q> queryType, @Nonnull final Class<S> serviceType) {
+    query = FluentAnswer.createMock(queryType);
+    createMethod = createMethod(queryType,serviceType);
 
     list(new ArrayList<R>());
     singleResult(null);
+  }
+
+  private Method createMethod(@Nonnull final Class<Q> queryType, @Nonnull Class<S> serviceType) {
+    try {
+      return serviceType.getDeclaredMethod("create" + queryType.getSimpleName());
+    } catch (NoSuchMethodException e) {
+      throw propagate(e);
+    }
   }
 
   public final Q list(final List<R> result) {

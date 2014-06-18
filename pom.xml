@@ -8,9 +8,9 @@
     <version>0.1-SNAPSHOT</version>
 
     <parent>
-        <groupId>org.camunda.bpm</groupId>
-        <artifactId>camunda-root</artifactId>
-        <version>7.1.0-Final</version>
+        <groupId>org.camunda</groupId>
+        <artifactId>camunda-release-parent</artifactId>
+        <version>2.2</version>
         <relativePath />
     </parent>
 
@@ -18,6 +18,7 @@
         <!-- Avoid the message "[WARNING] Using platform encoding (UTF-8 actually) ... also for the failsafe plugin -->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <camunda.version>7.1.0-Final</camunda.version>
         <needle4j.version>2.3</needle4j.version>
         <slf4j.version>1.7.2</slf4j.version>
         <guava.version>14.0.1</guava.version>
@@ -34,7 +35,7 @@
             <dependency>
                 <groupId>org.camunda.bpm</groupId>
                 <artifactId>camunda-bom</artifactId>
-                <version>${project.parent.version}</version>
+                <version>${camunda.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

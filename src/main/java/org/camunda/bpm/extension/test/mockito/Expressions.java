@@ -66,8 +66,7 @@ public final class Expressions {
    * Registers mocks via {@link org.camunda.bpm.engine.test.mock.Mocks#register(String, Object)} for all
    * attributes with Named-types.
    *
-   * @param instance instance whos fields are registered (maybe Junit test or jbehave
-   *                 steps).
+   * @param instance instance who's fields are registered (maybe Junit test or jbehave steps).
    */
   public static void registerInstancesForFields(final Object instance) {
     checkArgument(instance != null, "instance must not be null!");
