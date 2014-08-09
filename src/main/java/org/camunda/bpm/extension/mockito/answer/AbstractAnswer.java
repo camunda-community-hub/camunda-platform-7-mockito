@@ -19,6 +19,12 @@ abstract class AbstractAnswer<T extends VariableScope> implements Answer<Void> {
     return null;
   }
 
+  /**
+   * Every implementing class must define what "answer" should actually do.
+   *
+   * @param parameter either DelegateTask or DelegateExecution.
+   * @throws Exception when anything fails
+   */
   protected abstract void answer(T parameter) throws Exception;
 
 }
