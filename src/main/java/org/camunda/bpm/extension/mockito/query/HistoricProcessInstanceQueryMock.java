@@ -7,7 +7,8 @@ import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery;
 /**
  * @author Jan Galinski, Holisticon AG
  */
-public class HistoricProcessInstanceQueryMock extends AbstractQueryMock<HistoricProcessInstanceQueryMock, HistoricProcessInstanceQuery, HistoricProcessInstance, HistoryService> {
+public class HistoricProcessInstanceQueryMock extends
+    AbstractQueryMock<HistoricProcessInstanceQueryMock, HistoricProcessInstanceQuery, HistoricProcessInstance, HistoryService> {
 
   public HistoricProcessInstanceQueryMock() {
     super(HistoricProcessInstanceQuery.class, HistoryService.class);

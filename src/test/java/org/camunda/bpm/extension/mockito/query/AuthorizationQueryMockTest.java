@@ -20,11 +20,7 @@ public class AuthorizationQueryMockTest {
     final AuthorizationQuery query = QueryMocks.mockAuthorizationQuery(serviceMock).singleResult(authorization);
 
     // @formatter:off
-    final Authorization result = serviceMock.createAuthorizationQuery()
-            .authorizationId("foo")
-            .authorizationType(1)
-            .userIdIn("user")
-            .singleResult();
+    final Authorization result = serviceMock.createAuthorizationQuery().authorizationId("foo").authorizationType(1).userIdIn("user").singleResult();
     // @formatter:on
 
     assertThat(result).isEqualTo(authorization);

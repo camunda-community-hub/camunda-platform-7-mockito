@@ -4,7 +4,6 @@ import static org.mockito.Mockito.verify;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.camunda.bpm.extension.mockito.verify.AbstractMockitoVerification;
 import org.mockito.verification.VerificationMode;
 
 public class JavaDelegateVerification extends AbstractMockitoVerification<JavaDelegate, DelegateExecution> {

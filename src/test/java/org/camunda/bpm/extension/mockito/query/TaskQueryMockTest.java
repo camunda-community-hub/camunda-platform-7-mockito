@@ -40,24 +40,10 @@ public class TaskQueryMockTest {
   public void singleResult_for_everything() {
     final TaskQuery taskQuery = QueryMocks.mockTaskQuery(taskService).singleResult(singleResult);
     // @formatter:off
-    assertThat(taskService.createTaskQuery()
-            .taskDefinitionKey("")
-            .processInstanceBusinessKey("")
-            .taskDefinitionKey("")
-            .taskId("")
-            .taskUnassigned()
-            .processInstanceId("pid")
-            .active()
-            .activityInstanceIdIn("")
-            .dueAfter(new Date())
-            .dueBefore(new Date())
-            .dueDate(new Date())
-            .excludeSubtasks()
-            .executionId("")
-            .processDefinitionId("")
-            .processDefinitionKey("")
-            .singleResult())
-            .isEqualTo(singleResult);
+    assertThat(
+        taskService.createTaskQuery().taskDefinitionKey("").processInstanceBusinessKey("").taskDefinitionKey("").taskId("").taskUnassigned()
+            .processInstanceId("pid").active().activityInstanceIdIn("").dueAfter(new Date()).dueBefore(new Date()).dueDate(new Date()).excludeSubtasks()
+            .executionId("").processDefinitionId("").processDefinitionKey("").singleResult()).isEqualTo(singleResult);
     // @formatter:on
 
     verify(taskQuery).processInstanceId("pid");

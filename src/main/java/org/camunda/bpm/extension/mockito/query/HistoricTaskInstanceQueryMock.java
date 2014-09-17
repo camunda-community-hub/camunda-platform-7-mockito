@@ -7,7 +7,8 @@ import org.camunda.bpm.engine.history.HistoricTaskInstanceQuery;
 /**
  * @author Jan Galinski, Holisticon AG
  */
-public class HistoricTaskInstanceQueryMock extends AbstractQueryMock<HistoricTaskInstanceQueryMock, HistoricTaskInstanceQuery, HistoricTaskInstance, HistoryService> {
+public class HistoricTaskInstanceQueryMock extends
+    AbstractQueryMock<HistoricTaskInstanceQueryMock, HistoricTaskInstanceQuery, HistoricTaskInstance, HistoryService> {
 
   public HistoricTaskInstanceQueryMock() {
     super(HistoricTaskInstanceQuery.class, HistoryService.class);

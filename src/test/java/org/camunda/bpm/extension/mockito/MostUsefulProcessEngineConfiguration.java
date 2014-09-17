@@ -13,8 +13,11 @@ import org.camunda.bpm.engine.test.mock.MockExpressionManager;
 import com.google.common.base.Supplier;
 
 /**
- * Configuration that makes the standard camunda.cfg.xml obsolete by setting the history, schema and job-executor settings.
- * @deprecated  this class also exists in camunda-bpm-needle and should be centralized.
+ * Configuration that makes the standard camunda.cfg.xml obsolete by setting the
+ * history, schema and job-executor settings.
+ * 
+ * @deprecated this class also exists in camunda-bpm-needle and should be
+ *             centralized.
  */
 @Deprecated
 public class MostUsefulProcessEngineConfiguration extends StandaloneInMemProcessEngineConfiguration {

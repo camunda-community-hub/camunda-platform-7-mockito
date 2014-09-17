@@ -12,7 +12,6 @@ public class ParseDelegateExpressionsTest {
 
   public static final String BPMN_FILE = "MockProcess.bpmn";
 
-
   @Test
   public void never_returns_null() {
     assertThat(JAVA_DELEGATE.apply(getResource(BPMN_FILE))).isNotNull();

@@ -11,8 +11,10 @@ import org.mockito.Mockito;
 /**
  * Common super class for all fluent mocks.
  *
- * @param <T> type of mock (JavaDelegate, ExecutionListener, TaskListener)
- * @param <P> type of method argument (DelegateExecution, DelegateTask)
+ * @param <T>
+ *          type of mock (JavaDelegate, ExecutionListener, TaskListener)
+ * @param <P>
+ *          type of method argument (DelegateExecution, DelegateTask)
  */
 abstract class FluentMock<T, P extends VariableScope> {
 
@@ -22,8 +24,10 @@ abstract class FluentMock<T, P extends VariableScope> {
   /**
    * Creates a new instance for given mock.
    *
-   * @param mock the mocked delegate or listener
-   * @param parameterType the parameter type  (DelegateExecution, DelegateTask)
+   * @param mock
+   *          the mocked delegate or listener
+   * @param parameterType
+   *          the parameter type (DelegateExecution, DelegateTask)
    */
   protected FluentMock(final T mock, final Class<P> parameterType) {
     this.mock = mock;
@@ -45,7 +49,8 @@ abstract class FluentMock<T, P extends VariableScope> {
   /**
    * The mock will throw a BpmnError with given errorCode.
    *
-   * @param errorCode the error code
+   * @param errorCode
+   *          the error code
    */
   public void onExecutionThrowBpmnError(final String errorCode) {
     onExecutionThrowBpmnError(new BpmnError(errorCode));
@@ -54,8 +59,10 @@ abstract class FluentMock<T, P extends VariableScope> {
   /**
    * The mock will throw a BpmnError with given errorCode and message.
    *
-   * @param errorCode the error code
-   * @param message the error message
+   * @param errorCode
+   *          the error code
+   * @param message
+   *          the error message
    */
   public void onExecutionThrowBpmnError(final String errorCode, final String message) {
     onExecutionThrowBpmnError(new BpmnError(errorCode, message));
@@ -63,7 +70,9 @@ abstract class FluentMock<T, P extends VariableScope> {
 
   /**
    * The implementation of throw-bpmn-error depends on the concrete type.
-   * @param bpmnError the error instance
+   * 
+   * @param bpmnError
+   *          the error instance
    */
   public abstract void onExecutionThrowBpmnError(final BpmnError bpmnError);
 

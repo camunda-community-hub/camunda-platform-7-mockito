@@ -61,7 +61,7 @@ abstract class AbstractQueryMock<M extends AbstractQueryMock<M, Q, R, S>, Q exte
    */
   protected AbstractQueryMock(@Nonnull final Class<Q> queryType, @Nonnull final Class<S> serviceType) {
     query = FluentAnswer.createMock(queryType);
-    createMethod = createMethod(queryType,serviceType);
+    createMethod = createMethod(queryType, serviceType);
 
     list(new ArrayList<R>());
     singleResult(null);

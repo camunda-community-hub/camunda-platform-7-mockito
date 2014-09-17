@@ -34,7 +34,7 @@ public class AbstractAnswerTest {
 
   @Test
   public void shouldDelegateToGenericAnswer() throws Throwable {
-    when(invocationOnMock.getArguments()).thenReturn(new Object[]{variableScope});
+    when(invocationOnMock.getArguments()).thenReturn(new Object[] { variableScope });
     answer.answer(invocationOnMock);
     verify(answer).answer(variableScope);
   }

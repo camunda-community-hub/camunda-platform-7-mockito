@@ -21,10 +21,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Util class that delegates to {@link org.camunda.bpm.engine.test.mock.Mocks#register(String, Object)} and
- * {@link org.camunda.bpm.engine.test.mock.Mocks#get(Object)} in a type-safe way.
+ * Util class that delegates to
+ * {@link org.camunda.bpm.engine.test.mock.Mocks#register(String, Object)} and
+ * {@link org.camunda.bpm.engine.test.mock.Mocks#get(Object)} in a type-safe
+ * way.
  * <p/>
- * When mocking JavaDelegate, ExecutionListener or TaskListener, use {@link DelegateExpressions} instead.
+ * When mocking JavaDelegate, ExecutionListener or TaskListener, use
+ * {@link DelegateExpressions} instead.
  */
 @SuppressWarnings("unused")
 public final class Expressions {
@@ -42,7 +45,8 @@ public final class Expressions {
    * Registers mock instances for every public static nested class found in
    * parentClass.
    *
-   * @param parentClass the parentClass to scan for nested public static types
+   * @param parentClass
+   *          the parentClass to scan for nested public static types
    */
   public static void registerMockInstancesForNestedTypes(final Class<?> parentClass) {
     final Collection<Class<?>> nestedClasses = findNestedClasses(parentClass);
@@ -64,10 +68,13 @@ public final class Expressions {
   }
 
   /**
-   * Registers mocks via {@link org.camunda.bpm.engine.test.mock.Mocks#register(String, Object)} for all
-   * attributes with Named-types.
+   * Registers mocks via
+   * {@link org.camunda.bpm.engine.test.mock.Mocks#register(String, Object)} for
+   * all attributes with Named-types.
    *
-   * @param instance instance who's fields are registered (maybe Junit test or jbehave steps).
+   * @param instance
+   *          instance who's fields are registered (maybe Junit test or jbehave
+   *          steps).
    */
   public static void registerInstancesForFields(final Object instance) {
     checkArgument(instance != null, "instance must not be null!");
@@ -88,7 +95,8 @@ public final class Expressions {
    * Registers new instances for every public static nested class found in
    * parentClass.
    *
-   * @param parentClass the parentClass to scan for nested public static types
+   * @param parentClass
+   *          the parentClass to scan for nested public static types
    */
   public static void registerNewInstancesForNestedTypes(final Class<?> parentClass) {
     for (final Class<?> type : findNestedClasses(parentClass)) {
@@ -99,7 +107,8 @@ public final class Expressions {
   /**
    * Creates and registers mock instance for every given type.
    *
-   * @param types collection of types to mock and register
+   * @param types
+   *          collection of types to mock and register
    * @see #registerMockInstances(java.util.Collection)
    */
   public static void registerMockInstances(final Class<?>... types) {
@@ -110,7 +119,8 @@ public final class Expressions {
   /**
    * Creates and registers mock instance for every given type.
    *
-   * @param types collection of types to mock and register
+   * @param types
+   *          collection of types to mock and register
    */
   public static void registerMockInstances(final Collection<Class<?>> types) {
     for (final Class<?> type : types) {
@@ -121,8 +131,10 @@ public final class Expressions {
   /**
    * Creates a mock for the given type and registers it.
    *
-   * @param name the juel name under which the mock is registered
-   * @param type the type of the mock to create
+   * @param name
+   *          the juel name under which the mock is registered
+   * @param type
+   *          the type of the mock to create
    * @return the registered mock instance
    */
   public static <T> T registerMockInstance(final String name, final Class<T> type) {
@@ -132,7 +144,8 @@ public final class Expressions {
   /**
    * Creates a mock for the given type and registers it.
    *
-   * @param type the type of the mock to create
+   * @param type
+   *          the type of the mock to create
    * @return the registered mock instance
    */
   public static <T> T registerMockInstance(final Class<T> type) {
@@ -143,8 +156,10 @@ public final class Expressions {
    * Creates a new instance for the given type and registers it under the given
    * name.
    *
-   * @param name the name for the registered instance
-   * @param type the type of the instance to create
+   * @param name
+   *          the name for the registered instance
+   * @param type
+   *          the type of the instance to create
    * @return the registered instance
    */
   public static <T> T registerNewInstance(final String name, final Class<T> type) {
@@ -155,7 +170,8 @@ public final class Expressions {
    * Creates a new instance for the given type using the default constructor and
    * registers it.
    *
-   * @param type the type of the instance to create
+   * @param type
+   *          the type of the instance to create
    * @return the registered instance
    * @see #registerNewInstance(String, Class)
    */
@@ -167,7 +183,8 @@ public final class Expressions {
    * If you already have the instance, register it directly. Name is guessed via
    * {@link NameForType}.
    *
-   * @param instance the instance or mock to register
+   * @param instance
+   *          the instance or mock to register
    * @return the registered instance
    */
   public static <T> T registerInstance(final T instance) {
@@ -175,10 +192,13 @@ public final class Expressions {
   }
 
   /**
-   * Delegates to {@link org.camunda.bpm.engine.test.mock.Mocks#register(String, Object)}
+   * Delegates to
+   * {@link org.camunda.bpm.engine.test.mock.Mocks#register(String, Object)}
    *
-   * @param name     the juel name for the registered instance
-   * @param instance the instance to register
+   * @param name
+   *          the juel name for the registered instance
+   * @param instance
+   *          the instance to register
    * @return the registered instance
    */
   public static <T> T registerInstance(final String name, final T instance) {
@@ -192,7 +212,8 @@ public final class Expressions {
   }
 
   /**
-   * @param name juel name of the registered instance or mock
+   * @param name
+   *          juel name of the registered instance or mock
    * @return registered instance or mock of type
    */
   @SuppressWarnings("unchecked")
@@ -204,7 +225,8 @@ public final class Expressions {
   }
 
   /**
-   * @param type the type of the registered instance or mock
+   * @param type
+   *          the type of the registered instance or mock
    * @return registered instance or mock for type
    */
   public static <T> T getRegistered(final Class<?> type) {

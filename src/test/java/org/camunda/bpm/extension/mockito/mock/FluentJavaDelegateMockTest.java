@@ -31,6 +31,6 @@ public class FluentJavaDelegateMockTest {
 
     // test succeeds when exception is thrown
     registeredDelegate.execute(mock(DelegateExecution.class));
-  }
 
+  }
 }

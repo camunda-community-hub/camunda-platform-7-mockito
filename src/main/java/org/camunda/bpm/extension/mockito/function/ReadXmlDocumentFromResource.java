@@ -40,5 +40,4 @@ public enum ReadXmlDocumentFromResource implements Function<URL, Document> {
 
   }
 
-
 }

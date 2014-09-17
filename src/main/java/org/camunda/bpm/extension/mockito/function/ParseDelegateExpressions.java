@@ -21,18 +21,17 @@ import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 
 /**
- * Parses a given BPMN File and returns a Set of all  delegateExpression names.
+ * Parses a given BPMN File and returns a Set of all delegateExpression names.
  *
  * @author Jan Galinski, Holisticon AG
  */
 public enum ParseDelegateExpressions implements Function<URL, Set<String>> {
 
-  EXECUTION_LISTENER,
-  TASK_LISTENER,
-  JAVA_DELEGATE;
+  EXECUTION_LISTENER, TASK_LISTENER, JAVA_DELEGATE;
 
   /**
-   * Caches the results for each BPMN resource, so the document has to be parsed only once.
+   * Caches the results for each BPMN resource, so the document has to be parsed
+   * only once.
    */
   private static final Map<URL, Map<ParseDelegateExpressions, Set<String>>> cache = new HashMap<URL, Map<ParseDelegateExpressions, Set<String>>>();
 
@@ -44,7 +43,6 @@ public enum ParseDelegateExpressions implements Function<URL, Set<String>> {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
   private final ReadXmlDocumentFromResource readXmlDocumentFromResource = ReadXmlDocumentFromResource.INSTANCE;
-
 
   @Override
   public Set<String> apply(URL bpmnResource) {
@@ -59,13 +57,14 @@ public enum ParseDelegateExpressions implements Function<URL, Set<String>> {
     return cache.get(bpmnResource).get(this);
   }
 
-
   private static Map<ParseDelegateExpressions, Set<String>> initEmptyMap(final URL bpmnResource) {
-    final Map<ParseDelegateExpressions, Set<String>> map = new HashMap<ParseDelegateExpressions, Set<String>>() {{
-      put(EXECUTION_LISTENER, new HashSet<String>());
-      put(JAVA_DELEGATE, new HashSet<String>());
-      put(TASK_LISTENER, new HashSet<String>());
-    }};
+    final Map<ParseDelegateExpressions, Set<String>> map = new HashMap<ParseDelegateExpressions, Set<String>>() {
+      {
+        put(EXECUTION_LISTENER, new HashSet<String>());
+        put(JAVA_DELEGATE, new HashSet<String>());
+        put(TASK_LISTENER, new HashSet<String>());
+      }
+    };
 
     cache.put(bpmnResource, map);
 
@@ -79,7 +78,7 @@ public enum ParseDelegateExpressions implements Function<URL, Set<String>> {
 
       Node delegateExpression = attributes.getNamedItem(CAMUNDA_ATTRIBUTE_DELEGATE_EXPRESSION);
       if (delegateExpression == null) {
-       delegateExpression =  attributes.getNamedItem("camunda:"+CAMUNDA_ATTRIBUTE_DELEGATE_EXPRESSION);
+        delegateExpression = attributes.getNamedItem("camunda:" + CAMUNDA_ATTRIBUTE_DELEGATE_EXPRESSION);
       }
 
       if (delegateExpression != null) {
@@ -90,8 +89,7 @@ public enum ParseDelegateExpressions implements Function<URL, Set<String>> {
     return expressions;
   }
 
-
   public static String extractDelegateExpressionName(String delegateExpression) {
-    return isNotBlank(delegateExpression) ? delegateExpression.replaceAll(PATTERN_DELEGATE_EXPRESSION,"$1") : null;
+    return isNotBlank(delegateExpression) ? delegateExpression.replaceAll(PATTERN_DELEGATE_EXPRESSION, "$1") : null;
   }
 }

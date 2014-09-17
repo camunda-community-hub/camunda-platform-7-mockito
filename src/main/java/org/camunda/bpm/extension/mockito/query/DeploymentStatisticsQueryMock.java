@@ -7,7 +7,8 @@ import org.camunda.bpm.engine.management.DeploymentStatisticsQuery;
 /**
  * @author Jan Galinski, Holisticon AG
  */
-public class DeploymentStatisticsQueryMock extends AbstractQueryMock<DeploymentStatisticsQueryMock, DeploymentStatisticsQuery, DeploymentStatistics, ManagementService> {
+public class DeploymentStatisticsQueryMock extends
+    AbstractQueryMock<DeploymentStatisticsQueryMock, DeploymentStatisticsQuery, DeploymentStatistics, ManagementService> {
 
   public DeploymentStatisticsQueryMock() {
     super(DeploymentStatisticsQuery.class, ManagementService.class);

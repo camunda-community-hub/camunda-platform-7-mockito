@@ -19,6 +19,6 @@ public class ReadXmlDocumentFromResourceTest {
   public void returns_document_for_resource() throws TransformerException {
     Document document = ReadXmlDocumentFromResource.INSTANCE.apply(Resources.getResource("MockProcess.bpmn"));
     assertThat(document).isNotNull();
-   }
+  }
 
 }

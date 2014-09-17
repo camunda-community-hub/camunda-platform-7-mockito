@@ -35,7 +35,7 @@ public class ManualMockProcessTest {
   @Deployment(resources = "MockProcess.bpmn")
   public void deploy_and_run_process_with_manually_registered_mocks() {
     registerExecutionListenerMock("startProcess");
-    FluentJavaDelegateMock loadData = registerJavaDelegateMock("loadData");
+    final FluentJavaDelegateMock loadData = registerJavaDelegateMock("loadData");
     registerTaskListenerMock("verifyData").onExecutionSetVariables("foo", "bar");
 
     final ProcessInstance processInstance = processEngineRule.getRuntimeService().startProcessInstanceByKey("process_mock_dummy");

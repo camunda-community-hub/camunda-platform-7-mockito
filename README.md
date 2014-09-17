@@ -1,5 +1,7 @@
 # camunda-bpm-mockito
 
+**simplify process mocking and testing******
+
 camunda-bpm-mockito is a community extension for the camunda bpm process engine that aims to simplify and 
 automate mocking of process applications.
 
@@ -24,20 +26,123 @@ But enough of "what we cannot do", lets move on to "what we can do":
 
 ## Mocking of queries
 
-TBD
+Sometimes you want to test a Bean that uses the query api. Since it is a fluent api, you would have to mock every single parameter call and let your service return the mocked query.
+
+With the QueryMocks extension, you can do all this in just one line of code, see [QueryMocksExample.java](src/test/java/org/camunda/bpm/extension/mockito/QueryMocksExample.java).
+
+```java
+  public class QueryMocksExample {
+    private final TaskService taskService = mock(TaskService.class);
+    private final Task task = mock(Task.class);
+    
+    @Test
+    public void mock_taskQuery() {
+        // bind query-mock to service-mock and set result to task.
+        final TaskQuery taskQuery = QueryMocks.mockTaskQuery(taskService).singleResult(task);
+
+        final Task result = taskService.createTaskQuery().active().activityInstanceIdIn("foo").excludeSubtasks().singleResult();
+
+        assertThat(result).isEqualTo(task);
+
+        verify(taskQuery).active();
+        verify(taskQuery).activityInstanceIdIn("foo");
+        verify(taskQuery).excludeSubtasks();
+    }
+}
+```
 
 ## Mock Listener and Delegate behavior
 
-TBD
+When working with the Delegate and Listener interfaces, there are basically two things they can do: modify process variables and raise errors.
+We can use this to test bpmn-processes without relying on the delegate implementation.
+
+```java
+public class FluentJavaDelegateMockTest {
+
+  private static final String BEAN_NAME = "foo";
+  private static final String MESSAGE = "message";
+
+  @Rule
+  public final ExpectedException thrown = ExpectedException.none();
+
+  @Test
+  public void shouldThrowBpmnError() throws Exception {
+
+    // expect exception
+    thrown.expect(BpmnError.class);
+    thrown.expectMessage(MESSAGE);
+
+    DelegateExpressions.registerJavaDelegateMock(BEAN_NAME).onExecutionThrowBpmnError("code", MESSAGE);
+
+    final JavaDelegate registeredDelegate = DelegateExpressions.getJavaDelegateMock(BEAN_NAME);
+
+    // test succeeds when exception is thrown
+    registeredDelegate.execute(mock(DelegateExecution.class));
+  }
+}
+```
 
 ## Easy register and verify mocks
 
-TBD
+On top of the well known "Mocks.register()" hook, you now have the possibility to register fluent mocks directly
+
+     registerJavaDelegateMock("name")
+     registerMockInstance(YourDelegate.class)
+
+In the latter case, "YourDelegate" has to be annotated with @Named.
+
+To verify the Mock execution, you can use
+
+    verifyJavaDelegateMock("name").executed(times(2));
 
 ## Auto mock all delegates and listeners
 
-TBD
+With the autoMock() feature, you can register all Delegates and Listeners at once, without explicitly adding "register"-statements to your testcase.
+If you do need to specify behaviour for the mocks, you can still get the mock via "getRegisteredJavaDelegateMock" (for delegates).
+
+```java
+@Test
+@Deployment(resources = "MockProcess.bpmn")
+  public void register_mocks_for_all_listeners_and_delegates() throws Exception {
+    autoMock("MockProcess.bpmn");
+
+    final ProcessInstance processInstance = processEngineRule.getRuntimeService().startProcessInstanceByKey("process_mock_dummy");
+
+    assertThat(processEngineRule.getTaskService().createTaskQuery().processInstanceId(processInstance.getId()).singleResult()).isNotNull();
+
+    verifyTaskListenerMock("verifyData").executed();
+    verifyExecutionListenerMock("startProcess").executed();
+    verifyJavaDelegateMock("loadData").executed();
+    verifyExecutionListenerMock("beforeLoadData").executed();
+  }
+```
 
 
+## Get started
 
+Just include camunda-bpm-mockito in the test scope of your project:
+
+```xml
+<dependency>
+  <groupId>org.camunda.extension</groupId>
+  <artifactId>camunda-bpm-mockito</artifactId>
+  <scope>test</scope>
+  <version>1.0-SNAPSHOT</version>
+</dependency>
+```
+
+## Resources
+
+* [Issue Tracker](https://github.com/camunda/camunda-bpm-mockito/issues)
+* [Contributing](https://github.com/camunda/camunda-bpm-mockito/blob/master/CONTRIBUTING.md) 
+
+## Maintainer
+
+* [Jan Galinski](https://github.com/jangalinski), [Holisticon AG](http://www.holisticon.de)
+* [Simon Zambrovski](https://github.com/zambrovski), [Holisticon AG](http://www.holisticon.de).
+
+
+## License
+
+Apache License, Version 2.0
 

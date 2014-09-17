@@ -1,8 +1,7 @@
 package org.camunda.bpm.extension.mockito;
 
-import static com.google.common.io.Resources.getResource;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.registerDelegateExpressionMocks;
+import static org.camunda.bpm.extension.mockito.DelegateExpressions.autoMock;
 import static org.camunda.bpm.extension.mockito.DelegateExpressions.verifyExecutionListenerMock;
 import static org.camunda.bpm.extension.mockito.DelegateExpressions.verifyJavaDelegateMock;
 import static org.camunda.bpm.extension.mockito.DelegateExpressions.verifyTaskListenerMock;
@@ -17,8 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * If everything works as expected, the process can be deployed and executed without explicitly registering mocks for
- * the delegate, the execution- and the task-listener.
+ * If everything works as expected, the process can be deployed and executed
+ * without explicitly registering mocks for the delegate, the execution- and the
+ * task-listener.
  *
  * @author Jan Galinski, Holisticon AG
  */
@@ -32,7 +32,7 @@ public class AutoMockProcessTest {
   @Test
   @Deployment(resources = "MockProcess.bpmn")
   public void register_mocks_for_all_listeners_and_delegates() throws Exception {
-    registerDelegateExpressionMocks(getResource("MockProcess.bpmn"));
+    autoMock("MockProcess.bpmn");
 
     final ProcessInstance processInstance = processEngineRule.getRuntimeService().startProcessInstanceByKey("process_mock_dummy");
 
@@ -43,7 +43,5 @@ public class AutoMockProcessTest {
     verifyJavaDelegateMock("loadData").executed();
     verifyExecutionListenerMock("beforeLoadData").executed();
   }
-
-
 
 }

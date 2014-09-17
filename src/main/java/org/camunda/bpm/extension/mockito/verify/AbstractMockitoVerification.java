@@ -10,8 +10,10 @@ import org.mockito.verification.VerificationMode;
 /**
  * Base implementation of {@link MockitoVerification}.
  *
- * @param <M> type of the mock Delegate
- * @param <P> type of the simple argument the verified method takes
+ * @param <M>
+ *          type of the mock Delegate
+ * @param <P>
+ *          type of the simple argument the verified method takes
  */
 public abstract class AbstractMockitoVerification<M, P> implements MockitoVerification<P> {
 
@@ -21,10 +23,16 @@ public abstract class AbstractMockitoVerification<M, P> implements MockitoVerifi
   /**
    * Create new instance.
    *
-   * @param mock          the wrapped mock (has to be either {@link org.camunda.bpm.engine.delegate.JavaDelegate},
-   *                      {@link org.camunda.bpm.engine.delegate.TaskListener} or {@link org.camunda.bpm.engine.delegate.ExecutionListener}.
-   * @param parameterType the parameter the main method (execute() or notify() expects, one
-   *                      of either {@link org.camunda.bpm.engine.delegate.DelegateExecution} or {@link org.camunda.bpm.engine.delegate.DelegateTask}.
+   * @param mock
+   *          the wrapped mock (has to be either
+   *          {@link org.camunda.bpm.engine.delegate.JavaDelegate},
+   *          {@link org.camunda.bpm.engine.delegate.TaskListener} or
+   *          {@link org.camunda.bpm.engine.delegate.ExecutionListener}.
+   * @param parameterType
+   *          the parameter the main method (execute() or notify() expects, one
+   *          of either
+   *          {@link org.camunda.bpm.engine.delegate.DelegateExecution} or
+   *          {@link org.camunda.bpm.engine.delegate.DelegateTask}.
    */
   public AbstractMockitoVerification(final M mock, final Class<P> parameterType) {
     this.mock = mock;
@@ -55,10 +63,12 @@ public abstract class AbstractMockitoVerification<M, P> implements MockitoVerifi
    * The concrete implementation must implement the method call
    * (verify(mock).METHOD_CALL(argumentCaptor.capture)).
    *
-   * @param verificationMode defaults to times(1), but any {@link org.mockito.verification.VerificationMode} can be
-   *                         used.
-   * @throws Exception just in case the METHOD_CALL throws an exception. If caught, it
-   *                   is propagated unchecked.
+   * @param verificationMode
+   *          defaults to times(1), but any
+   *          {@link org.mockito.verification.VerificationMode} can be used.
+   * @throws Exception
+   *           just in case the METHOD_CALL throws an exception. If caught, it
+   *           is propagated unchecked.
    */
   protected abstract void doVerify(VerificationMode verificationMode) throws Exception;
 
