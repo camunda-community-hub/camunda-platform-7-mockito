@@ -37,6 +37,7 @@ public class ManualMockProcessTest {
     registerExecutionListenerMock("startProcess");
     final FluentJavaDelegateMock loadData = registerJavaDelegateMock("loadData");
     registerTaskListenerMock("verifyData").onExecutionSetVariables("foo", "bar");
+    registerExecutionListenerMock("beforeLoadData");
 
     final ProcessInstance processInstance = processEngineRule.getRuntimeService().startProcessInstanceByKey("process_mock_dummy");
 
