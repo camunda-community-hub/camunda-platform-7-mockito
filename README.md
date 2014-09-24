@@ -25,7 +25,10 @@ Just include camunda-bpm-mockito in the test scope of your project:
 </dependency>
 ```
 
-Version 1.0 just got published in the [extension-repository](https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions/org/camunda/bpm/extension/camunda-bpm-mockito/1.0/).
+Version 1.0 just got published to:
+
+* [extension-repository](https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions/org/camunda/bpm/extension/camunda-bpm-mockito/1.0/).
+* [maven central](http://search.maven.org/#artifactdetails%7Corg.camunda.bpm.extension%7Ccamunda-bpm-mockito%7C1.0%7Cjar)
 
 ## Mocking of queries
 
