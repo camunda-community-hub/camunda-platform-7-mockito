@@ -12,17 +12,20 @@ automate mocking of process applications.
 * Helpers for registering, retrieving and verifying mocks - convenience methods around Mocks.register()
 * Auto Mocking all expressions and delegates in a process - without explicitly registering mocks, all instances are mocked by default, so no process will fail to run because an expression is unknown.
 
-**Limitations:**
+## Get started
 
-* though it is possible to use arbitrary beans as expressions (myBean.doSomething()), we solely focus on 
-Listeners (notify()) and Delegates (execute()) here, since this is the only way to apply automatic behavior. If you need
-to mock custom beans, you still can use some of the tools to register the mock, but can nit use the fluent mocking or 
-auto mocking feature. Do to the nature of automatic mocking, this is immanent and will not change.
-* Currently, only expression-delegates (${myDelegate}) are supported (as you do use with CDI/Spring)) but no FQN class names. 
-This may and probably will change with future versions, it just has to be implemented ... 
-* expressions are only parsed for listeners and delegates, not for process variables.
+Just include camunda-bpm-mockito in the test scope of your project:
 
-But enough of "what we cannot do", lets move on to "what we can do":
+```xml
+<dependency>
+  <groupId>org.camunda.extension</groupId>
+  <artifactId>camunda-bpm-mockito</artifactId>
+  <scope>test</scope>
+  <version>1.0</version>
+</dependency>
+```
+
+Version 1.0 just got published in the [extension-repository](https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions/org/camunda/bpm/extension/camunda-bpm-mockito/1.0/).
 
 ## Mocking of queries
 
@@ -117,19 +120,15 @@ If you do need to specify behaviour for the mocks, you can still get the mock vi
   }
 ```
 
+**Limitations:**
 
-## Get started
-
-Just include camunda-bpm-mockito in the test scope of your project:
-
-```xml
-<dependency>
-  <groupId>org.camunda.extension</groupId>
-  <artifactId>camunda-bpm-mockito</artifactId>
-  <scope>test</scope>
-  <version>1.0-SNAPSHOT</version>
-</dependency>
-```
+* though it is possible to use arbitrary beans as expressions (myBean.doSomething()), we solely focus on 
+Listeners (notify()) and Delegates (execute()) here, since this is the only way to apply automatic behavior. If you need
+to mock custom beans, you still can use some of the tools to register the mock, but can nit use the fluent mocking or 
+auto mocking feature. Do to the nature of automatic mocking, this is immanent and will not change.
+* Currently, only expression-delegates (${myDelegate}) are supported (as you do use with CDI/Spring)) but no FQN class names. 
+This may and probably will change with future versions, it just has to be implemented ... 
+* expressions are only parsed for listeners and delegates, not for process variables.
 
 ## Resources
 
