@@ -137,6 +137,7 @@ This may and probably will change with future versions, it just has to be implem
 
 * [Issue Tracker](https://github.com/camunda/camunda-bpm-mockito/issues)
 * [Contributing](https://github.com/camunda/camunda-bpm-mockito/blob/master/CONTRIBUTING.md) 
+* [openhub](https://www.openhub.net/p/camunda-bpm-mockito)
 
 ## Maintainer
 
