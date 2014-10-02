@@ -44,6 +44,16 @@ public class FluentTaskListenerMock extends FluentMock<TaskListener, DelegateTas
     });
   }
 
+  @Override
+  public void onExecutionThrowException(final Exception exception) {
+    doAnswer(new TaskListener() {
+      @Override
+      public void notify(DelegateTask delegateTask) {
+        throw new RuntimeException(exception);
+      }
+    });
+  }
+
   private void doAnswer(final TaskListener taskListener) {
     try {
       Mockito.doAnswer(new TaskListenerAnswer(taskListener)).when(mock).notify(any());

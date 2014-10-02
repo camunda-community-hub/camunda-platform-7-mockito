@@ -40,6 +40,16 @@ public class FluentExecutionListenerMock extends FluentMock<ExecutionListener, D
   }
 
   @Override
+  public void onExecutionThrowException(final Exception exception) {
+    doAnswer(new ExecutionListener() {
+      @Override
+      public void notify(DelegateExecution execution) throws Exception {
+        throw exception;
+      }
+    });
+  }
+
+  @Override
   public void notify(final DelegateExecution execution) throws Exception {
     mock.notify(execution);
   }

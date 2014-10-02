@@ -1,7 +1,5 @@
 package org.camunda.bpm.extension.mockito.mock;
 
-import static org.mockito.Mockito.mock;
-
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -9,6 +7,8 @@ import org.camunda.bpm.extension.mockito.DelegateExpressions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import static org.mockito.Mockito.mock;
 
 public class FluentJavaDelegateMockTest {
 
@@ -19,7 +19,7 @@ public class FluentJavaDelegateMockTest {
   public final ExpectedException thrown = ExpectedException.none();
 
   @Test
-  public void shouldThrowBpmnError() throws Exception {
+  public void throws_bpmnError() throws Exception {
 
     // expect exception
     thrown.expect(BpmnError.class);
@@ -32,5 +32,14 @@ public class FluentJavaDelegateMockTest {
     // test succeeds when exception is thrown
     registeredDelegate.execute(mock(DelegateExecution.class));
 
+  }
+
+  @Test
+  public void throws_exception() throws Exception {
+    thrown.expect(NullPointerException.class);
+
+    DelegateExpressions.registerJavaDelegateMock(BEAN_NAME).onExecutionThrowException(new NullPointerException());
+
+    DelegateExpressions.getJavaDelegateMock(BEAN_NAME).execute(mock(DelegateExecution.class));
   }
 }

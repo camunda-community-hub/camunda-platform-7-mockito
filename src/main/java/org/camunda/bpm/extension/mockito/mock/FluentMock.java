@@ -70,11 +70,19 @@ abstract class FluentMock<T, P extends VariableScope> {
 
   /**
    * The implementation of throw-bpmn-error depends on the concrete type.
-   * 
+   *
    * @param bpmnError
    *          the error instance
    */
   public abstract void onExecutionThrowBpmnError(final BpmnError bpmnError);
+
+
+  /**
+   * The mock will throw the given exception on execution.
+   *
+   * @param exception the exception instance
+   */
+  public abstract void onExecutionThrowException(final Exception exception);
 
   /**
    * @return the internal mock
