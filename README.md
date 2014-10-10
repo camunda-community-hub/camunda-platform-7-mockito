@@ -2,15 +2,15 @@
 
 **simplify process mocking and testing**
 
-camunda-bpm-mockito is a community extension for the camunda bpm process engine that aims to simplify and 
+camunda-bpm-mockito is a community extension for the Camunda BPM process engine that aims to simplify and 
 automate mocking of process applications.
 
 **Features:**
 
-* Fluent mocking of query API - It is now very easy to mock a complex fluent query against the service api without any redundancy
-* Fluent mocking of Listener and Delegate behavior - since delegates and listener methods are void, they only can modify process variables or raise an error. Instead of messing with mockitos doAnswer() you can use these options with a fluent api
-* Helpers for registering, retrieving and verifying mocks - convenience methods around Mocks.register()
-* Auto Mocking all expressions and delegates in a process - without explicitly registering mocks, all instances are mocked by default, so no process will fail to run because an expression is unknown.
+* Fluent mocking of query API - It is now very easy to mock a complex fluent query for the service API without any redundancy.
+* Fluent mocking of Listener and Delegate behavior - since delegate and listener methods are void, they can either modify process variables or raise an error. Instead of messing up with mockito's doAnswer() you can use these options with a fluent API.
+* Helpers for registering, retrieving and verifying mocks - convenience methods around Mocks.register().
+* Automatic mocking of all expressions and delegates in a process - without explicitly registering mocks, all instances are mocked by default, so no process will fail to run because a JUEL expression is using an unknown statement or identifier.
 
 ## Get started
 
@@ -25,14 +25,14 @@ Just include camunda-bpm-mockito in the test scope of your project:
 </dependency>
 ```
 
-Version 1.0 just got published to:
+Version 1.0 got published to:
 
 * [extension-repository](https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions/org/camunda/bpm/extension/camunda-bpm-mockito/1.0/).
 * [maven central](http://search.maven.org/#artifactdetails%7Corg.camunda.bpm.extension%7Ccamunda-bpm-mockito%7C1.0%7Cjar)
 
 ## Mocking of queries
 
-Sometimes you want to test a Bean that uses the query api. Since it is a fluent api, you would have to mock every single parameter call and let your service return the mocked query.
+Sometimes you want to test a Bean that uses the query API. Since the API is fluent, you would have to mock every single parameter call and let your service return the mocked query.
 
 With the QueryMocks extension, you can do all this in just one line of code, see [QueryMocksExample.java](src/test/java/org/camunda/bpm/extension/mockito/QueryMocksExample.java).
 
@@ -59,8 +59,7 @@ With the QueryMocks extension, you can do all this in just one line of code, see
 
 ## Mock Listener and Delegate behavior
 
-When working with the Delegate and Listener interfaces, there are basically two things they can do: modify process variables and raise errors.
-We can use this to test bpmn-processes without relying on the delegate implementation.
+Mocking void methods usiong mockito is not very convenient, since you need to use the doAnswer(Answer<T>).when() construct, implement your own answer and pick up the parameter from the invocation context. JavaDelegate and ExecutionListener are providing their basic fuctionality using void methods.  In general, when working with the Delegate and Listener interfaces, there are basically two things they can do from the point of intercation between the process execution: modify process variables and raise errors. We can use this to test bpmn-processes without relying on the delegate implementation. 
 
 ```java
 public class FluentJavaDelegateMockTest {
@@ -90,7 +89,7 @@ public class FluentJavaDelegateMockTest {
 
 ## Easy register and verify mocks
 
-On top of the well known "Mocks.register()" hook, you now have the possibility to register fluent mocks directly
+In addition two of the well-known "Mocks.register()" hook, you now have the possibility to register fluent mocks directly:
 
      registerJavaDelegateMock("name")
      registerMockInstance(YourDelegate.class)
@@ -127,10 +126,10 @@ If you do need to specify behaviour for the mocks, you can still get the mock vi
 
 * though it is possible to use arbitrary beans as expressions (myBean.doSomething()), we solely focus on 
 Listeners (notify()) and Delegates (execute()) here, since this is the only way to apply automatic behavior. If you need
-to mock custom beans, you still can use some of the tools to register the mock, but can nit use the fluent mocking or 
-auto mocking feature. Do to the nature of automatic mocking, this is immanent and will not change.
+to mock custom beans, you still can use some of the tools to register the mock, but can not use the fluent mocking or 
+auto mocking feature. Due to the nature of automatic mocking, this is immanent and will not change.
 * Currently, only expression-delegates (${myDelegate}) are supported (as you do use with CDI/Spring)) but no FQN class names. 
-This may and probably will change with future versions, it just has to be implemented ... 
+This might and probably will change with future versions, it just has to be implemented ... 
 * expressions are only parsed for listeners and delegates, not for process variables.
 
 ## Resources
