@@ -20,7 +20,7 @@ Just include camunda-bpm-mockito in the test scope of your project:
 
 ```xml
 <dependency>
-  <groupId>org.camunda.extension</groupId>
+  <groupId>org.camunda.bpm.extension</groupId>
   <artifactId>camunda-bpm-mockito</artifactId>
   <scope>test</scope>
   <version>1.0</version>
