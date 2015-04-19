@@ -21,9 +21,8 @@
     <camunda.version>7.1.0-Final</camunda.version>
 
     <slf4j.version>1.7.2</slf4j.version>
-    <guava.version>14.0.1</guava.version>
+    <guava.version>18.0</guava.version>
     <commons-lang3.version>3.1</commons-lang3.version>
-    <spring.version>3.2.2.RELEASE</spring.version>
 
     <!-- test tools -->
     <mockito.version>1.10.19</mockito.version>
@@ -53,6 +52,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
@@ -66,18 +66,21 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>${assertj.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-core</artifactId>
       <version>${hamcrest.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-library</artifactId>
       <version>${hamcrest.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
@@ -99,12 +102,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
-      <scope>provided</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -130,9 +127,18 @@
       <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>3.1.2.RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 

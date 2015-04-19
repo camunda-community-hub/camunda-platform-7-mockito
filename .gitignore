@@ -3,5 +3,7 @@
 .classpath
 .project
 .settings/
+.meta-data/
+.java-version
 .DS_Store
 target/
