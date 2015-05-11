@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Named;
 
-public class NameForTypeTest {
+public class NameForExpressionTypeTest {
 
   public static class PojoBean {
   }

@@ -8,6 +8,7 @@ import java.net.URL;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.extension.mockito.function.ParseDelegateExpressions;
@@ -56,14 +57,8 @@ public final class DelegateExpressions {
    */
   @SuppressWarnings("ConstantConditions")
   public static void autoMock(final @Nonnull URL bpmnFile) {
-    for (String name : ParseDelegateExpressions.EXECUTION_LISTENER.apply(bpmnFile)) {
-      registerExecutionListenerMock(name);
-    }
-    for (String name : ParseDelegateExpressions.TASK_LISTENER.apply(bpmnFile)) {
-      registerTaskListenerMock(name);
-    }
-    for (String name : ParseDelegateExpressions.JAVA_DELEGATE.apply(bpmnFile)) {
-      registerJavaDelegateMock(name);
+    for (Pair<ParseDelegateExpressions.ExpressionType, String> pair : new ParseDelegateExpressions().apply(bpmnFile)) {
+      pair.getLeft().registerMock(pair.getRight());
     }
   }
 
@@ -118,6 +113,11 @@ public final class DelegateExpressions {
     return getRegistered(name);
   }
 
+
+  public static FluentJavaDelegateMock getJavaDelegateMock(final Class<?> type) {
+    return getRegistered(type);
+  }
+
   /**
    * Returns the registered FluentExecutionListenerMock instance for name.
    *
@@ -128,6 +128,10 @@ public final class DelegateExpressions {
    */
   public static FluentExecutionListenerMock getExecutionListenerMock(final String name) {
     return getRegistered(name);
+  }
+
+  public static FluentExecutionListenerMock getExecutionListenerMock(final Class<?> type) {
+    return getRegistered(type);
   }
 
   /**
@@ -142,6 +146,10 @@ public final class DelegateExpressions {
     return getRegistered(name);
   }
 
+  public static FluentTaskListenerMock getTaskListenerMock(final Class<?> type) {
+    return getRegistered(type);
+  }
+
   /**
    * Gets the registered FluentJavaDelegateMock and creates a verification
    * instance.
@@ -153,6 +161,9 @@ public final class DelegateExpressions {
    */
   public static MockitoVerification<DelegateExecution> verifyJavaDelegateMock(final String name) {
     return verifyJavaDelegateMock(getJavaDelegateMock(name));
+  }
+  public static MockitoVerification<DelegateExecution> verifyJavaDelegateMock(final Class<?> type) {
+    return verifyJavaDelegateMock(getJavaDelegateMock(type));
   }
 
   /**
@@ -179,6 +190,10 @@ public final class DelegateExpressions {
     return verifyExecutionListenerMock(getExecutionListenerMock(name));
   }
 
+  public static MockitoVerification<DelegateExecution> verifyExecutionListenerMock(final Class<?> type) {
+    return verifyExecutionListenerMock(getExecutionListenerMock(type));
+  }
+
   /**
    * Creates a verification instance for ExecutionListener.
    *
@@ -201,6 +216,10 @@ public final class DelegateExpressions {
    */
   public static MockitoVerification<DelegateTask> verifyTaskListenerMock(final String name) {
     return verifyTaskListenerMock(getTaskListenerMock(name));
+  }
+
+  public static MockitoVerification<DelegateTask> verifyTaskListenerMock(final Class<?> type) {
+    return verifyTaskListenerMock(getTaskListenerMock(type));
   }
 
   /**

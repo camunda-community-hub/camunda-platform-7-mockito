@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://activiti.org/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="_26WcoMvlEeOJ0dSME99_6w" exporter="camunda modeler" exporterVersion="2.7.0" targetNamespace="http://activiti.org/bpmn">
-  <bpmn2:process id="process_mock_dummy" name="Dummy Mock Process" isExecutable="true">
-    <bpmn2:startEvent id="StartEvent_1">
-      <bpmn2:extensionElements>
+<definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://activiti.org/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd" id="_26WcoMvlEeOJ0dSME99_6w" exporter="camunda modeler" exporterVersion="2.7.0" targetNamespace="http://activiti.org/bpmn">
+  <process id="process_mock_dummy" name="Dummy Mock Process" isExecutable="true">
+    <startEvent id="StartEvent_1">
+      <extensionElements>
         <camunda:executionListener delegateExpression="#{startProcess}" event="end"/>
-      </bpmn2:extensionElements>
-      <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
-    </bpmn2:startEvent>
-    <bpmn2:serviceTask id="ServiceTask_1" camunda:delegateExpression="#{loadData}" name="Load Data">
-      <bpmn2:extensionElements>
+      </extensionElements>
+      <outgoing>SequenceFlow_1</outgoing>
+    </startEvent>
+    <serviceTask id="ServiceTask_1" camunda:delegateExpression="#{loadData}" name="Load Data">
+      <extensionElements>
         <camunda:executionListener delegateExpression="#{beforeLoadData}" event="start"/>
-      </bpmn2:extensionElements>
-      <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
-    </bpmn2:serviceTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent_1" targetRef="ServiceTask_1"/>
-    <bpmn2:userTask id="UserTask_1" name="Verify Data">
-      <bpmn2:extensionElements>
+      </extensionElements>
+      <incoming>SequenceFlow_1</incoming>
+      <outgoing>SequenceFlow_2</outgoing>
+    </serviceTask>
+    <sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent_1" targetRef="ServiceTask_1"/>
+    <userTask id="UserTask_1" name="Verify Data">
+      <extensionElements>
         <camunda:taskListener delegateExpression="#{verifyData}" event="create"/>
-      </bpmn2:extensionElements>
-      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-    </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="ServiceTask_1" targetRef="UserTask_1"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="UserTask_1" targetRef="ServiceTask_2"/>
-    <bpmn2:serviceTask id="ServiceTask_2" camunda:delegateExpression="#{saveData}" name="Save Data">
-      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
-    </bpmn2:serviceTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="ServiceTask_2" targetRef="EndEvent_1"/>
-    <bpmn2:endEvent id="EndEvent_1">
-      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
-    </bpmn2:endEvent>
-    <bpmn2:textAnnotation id="TextAnnotation_1">
-      <bpmn2:text>with execution listener</bpmn2:text>
-    </bpmn2:textAnnotation>
-    <bpmn2:association id="Association_1" sourceRef="TextAnnotation_1" targetRef="StartEvent_1"/>
-    <bpmn2:textAnnotation id="TextAnnotation_2">
-      <bpmn2:text>with java delegate</bpmn2:text>
-    </bpmn2:textAnnotation>
-    <bpmn2:association id="Association_2" sourceRef="TextAnnotation_2" targetRef="ServiceTask_1"/>
-    <bpmn2:textAnnotation id="TextAnnotation_3">
-      <bpmn2:text>with task listener</bpmn2:text>
-    </bpmn2:textAnnotation>
-    <bpmn2:association id="Association_3" sourceRef="TextAnnotation_3" targetRef="UserTask_1"/>
-    <bpmn2:association id="Association_4" sourceRef="TextAnnotation_2" targetRef="ServiceTask_2"/>
-  </bpmn2:process>
+      </extensionElements>
+      <incoming>SequenceFlow_2</incoming>
+      <outgoing>SequenceFlow_4</outgoing>
+    </userTask>
+    <sequenceFlow id="SequenceFlow_2" sourceRef="ServiceTask_1" targetRef="UserTask_1"/>
+    <sequenceFlow id="SequenceFlow_4" name="" sourceRef="UserTask_1" targetRef="ServiceTask_2"/>
+    <serviceTask id="ServiceTask_2" camunda:delegateExpression="#{saveData}" name="Save Data">
+      <incoming>SequenceFlow_4</incoming>
+      <outgoing>SequenceFlow_3</outgoing>
+    </serviceTask>
+    <sequenceFlow id="SequenceFlow_3" name="" sourceRef="ServiceTask_2" targetRef="EndEvent_1"/>
+    <endEvent id="EndEvent_1">
+      <incoming>SequenceFlow_3</incoming>
+    </endEvent>
+    <textAnnotation id="TextAnnotation_1">
+      <text>with execution listener</text>
+    </textAnnotation>
+    <association id="Association_1" sourceRef="TextAnnotation_1" targetRef="StartEvent_1"/>
+    <textAnnotation id="TextAnnotation_2">
+      <text>with java delegate</text>
+    </textAnnotation>
+    <association id="Association_2" sourceRef="TextAnnotation_2" targetRef="ServiceTask_1"/>
+    <textAnnotation id="TextAnnotation_3">
+      <text>with task listener</text>
+    </textAnnotation>
+    <association id="Association_3" sourceRef="TextAnnotation_3" targetRef="UserTask_1"/>
+    <association id="Association_4" sourceRef="TextAnnotation_2" targetRef="ServiceTask_2"/>
+  </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process_mock_dummy">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_7" bpmnElement="StartEvent_1">
@@ -115,4 +115,4 @@
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
-</bpmn2:definitions>
+</definitions>
