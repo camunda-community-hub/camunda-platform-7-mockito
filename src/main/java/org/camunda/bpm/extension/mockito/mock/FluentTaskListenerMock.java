@@ -8,6 +8,7 @@ import java.util.Map;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;
+import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.extension.mockito.answer.TaskListenerAnswer;
 import org.mockito.Mockito;
 
@@ -23,7 +24,7 @@ public class FluentTaskListenerMock extends FluentMock<TaskListener, DelegateTas
   }
 
   @Override
-  public void onExecutionSetVariables(final Map<String, Object> variables) {
+  public void onExecutionSetVariables(final VariableMap variables) {
     doAnswer(new TaskListener() {
 
       @Override

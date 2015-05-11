@@ -5,7 +5,8 @@ import java.util.Map.Entry;
 
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.VariableScope;
-import org.camunda.bpm.extension.util.ProcessVariableMaps;
+import org.camunda.bpm.engine.variable.VariableMap;
+import org.camunda.bpm.engine.variable.Variables;
 import org.mockito.Mockito;
 
 /**
@@ -35,16 +36,25 @@ abstract class FluentMock<T, P extends VariableScope> {
   }
 
   protected void setVariables(final VariableScope variableScope, final Map<String, Object> variables) {
+    if (variables == null || variables.isEmpty()) {
+      return;
+    }
     for (final Entry<String, Object> variable : variables.entrySet()) {
       variableScope.setVariable(variable.getKey(), variable.getValue());
     }
   }
 
-  public final void onExecutionSetVariables(final Object... keyValuePairs) {
-    onExecutionSetVariables(ProcessVariableMaps.parseMap(keyValuePairs));
-  }
+  /**
+   * @param variableMap the process variables this delegate sets when executed
+   */
+  public abstract void onExecutionSetVariables(final VariableMap variableMap);
 
-  public abstract void onExecutionSetVariables(Map<String, Object> variables);
+  /**
+   * @param variables the process variables this delegate sets when executed
+   */
+  public void onExecutionSetVariables(final Map<String, Object> variables) {
+    onExecutionSetVariables(Variables.fromMap(variables));
+  }
 
   /**
    * The mock will throw a BpmnError with given errorCode.

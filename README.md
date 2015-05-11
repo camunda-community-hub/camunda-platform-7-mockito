@@ -14,6 +14,13 @@ automate mocking of process applications.
 * Helpers for registering, retrieving and verifying mocks - convenience methods around Mocks.register().
 * Automatic mocking of all expressions and delegates in a process - without explicitly registering mocks, all instances are mocked by default, so no process will fail to run because a JUEL expression is using an unknown statement or identifier.
 
+## What's new in Version 2.0
+
+* switch to camunda 7.2
+* remove org.camunda.bpm.extension.util.ProcessVariableMaps -> use Variables instead
+* remove dependencies to cdi (you will have to add them again to use the extension with cdi/ejb)
+* add support for spring expressions 
+
 ## Get started
 
 Just include camunda-bpm-mockito in the test scope of your project:

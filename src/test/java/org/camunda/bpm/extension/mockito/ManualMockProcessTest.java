@@ -1,5 +1,6 @@
 package org.camunda.bpm.extension.mockito;
 
+import static org.camunda.bpm.engine.variable.Variables.createVariables;
 import static org.camunda.bpm.extension.mockito.DelegateExpressions.getExecutionListenerMock;
 import static org.camunda.bpm.extension.mockito.DelegateExpressions.getJavaDelegateMock;
 import static org.camunda.bpm.extension.mockito.DelegateExpressions.getTaskListenerMock;
@@ -16,6 +17,7 @@ import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
+import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.extension.mockito.mock.FluentJavaDelegateMock;
 import org.hamcrest.CoreMatchers;
 import org.junit.Rule;
@@ -36,7 +38,7 @@ public class ManualMockProcessTest {
   public void deploy_and_run_process_with_manually_registered_mocks() {
     registerExecutionListenerMock("startProcess");
     final FluentJavaDelegateMock loadData = registerJavaDelegateMock("loadData");
-    registerTaskListenerMock("verifyData").onExecutionSetVariables("foo", "bar");
+    registerTaskListenerMock("verifyData").onExecutionSetVariables(createVariables().putValue("foo", "bar"));
     registerExecutionListenerMock("beforeLoadData");
 
     final ProcessInstance processInstance = processEngineRule.getRuntimeService().startProcessInstanceByKey("process_mock_dummy");

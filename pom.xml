@@ -18,7 +18,7 @@
     <!-- Avoid the message "[WARNING] Using platform encoding (UTF-8 actually) ... also for the failsafe plugin -->
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <camunda.version>7.1.0-Final</camunda.version>
+    <camunda.version>7.2.0</camunda.version>
 
     <slf4j.version>1.7.2</slf4j.version>
     <guava.version>18.0</guava.version>
@@ -53,6 +53,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>compile</scope>
+      <version>4.12</version>
     </dependency>
 
     <dependency>
@@ -139,6 +140,7 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <scope>provided</scope>
+      <version>1.4.182</version>
     </dependency>
   </dependencies>
 

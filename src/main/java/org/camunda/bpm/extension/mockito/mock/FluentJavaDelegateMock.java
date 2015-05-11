@@ -3,6 +3,7 @@ package org.camunda.bpm.extension.mockito.mock;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.extension.mockito.answer.JavaDelegateAnswer;
 import org.mockito.Mockito;
 
@@ -23,7 +24,7 @@ public final class FluentJavaDelegateMock extends FluentMock<JavaDelegate, Deleg
   }
 
   @Override
-  public void onExecutionSetVariables(final Map<String, Object> variables) {
+  public void onExecutionSetVariables(final VariableMap variables) {
     doAnswer(new JavaDelegate() {
 
       @Override

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
+import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.extension.mockito.answer.ExecutionListenerAnswer;
 import org.mockito.Mockito;
 
@@ -18,7 +19,7 @@ public class FluentExecutionListenerMock extends FluentMock<ExecutionListener, D
   }
 
   @Override
-  public void onExecutionSetVariables(final Map<String, Object> variables) {
+  public void onExecutionSetVariables(final VariableMap variables) {
     doAnswer(new ExecutionListener() {
 
       @Override
