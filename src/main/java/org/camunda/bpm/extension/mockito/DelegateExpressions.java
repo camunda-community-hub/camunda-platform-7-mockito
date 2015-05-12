@@ -3,14 +3,20 @@ package org.camunda.bpm.extension.mockito;
 import static com.google.common.io.Resources.getResource;
 import static org.camunda.bpm.extension.mockito.Expressions.getRegistered;
 import static org.camunda.bpm.extension.mockito.Expressions.registerInstance;
+import static org.camunda.bpm.extension.mockito.function.NameForType.juelNameFor;
 
 import java.net.URL;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.reflect.ClassPath;
 import org.apache.commons.lang3.tuple.Pair;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.DelegateTask;
+import org.camunda.bpm.engine.delegate.ExecutionListener;
+import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.bpm.engine.delegate.TaskListener;
+import org.camunda.bpm.extension.mockito.function.NameForType;
 import org.camunda.bpm.extension.mockito.function.ParseDelegateExpressions;
 import org.camunda.bpm.extension.mockito.mock.FluentExecutionListenerMock;
 import org.camunda.bpm.extension.mockito.mock.FluentJavaDelegateMock;
@@ -76,6 +82,17 @@ public final class DelegateExpressions {
   }
 
   /**
+   * Registers a new FluentJavaDelegateMock instance for name (by type).
+   *
+   * @param type
+   *          the type to register
+   * @return new fluent-mock instance
+   */
+  public static FluentJavaDelegateMock registerExecutionListenerMock(final Class<? extends JavaDelegate> type) {
+    return registerJavaDelegateMock(juelNameFor(type));
+  }
+
+  /**
    * Registers a new FluentExecutionListenerMock instance for name.
    *
    * @param name
@@ -89,6 +106,17 @@ public final class DelegateExpressions {
   }
 
   /**
+   * Registers a new FluentExecutionListenerMock instance for name (by type).
+   *
+   * @param type
+   *          the type to register
+   * @return new fluent-mock instance
+   */
+  public static FluentExecutionListenerMock registerExecutionListenerMock(final Class<? extends ExecutionListener> type) {
+    return registerExecutionListenerMock(juelNameFor(type));
+  }
+
+  /**
    * Registers a new FluentTaskListenerMock instance for name.
    *
    * @param name
@@ -99,6 +127,17 @@ public final class DelegateExpressions {
    */
   public static FluentTaskListenerMock registerTaskListenerMock(final String name) {
     return registerInstance(name, new FluentTaskListenerMock());
+  }
+
+  /**
+   * Registers a new FluentTaskListenerMock instance for name (by type).
+   *
+   * @param type
+   *          the type to register
+   * @return new fluent-mock instance
+   */
+  public static FluentTaskListenerMock registerTaskListenerMock(final Class<? extends TaskListener> type) {
+    return registerTaskListenerMock(juelNameFor(type));
   }
 
   /**
@@ -162,6 +201,14 @@ public final class DelegateExpressions {
   public static MockitoVerification<DelegateExecution> verifyJavaDelegateMock(final String name) {
     return verifyJavaDelegateMock(getJavaDelegateMock(name));
   }
+
+  /**
+   * Gets the registered FluentJavaDelegateMock and creates a verification
+   * instance.
+   *
+   * @param type the type of the delegate to lookup
+   * @return verifcation for JavaDelegate
+   */
   public static MockitoVerification<DelegateExecution> verifyJavaDelegateMock(final Class<?> type) {
     return verifyJavaDelegateMock(getJavaDelegateMock(type));
   }
@@ -190,6 +237,14 @@ public final class DelegateExpressions {
     return verifyExecutionListenerMock(getExecutionListenerMock(name));
   }
 
+  /**
+   * Gets the registered FluentExecutionListenerMock and creates a verification
+   * instance.
+   *
+   * @param type
+   *          the type of the listener to lookup
+   * @return verification for ExecutionListener
+   */
   public static MockitoVerification<DelegateExecution> verifyExecutionListenerMock(final Class<?> type) {
     return verifyExecutionListenerMock(getExecutionListenerMock(type));
   }
@@ -218,6 +273,14 @@ public final class DelegateExpressions {
     return verifyTaskListenerMock(getTaskListenerMock(name));
   }
 
+  /**
+   * Gets the registered FluentExecutionListenerMock and creates a verification
+   * instance.
+   *
+   * @param type
+   *          the type of the listener to lookup
+   * @return verification for TaskListener
+   */
   public static MockitoVerification<DelegateTask> verifyTaskListenerMock(final Class<?> type) {
     return verifyTaskListenerMock(getTaskListenerMock(type));
   }
