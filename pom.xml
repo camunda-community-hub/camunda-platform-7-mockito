@@ -18,11 +18,11 @@
     <!-- Avoid the message "[WARNING] Using platform encoding (UTF-8 actually) ... also for the failsafe plugin -->
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <camunda.version>7.2.0</camunda.version>
+    <camunda.version>7.3.0</camunda.version>
 
-    <slf4j.version>1.7.2</slf4j.version>
+    <slf4j.version>1.7.12</slf4j.version>
     <guava.version>18.0</guava.version>
-    <commons-lang3.version>3.1</commons-lang3.version>
+    <commons-lang3.version>3.3.1</commons-lang3.version>
 
     <!-- test tools -->
     <mockito.version>1.10.19</mockito.version>
@@ -93,13 +93,13 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
-      <version>2.0.1</version>
+      <version>3.0.1</version>
     </dependency>
 
     <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
-      <version>1</version>
+      <version>1.0-PFD-1</version>
       <scope>provided</scope>
     </dependency>
 
@@ -132,7 +132,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>3.1.2.RELEASE</version>
+      <version>4.2.2.RELEASE</version>
       <scope>test</scope>
     </dependency>
 
@@ -140,7 +140,7 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <scope>provided</scope>
-      <version>1.4.182</version>
+      <version>1.4.190</version>
     </dependency>
   </dependencies>
 
