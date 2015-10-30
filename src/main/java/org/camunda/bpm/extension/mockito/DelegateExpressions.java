@@ -88,7 +88,7 @@ public final class DelegateExpressions {
    *          the type to register
    * @return new fluent-mock instance
    */
-  public static FluentJavaDelegateMock registerExecutionListenerMock(final Class<? extends JavaDelegate> type) {
+  public static FluentJavaDelegateMock registerJavaDelegateMock(final Class<? extends JavaDelegate> type) {
     return registerJavaDelegateMock(juelNameFor(type));
   }
 
