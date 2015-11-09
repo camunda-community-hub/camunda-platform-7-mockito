@@ -98,7 +98,7 @@ In addition two of the well-known "Mocks.register()" hook, you now have the poss
      registerJavaDelegateMock("name")
      registerMockInstance(YourDelegate.class)
 
-In the latter case, "YourDelegate" has to be annotated with @Named.
+In the latter case, "YourDelegate" has to be annotated with @Named, @Component or @Service, depending on the injection framework you are using.
 
 To verify the Mock execution, you can use
 
