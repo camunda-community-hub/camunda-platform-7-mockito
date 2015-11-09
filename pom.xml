@@ -4,7 +4,7 @@
   <groupId>org.camunda.bpm.extension</groupId>
   <artifactId>camunda-bpm-mockito</artifactId>
   <packaging>jar</packaging>
-  <version>2.0</version>
+  <version>2.1-SNAPSHOT</version>
 
   <parent>
     <groupId>org.camunda</groupId>
@@ -158,7 +158,7 @@
     <connection>scm:git:git@github.com:camunda/camunda-bpm-mockito.git</connection>
     <url>scm:git:git@github.com:camunda/camunda-bpm-mockito.git</url>
     <developerConnection>scm:git:git@github.com:camunda/camunda-bpm-mockito.git</developerConnection>
-    <tag>2.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <!-- repositories used for distribution of releases and snapshots, DO NOT CHANGE -->
