@@ -30,14 +30,9 @@ Just include camunda-bpm-mockito in the test scope of your project:
   <groupId>org.camunda.bpm.extension</groupId>
   <artifactId>camunda-bpm-mockito</artifactId>
   <scope>test</scope>
-  <version>1.0</version>
+  <version>2.0</version>
 </dependency>
 ```
-
-Version 1.0 got published to:
-
-* [extension-repository](https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions/org/camunda/bpm/extension/camunda-bpm-mockito/1.0/).
-* [maven central](http://search.maven.org/#artifactdetails%7Corg.camunda.bpm.extension%7Ccamunda-bpm-mockito%7C1.0%7Cjar)
 
 ## Mocking of queries
 
@@ -139,7 +134,7 @@ to mock custom beans, you still can use some of the tools to register the mock, 
 auto mocking feature. Due to the nature of automatic mocking, this is immanent and will not change.
 * Currently, only expression-delegates (${myDelegate}) are supported (as you do use with CDI/Spring)) but no FQN class names. 
 This might and probably will change with future versions, it just has to be implemented ... 
-* expressions are only parsed for listeners and delegates, not for process variables.
+* while automocking, expressions are only parsed for listeners and delegates, not for process variables.
 
 ## Resources
 
@@ -155,5 +150,5 @@ This might and probably will change with future versions, it just has to be impl
 
 ## License
 
-Apache License, Version 2.0
+* [Apache License, Version 2.0](./LICENSE)
 
