@@ -7,7 +7,6 @@ import static org.camunda.bpm.extension.mockito.DelegateExpressions.verifyJavaDe
 import static org.camunda.bpm.extension.mockito.DelegateExpressions.verifyTaskListenerMock;
 import static org.camunda.bpm.extension.mockito.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
 
-import org.apache.ibatis.logging.slf4j.Slf4jImpl;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
@@ -16,8 +15,6 @@ import org.camunda.bpm.engine.test.mock.Mocks;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * If everything works as expected, the process can be deployed and executed
@@ -27,8 +24,6 @@ import org.slf4j.LoggerFactory;
  * @author Jan Galinski, Holisticon AG
  */
 public class AutoMockProcessTest {
-
-  private final Logger logger = LoggerFactory.getLogger(getClass());
 
   @Rule
   public final ProcessEngineRule processEngineRule = new ProcessEngineRule(mostUsefulProcessEngineConfiguration().buildProcessEngine());

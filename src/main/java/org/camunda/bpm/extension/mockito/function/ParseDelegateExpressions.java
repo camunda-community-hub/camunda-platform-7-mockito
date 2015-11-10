@@ -5,10 +5,10 @@ import static org.camunda.bpm.model.bpmn.impl.BpmnModelConstants.CAMUNDA_ATTRIBU
 import static org.camunda.bpm.model.bpmn.impl.BpmnModelConstants.CAMUNDA_ELEMENT_EXECUTION_LISTENER;
 import static org.camunda.bpm.model.bpmn.impl.BpmnModelConstants.CAMUNDA_ELEMENT_TASK_LISTENER;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Function;
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.camunda.bpm.extension.mockito.DelegateExpressions;
 import org.slf4j.Logger;
@@ -18,9 +18,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Function;
+import com.google.common.base.MoreObjects;
 
 /**
  * Parses a given BPMN File and returns a Set of all delegateExpression names.

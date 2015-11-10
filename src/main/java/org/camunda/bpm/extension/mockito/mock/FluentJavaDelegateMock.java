@@ -1,16 +1,14 @@
 package org.camunda.bpm.extension.mockito.mock;
 
+import static com.google.common.base.Throwables.propagate;
+import static org.mockito.Mockito.mock;
+
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.extension.mockito.answer.JavaDelegateAnswer;
 import org.mockito.Mockito;
-
-import java.util.Map;
-
-import static com.google.common.base.Throwables.propagate;
-import static org.mockito.Mockito.mock;
 
 public final class FluentJavaDelegateMock extends FluentMock<JavaDelegate, DelegateExecution> implements JavaDelegate {
 
