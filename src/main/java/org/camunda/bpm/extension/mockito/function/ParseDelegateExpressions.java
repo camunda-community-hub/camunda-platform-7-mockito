@@ -20,7 +20,8 @@ import org.w3c.dom.NodeList;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
-import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+
 
 /**
  * Parses a given BPMN File and returns a Set of all delegateExpression names.
@@ -82,7 +83,7 @@ public class ParseDelegateExpressions implements Function<URL, List<Pair<ParseDe
             final NamedNodeMap attributes = nodes.item(i).getAttributes();
 
             // TODO: this is not nice, but I cannot get getNamedItemNS("*", ...) to work properly
-            Node delegateExpression = MoreObjects.firstNonNull(attributes.getNamedItem(CAMUNDA_ATTRIBUTE_DELEGATE_EXPRESSION), attributes.getNamedItem("camunda:"+CAMUNDA_ATTRIBUTE_DELEGATE_EXPRESSION));
+            Node delegateExpression = Objects.firstNonNull(attributes.getNamedItem(CAMUNDA_ATTRIBUTE_DELEGATE_EXPRESSION), attributes.getNamedItem("camunda:"+CAMUNDA_ATTRIBUTE_DELEGATE_EXPRESSION));
 
             if (delegateExpression != null) {
               add(Pair.of(type, extractDelegateExpressionName(delegateExpression.getTextContent())));
