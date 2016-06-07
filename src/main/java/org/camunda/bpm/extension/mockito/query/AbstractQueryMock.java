@@ -20,7 +20,7 @@ import com.google.common.base.Supplier;
  * super class, the high level of Generics is needed for the fluent api pattern,
  * so the abstract mock implementing the generic Query interface must also keep
  * a reference to itself.
- * 
+ *
  * @param <M>
  *          the type of the AbstractQueryMock (repeat the type of the class you
  *          are building). Used to "return this"
@@ -31,7 +31,7 @@ import com.google.common.base.Supplier;
  * @param <S>
  *          the type of the service the query belongs to (used for "forService"
  *          binding), for Example: TaskService.
- * 
+ *
  * @author Jan Galinski
  */
 abstract class AbstractQueryMock<M extends AbstractQueryMock<M, Q, R, S>, Q extends Query<?, R>, R extends Object, S> implements Supplier<Q> {
@@ -53,7 +53,7 @@ abstract class AbstractQueryMock<M extends AbstractQueryMock<M, Q, R, S>, Q exte
    * <li>list() - returns empty ArrayList</li>
    * <lI>singeResult() - returns null</lI>
    * </ul>
-   * 
+   *
    * @param queryType
    *          the type of the query to mock.
    * @param serviceType
@@ -82,6 +82,11 @@ abstract class AbstractQueryMock<M extends AbstractQueryMock<M, Q, R, S>, Q exte
 
   public final Q singleResult(final R result) {
     when(query.singleResult()).thenReturn(result);
+    return get();
+  }
+
+  public final Q count(long count) {
+    when(query.count()).thenReturn(count);
     return get();
   }
 
