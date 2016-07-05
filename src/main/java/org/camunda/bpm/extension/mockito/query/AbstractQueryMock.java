@@ -75,17 +75,17 @@ abstract class AbstractQueryMock<M extends AbstractQueryMock<M, Q, R, S>, Q exte
     }
   }
 
-  public final Q list(final List<R> result) {
+  public Q list(final List<R> result) {
     when(query.list()).thenReturn(result);
     return get();
   }
 
-  public final Q singleResult(final R result) {
+  public Q singleResult(final R result) {
     when(query.singleResult()).thenReturn(result);
     return get();
   }
 
-  public final Q count(long count) {
+  public Q count(long count) {
     when(query.count()).thenReturn(count);
     return get();
   }
