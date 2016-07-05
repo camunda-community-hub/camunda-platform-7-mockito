@@ -64,4 +64,11 @@ public class TaskQueryMockTest {
 
     verify(taskQuery).processInstanceId("pid");
   }
+
+  @Test
+  public void count_on_taskQuery() throws Exception {
+    final TaskQuery taskQuery = QueryMocks.mockTaskQuery(taskService).count(5);
+
+    assertThat(taskService.createTaskQuery().active().processDefinitionKey("foo").count()).isEqualTo(5);
+  }
 }
