@@ -1,0 +1,15 @@
+package ${package};
+
+import ${serviceFqn};
+import ${resultFqn};
+import ${queryFqn};
+import javax.annotation.Generated;
+
+@Generated(value="${generator}", date="${date}")
+public class ${className} extends AbstractQueryMock<${className}, ${queryName}, ${resultName}, ${serviceName}> {
+
+  public ${className}() {
+    super(${queryName}.class, ${serviceName}.class);
+   }
+
+}

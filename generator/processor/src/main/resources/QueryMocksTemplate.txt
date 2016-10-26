@@ -1,0 +1,27 @@
+package org.camunda.bpm.extension.mockito;
+
+import org.camunda.bpm.engine.*;
+import org.camunda.bpm.extension.mockito.query.*;
+import javax.annotation.Generated;
+import org.camunda.bpm.extension.mockito.generator.annotation.CollectStaticMethods;
+
+@Generated(value="${generator}", date="${date}")
+@CollectStaticMethods
+@SuppressWarnings("unused")
+public final class QueryMocks {
+
+  ###
+  public static ${className} mock${queryName}(final ${serviceName} serviceMock) {
+    return new ${className}().forService(serviceMock);
+  }
+  ###
+
+  /**
+   * This is a util class, do not instantiate!
+   */
+  private QueryMocks() {
+    // empty
+  }
+
+}
+
