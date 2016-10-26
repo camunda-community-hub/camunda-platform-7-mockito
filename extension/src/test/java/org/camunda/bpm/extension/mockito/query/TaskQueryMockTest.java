@@ -37,14 +37,37 @@ public class TaskQueryMockTest {
 
   @Test
   public void singleResult_for_everything() {
-    final TaskQuery taskQuery = null;//QueryMocks1.mockTaskQuery(taskService).singleResult(singleResult);
+    final TaskQuery taskQuery = new TaskQueryMock().forService(taskService).singleResult(singleResult);
     // @formatter:off
     assertThat(
-        taskService.createTaskQuery().taskDefinitionKey("").processInstanceBusinessKey("").taskDefinitionKey("").taskId("").taskUnassigned()
-            .processInstanceId("pid").active().activityInstanceIdIn("").dueAfter(new Date()).dueBefore(new Date()).dueDate(new Date()).excludeSubtasks()
-            .executionId("").processDefinitionId("").processDefinitionKey("").singleResult()).isEqualTo(singleResult);
+      taskService.createTaskQuery()
+        .taskDefinitionKey("")
+        .processInstanceBusinessKey("")
+        .taskDefinitionKey("")
+        .taskId("")
+        .taskUnassigned()
+        .processInstanceId("pid")
+        .active()
+        .activityInstanceIdIn("")
+        .dueAfter(new Date())
+        .dueBefore(new Date())
+        .dueDate(new Date())
+        .excludeSubtasks()
+        .executionId("")
+        .processDefinitionId("")
+        .processDefinitionKey("")
+        .asc()
+        .desc()
+        .singleResult()).isEqualTo(singleResult);
     // @formatter:on
 
     verify(taskQuery).processInstanceId("pid");
+  }
+
+  @Test
+  public void count_on_taskQuery() throws Exception {
+    final TaskQuery taskQuery = new TaskQueryMock().forService(taskService).count(5);
+
+    assertThat(taskService.createTaskQuery().active().processDefinitionKey("foo").count()).isEqualTo(5);
   }
 }

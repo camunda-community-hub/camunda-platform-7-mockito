@@ -1,19 +1,17 @@
 package org.camunda.bpm.extension.mockito.query;
 
-import static com.google.common.base.Throwables.propagate;
-import static org.mockito.Mockito.when;
+import com.google.common.base.Supplier;
+import org.camunda.bpm.engine.query.Query;
+import org.camunda.bpm.extension.mockito.answer.FluentAnswer;
+import org.camunda.bpm.extension.mockito.generator.annotation.GenerateQueryMocks;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
-import org.camunda.bpm.engine.query.Query;
-import org.camunda.bpm.extension.mockito.answer.FluentAnswer;
-
-import com.google.common.base.Supplier;
-import org.camunda.bpm.extension.mockito.generator.annotation.GenerateQueryMocks;
+import static com.google.common.base.Throwables.propagate;
+import static org.mockito.Mockito.when;
 
 /**
  * This looks more complicated than it actually is ... To easily mock the

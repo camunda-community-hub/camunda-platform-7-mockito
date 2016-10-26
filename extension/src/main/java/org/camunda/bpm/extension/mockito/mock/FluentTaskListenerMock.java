@@ -3,8 +3,6 @@ package org.camunda.bpm.extension.mockito.mock;
 import static com.google.common.base.Throwables.propagate;
 import static org.mockito.Mockito.mock;
 
-import java.util.Map;
-
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;

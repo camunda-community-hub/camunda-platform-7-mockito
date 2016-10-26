@@ -13,8 +13,9 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.camunda.bpm.extension.mockito.generator</groupId>
       <artifactId>camunda-bpm-mockito-generator-annotation</artifactId>
-      <groupId>${project.groupId}</groupId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
@@ -35,7 +36,6 @@
       <version>1.0-rc2</version>
       <optional>true</optional>
     </dependency>
-
 
     <dependency>
       <groupId>com.google.testing.compile</groupId>

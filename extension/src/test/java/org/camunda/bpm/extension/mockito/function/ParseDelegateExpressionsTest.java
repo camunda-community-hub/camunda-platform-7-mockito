@@ -3,12 +3,11 @@ package org.camunda.bpm.extension.mockito.function;
 import static com.google.common.io.Resources.getResource;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
-
 import java.net.URL;
 import java.util.List;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.junit.Test;
 
 public class ParseDelegateExpressionsTest {
 

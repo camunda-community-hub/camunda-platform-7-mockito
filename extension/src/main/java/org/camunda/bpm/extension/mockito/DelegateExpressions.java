@@ -9,14 +9,12 @@ import java.net.URL;
 
 import javax.annotation.Nonnull;
 
-import com.google.common.reflect.ClassPath;
 import org.apache.commons.lang3.tuple.Pair;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.delegate.TaskListener;
-import org.camunda.bpm.extension.mockito.function.NameForType;
 import org.camunda.bpm.extension.mockito.function.ParseDelegateExpressions;
 import org.camunda.bpm.extension.mockito.generator.annotation.CollectStaticMethods;
 import org.camunda.bpm.extension.mockito.mock.FluentExecutionListenerMock;

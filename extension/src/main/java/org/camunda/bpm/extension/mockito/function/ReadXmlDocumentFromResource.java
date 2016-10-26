@@ -2,9 +2,9 @@ package org.camunda.bpm.extension.mockito.function;
 
 import static com.google.common.base.Throwables.propagate;
 
-import com.google.common.base.Function;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.net.URL;
 
 import javax.annotation.Nonnull;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,9 +14,11 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.net.URL;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import com.google.common.base.Function;
 
 /**
  * Return DOM document for given resource.

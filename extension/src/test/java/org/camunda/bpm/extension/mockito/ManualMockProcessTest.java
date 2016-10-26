@@ -17,7 +17,6 @@ import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
-import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.extension.mockito.mock.FluentJavaDelegateMock;
 import org.hamcrest.CoreMatchers;
 import org.junit.Rule;

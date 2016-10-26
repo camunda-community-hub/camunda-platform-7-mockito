@@ -1,5 +1,8 @@
 # camunda-bpm-mockito
 
+
+[![Project Stats](https://www.openhub.net/p/camunda-bpm-mockito/widgets/project_thin_badge.gif)](https://www.openhub.net/p/camunda-bpm-mockito)
+
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-mockito)
 
 **simplify process mocking and testing**
@@ -14,7 +17,13 @@ automate mocking of process applications.
 * Helpers for registering, retrieving and verifying mocks - convenience methods around Mocks.register().
 * Automatic mocking of all expressions and delegates in a process - without explicitly registering mocks, all instances are mocked by default, so no process will fail to run because a JUEL expression is using an unknown statement or identifier.
 
-## What's new in Version 2.0
+## Release Notes
+
+### 2.2
+
+* add support for asc() and desc() query methods (see #26)
+
+### 2.0
 
 * switch to camunda 7.2
 * remove org.camunda.bpm.extension.util.ProcessVariableMaps -> use Variables instead
@@ -30,14 +39,9 @@ Just include camunda-bpm-mockito in the test scope of your project:
   <groupId>org.camunda.bpm.extension</groupId>
   <artifactId>camunda-bpm-mockito</artifactId>
   <scope>test</scope>
-  <version>1.0</version>
+  <version>2.2</version>
 </dependency>
 ```
-
-Version 1.0 got published to:
-
-* [extension-repository](https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions/org/camunda/bpm/extension/camunda-bpm-mockito/1.0/).
-* [maven central](http://search.maven.org/#artifactdetails%7Corg.camunda.bpm.extension%7Ccamunda-bpm-mockito%7C1.0%7Cjar)
 
 ## Mocking of queries
 
@@ -103,7 +107,7 @@ In addition two of the well-known "Mocks.register()" hook, you now have the poss
      registerJavaDelegateMock("name")
      registerMockInstance(YourDelegate.class)
 
-In the latter case, "YourDelegate" has to be annotated with @Named.
+In the latter case, "YourDelegate" has to be annotated with @Named, @Component or @Service, depending on the injection framework you are using.
 
 To verify the Mock execution, you can use
 
@@ -139,7 +143,7 @@ to mock custom beans, you still can use some of the tools to register the mock, 
 auto mocking feature. Due to the nature of automatic mocking, this is immanent and will not change.
 * Currently, only expression-delegates (${myDelegate}) are supported (as you do use with CDI/Spring)) but no FQN class names. 
 This might and probably will change with future versions, it just has to be implemented ... 
-* expressions are only parsed for listeners and delegates, not for process variables.
+* while automocking, expressions are only parsed for listeners and delegates, not for process variables.
 
 ## Resources
 
@@ -149,11 +153,12 @@ This might and probably will change with future versions, it just has to be impl
 
 ## Maintainer
 
-* [Jan Galinski](https://github.com/jangalinski), [Holisticon AG](http://www.holisticon.de)
-* [Simon Zambrovski](https://github.com/zambrovski), [Holisticon AG](http://www.holisticon.de).
+* [Jan Galinski](https://github.com/jangalinski)
+* [Simon Zambrovski](https://github.com/zambrovski)
+* [Christian Lipphardt](https://github.com/hawky-4s-)
 
 
 ## License
 
-Apache License, Version 2.0
+* [Apache License, Version 2.0](./LICENSE)
 

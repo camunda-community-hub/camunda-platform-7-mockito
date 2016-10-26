@@ -1,5 +1,7 @@
 package org.camunda.bpm.extension.mockito.mock;
 
+import static org.mockito.Mockito.mock;
+
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -7,8 +9,6 @@ import org.camunda.bpm.extension.mockito.DelegateExpressions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import static org.mockito.Mockito.mock;
 
 public class FluentJavaDelegateMockTest {
 
