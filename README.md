@@ -19,6 +19,11 @@ automate mocking of process applications.
 
 ## Release Notes
 
+### 3.0
+
+* switch to camunda 7.5.0
+* support new query types via code generation
+
 ### 2.2
 
 * add support for asc() and desc() query methods (see #26)
@@ -36,10 +41,10 @@ Just include camunda-bpm-mockito in the test scope of your project:
 
 ```xml
 <dependency>
-  <groupId>org.camunda.bpm.extension</groupId>
+  <groupId>org.camunda.bpm.extension.mockito</groupId>
   <artifactId>camunda-bpm-mockito</artifactId>
   <scope>test</scope>
-  <version>2.2</version>
+  <version>3.0-SNAPSHOT</version>
 </dependency>
 ```
 
