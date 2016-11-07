@@ -10,5 +10,5 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Retention( CLASS )
 public @interface CollectStaticMethods {
 
-  String FQN = "org.camunda.bpm.extension.mockito.generator.annotation.GenerateQueryMocks";
+  String FQN = "org.camunda.bpm.extension.mockito.generator.annotation.CollectStaticMethods";
 }
