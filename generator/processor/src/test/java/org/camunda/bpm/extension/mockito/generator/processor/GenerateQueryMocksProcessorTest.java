@@ -1,18 +1,12 @@
 package org.camunda.bpm.extension.mockito.generator.processor;
 
 import com.google.common.base.Charsets;
-import com.google.common.io.ByteSource;
 import com.google.common.io.Resources;
 import com.google.testing.compile.CompileTester;
 import com.google.testing.compile.JavaFileObjects;
 import org.apache.commons.lang3.StringUtils;
 import org.camunda.bpm.extension.mockito.generator.annotation.GenerateQueryMocks;
-import org.camunda.bpm.extension.mockito.generator.processor.GenerateQueryMocksProcessor;
 import org.junit.Test;
-
-import javax.tools.ForwardingJavaFileObject;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardLocation;
 
 import java.util.Iterator;
 import java.util.List;
