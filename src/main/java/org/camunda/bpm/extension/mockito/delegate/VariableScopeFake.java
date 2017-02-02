@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.mockito.context;
+package org.camunda.bpm.extension.mockito.delegate;
 
 
 import org.camunda.bpm.engine.delegate.VariableScope;
@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class VariableScopeFake implements VariableScope{
+public class VariableScopeFake implements VariableScope {
 
   private final VariableMap global = Variables.createVariables();
   private final VariableMap local = Variables.createVariables();
@@ -42,7 +42,7 @@ public class VariableScopeFake implements VariableScope{
 
   @Override
   public VariableMap getVariablesTyped(boolean deserializeValues) {
-    throw new UnsupportedOperationException("not implemeneted");
+    throw new UnsupportedOperationException("variables-typed not implemented");
   }
 
   @Override
@@ -57,7 +57,7 @@ public class VariableScopeFake implements VariableScope{
 
   @Override
   public VariableMap getVariablesLocalTyped(boolean deserializeValues) {
-    throw new UnsupportedOperationException("not implemeneted");
+    throw new UnsupportedOperationException("variables-typed not implemented");
   }
 
   @Override
@@ -77,7 +77,7 @@ public class VariableScopeFake implements VariableScope{
 
   @Override
   public <T extends TypedValue> T getVariableTyped(String variableName, boolean deserializeValue) {
-    throw new UnsupportedOperationException("not implemeneted");
+    throw new UnsupportedOperationException("variables-typed not implemented");
   }
 
   @Override
@@ -87,7 +87,7 @@ public class VariableScopeFake implements VariableScope{
 
   @Override
   public <T extends TypedValue> T getVariableLocalTyped(String variableName, boolean deserializeValue) {
-    throw new UnsupportedOperationException("not implemeneted");
+    throw new UnsupportedOperationException("variables-typed not implemented");
   }
 
   @Override
@@ -102,12 +102,12 @@ public class VariableScopeFake implements VariableScope{
 
   @Override
   public void setVariable(String variableName, Object value) {
-    global.putValue(variableName,value);
+    global.putValue(variableName, value);
   }
 
   @Override
   public void setVariableLocal(String variableName, Object value) {
-    local.putValue(variableName,value);
+    local.putValue(variableName, value);
   }
 
   @Override
@@ -152,16 +152,12 @@ public class VariableScopeFake implements VariableScope{
 
   @Override
   public void removeVariables(Collection<String> variableNames) {
-    for (String variableName : variableNames) {
-      removeVariable(variableName);
-    }
+    variableNames.forEach(this::removeVariable);
   }
 
   @Override
   public void removeVariablesLocal(Collection<String> variableNames) {
-    for (String variableName : variableNames) {
-      removeVariableLocal(variableName);
-    }
+    variableNames.forEach(this::removeVariableLocal);
   }
 
   @Override

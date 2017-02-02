@@ -47,10 +47,7 @@ public final class Expressions {
    * @param parentClass the parentClass to scan for nested public static types
    */
   public static void registerMockInstancesForNestedTypes(final Class<?> parentClass) {
-    final Collection<Class<?>> nestedClasses = findNestedClasses(parentClass);
-    for (final Class<?> type : nestedClasses) {
-      registerMockInstance(type);
-    }
+    findNestedClasses(parentClass).forEach(Expressions::registerMockInstance);
   }
 
   private static Collection<Class<?>> findNestedClasses(final Class<?> parentClass) {
@@ -97,9 +94,7 @@ public final class Expressions {
    * @param parentClass the parentClass to scan for nested public static types
    */
   public static void registerNewInstancesForNestedTypes(final Class<?> parentClass) {
-    for (final Class<?> type : findNestedClasses(parentClass)) {
-      registerNewInstance(type);
-    }
+    findNestedClasses(parentClass).forEach(Expressions::registerNewInstance);
   }
 
   /**
@@ -121,9 +116,7 @@ public final class Expressions {
    * @param types collection of types to mock and register
    */
   public static void registerMockInstances(final Collection<Class<?>> types) {
-    for (final Class<?> type : types) {
-      registerMockInstance(type);
-    }
+    types.forEach(Expressions::registerMockInstance);
   }
 
   /**
