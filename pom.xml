@@ -10,7 +10,7 @@
 
   <groupId>org.camunda.bpm.extension.mockito</groupId>
   <artifactId>camunda-bpm-mockito</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
+  <version>3.0.0</version>
 
   <properties>
     <!-- Avoid the message "[WARNING] Using platform encoding (UTF-8 actually) ... also for the failsafe plugin -->
@@ -173,7 +173,7 @@
     <connection>scm:git:git@github.com:camunda/camunda-bpm-mockito.git</connection>
     <url>scm:git:git@github.com:camunda/camunda-bpm-mockito.git</url>
     <developerConnection>scm:git:git@github.com:camunda/camunda-bpm-mockito.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>3.0.0</tag>
   </scm>
 
   <!-- repositories used for distribution of releases and snapshots, DO NOT CHANGE -->
