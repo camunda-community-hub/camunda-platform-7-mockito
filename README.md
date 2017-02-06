@@ -3,7 +3,7 @@
 
 [![Project Stats](https://www.openhub.net/p/camunda-bpm-mockito/widgets/project_thin_badge.gif)](https://www.openhub.net/p/camunda-bpm-mockito)
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-mockito)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito)
 
 **simplify process mocking and testing**
 
@@ -21,8 +21,11 @@ automate mocking of process applications.
 
 ### 3.0
 
-* switch to camunda 7.5.0
-* support new query types via code generation
+* switch to camunda 7.6.0
+* switch to java8
+* support all new query types
+* `CamundaMockito.*` now is the single import you need to use all features from `DelegateExpressions`, `Expressions` and `QueryMocks`.
+* DelegateExecution and DelegateTask now can be used via "fake" implementations which makes preparation and assertions much easier when testing dlegates and listeners. Use of typed variables is not supported for now, though.
 
 ### 2.2
 
@@ -44,7 +47,7 @@ Just include camunda-bpm-mockito in the test scope of your project:
   <groupId>org.camunda.bpm.extension.mockito</groupId>
   <artifactId>camunda-bpm-mockito</artifactId>
   <scope>test</scope>
-  <version>3.0-SNAPSHOT</version>
+  <version>3.0.0</version>
 </dependency>
 ```
 
@@ -142,7 +145,7 @@ If you do need to specify behaviour for the mocks, you can still get the mock vi
 
 **Limitations:**
 
-* though it is possible to use arbitrary beans as expressions (myBean.doSomething()), we solely focus on 
+* Though it is possible to use arbitrary beans as expressions (myBean.doSomething()), we solely focus on 
 Listeners (notify()) and Delegates (execute()) here, since this is the only way to apply automatic behavior. If you need
 to mock custom beans, you still can use some of the tools to register the mock, but can not use the fluent mocking or 
 auto mocking feature. Due to the nature of automatic mocking, this is immanent and will not change.
