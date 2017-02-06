@@ -5,6 +5,8 @@
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito)
 
+> :bangbang: With release 3.0.0 the groupId changed, it is now `org.camunda.bpm.extension.mockito` :bangbang:
+
 **simplify process mocking and testing**
 
 camunda-bpm-mockito is a community extension for the Camunda BPM process engine that aims to simplify and 
