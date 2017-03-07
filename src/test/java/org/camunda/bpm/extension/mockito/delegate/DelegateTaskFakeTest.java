@@ -1,10 +1,12 @@
 package org.camunda.bpm.extension.mockito.delegate;
 
 
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.camunda.bpm.engine.task.IdentityLinkType.ASSIGNEE;
+import static org.camunda.bpm.engine.task.IdentityLinkType.CANDIDATE;
+import static org.camunda.bpm.engine.task.IdentityLinkType.OWNER;
 
 public class DelegateTaskFakeTest {
 
@@ -34,5 +36,51 @@ public class DelegateTaskFakeTest {
     assertThat(delegate.getPriority()).isEqualTo(0);
     delegate.setPriority(10);
     assertThat(delegate.getPriority()).isEqualTo(10);
+  }
+
+  @Test
+  public void addCandidateGroup() throws Exception {
+    delegate.addCandidateGroup("foo");
+
+    assertThat(DelegateTaskFake.candidateGroupIds(delegate)).containsOnly("foo");
+  }
+
+  @Test
+  public void addAndDeleteUserAssignee() throws Exception {
+    delegate.addUserIdentityLink("foo", ASSIGNEE);
+    delegate.addUserIdentityLink("bar", OWNER);
+
+    assertThat(DelegateTaskFake.userIds(delegate)).containsOnly("bar", "foo");
+
+    delegate.deleteCandidateUser("foo");
+    assertThat(DelegateTaskFake.userIds(delegate)).containsOnly("foo","bar");
+
+    delegate.deleteUserIdentityLink("foo", ASSIGNEE);
+    assertThat(DelegateTaskFake.userIds(delegate)).containsOnly("bar");
+
+  }
+
+  @Test
+  public void candidateUsers() throws Exception {
+    initIdentityLinks();
+
+    assertThat(DelegateTaskFake.candidateUserIds(delegate)).containsOnly("user3");
+  }
+
+  @Test
+  public void candidateGroups() throws Exception {
+    initIdentityLinks();
+
+    assertThat(DelegateTaskFake.candidateGroupIds(delegate)).containsOnly("group3");
+  }
+
+  private void initIdentityLinks() {
+    delegate.addUserIdentityLink("user1", ASSIGNEE);
+    delegate.addUserIdentityLink("user2", OWNER);
+    delegate.addUserIdentityLink("user3", CANDIDATE);
+    delegate.addGroupIdentityLink("group1", ASSIGNEE);
+    delegate.addGroupIdentityLink("group2", OWNER);
+    delegate.addGroupIdentityLink("group3", CANDIDATE);
+
   }
 }

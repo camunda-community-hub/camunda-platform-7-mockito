@@ -10,19 +10,65 @@ import org.camunda.bpm.model.bpmn.instance.UserTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.StringJoiner;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-public class DelegateTaskFake extends VariableScopeFake implements DelegateTask {
+import static org.camunda.bpm.engine.task.IdentityLinkType.CANDIDATE;
+
+@SuppressWarnings("unused")
+public class DelegateTaskFake extends VariableScopeFake implements DelegateTask, Serializable {
+
+  public static Set<String> candidateUserIds(DelegateTask task) {
+    return userIds(task, CANDIDATE);
+  }
+
+  public static Set<String> candidateGroupIds(DelegateTask task) {
+    return groupIds(task, CANDIDATE);
+  }
+
+  public static Set<String> userIds(DelegateTask task) {
+    return userIds(task, null);
+  }
+
+  public static Set<String> userIds(DelegateTask task, String type) {
+    return linkIds(task, IdentityLink::getUserId, type);
+  }
+
+  public static Set<String> groupIds(DelegateTask task) {
+    return groupIds(task, null);
+  }
+
+  public static Set<String> groupIds(DelegateTask task, String type) {
+    return linkIds(task, IdentityLink::getGroupId, type);
+  }
+
+  private static Set<String> linkIds(DelegateTask task, Function<IdentityLink, String> extract, String type) {
+    return Optional.ofNullable(task.getCandidates()).orElseGet(HashSet::new)
+      .stream()
+      .filter(link -> type == null || type.equals(link.getType()))
+      .map(extract)
+      .filter(Objects::nonNull)
+      .collect(Collectors.toSet());
+  }
+
+  private static Predicate<IdentityLink> isUserLink = link -> link.getUserId() != null;
+  private static Predicate<IdentityLink> isGroupLink = link -> link.getGroupId() != null;
 
   private final Logger log = LoggerFactory.getLogger(this.getClass());
   private String id;
 
-  private List<String> candidateUsers = new ArrayList<>();
-  private List<String> candidateGroups = new ArrayList<>();
+  private final Set<IdentityLink> candidates = new LinkedHashSet<>();
 
   private String name;
   private String description;
@@ -43,7 +89,6 @@ public class DelegateTaskFake extends VariableScopeFake implements DelegateTask 
   private String tenantId;
   private boolean completed;
   private ProcessEngineServices processEngineServices;
-
 
   @Override
   public String getId() {
@@ -201,24 +246,108 @@ public class DelegateTaskFake extends VariableScopeFake implements DelegateTask 
     return this;
   }
 
+  private IdentityLink identityLink(String userId, String groupId, String type) {
+    return new IdentityLink() {
+      @Override
+      public String getId() {
+        return UUID.randomUUID().toString();
+      }
+
+      @Override
+      public String getType() {
+        return type;
+      }
+
+      @Override
+      public String getUserId() {
+        return userId;
+      }
+
+      @Override
+      public String getGroupId() {
+        return groupId;
+      }
+
+      @Override
+      public String getTaskId() {
+        return getId();
+      }
+
+      @Override
+      public String getProcessDefId() {
+        return getProcessDefinitionId();
+      }
+
+      @Override
+      public String getTenantId() {
+        return getTenantId();
+      }
+
+      @Override
+      public String toString() {
+        return new StringJoiner(", ", IdentityLink.class.getSimpleName() + "[", "]")
+          .add("userId=" + getUserId())
+          .add("groupId=" + getGroupId())
+          .add("type=" + getType())
+          .toString();
+      }
+    };
+  }
+
   @Override
   public void addCandidateUser(String userId) {
-    candidateUsers.add(userId);
+    addUserIdentityLink(userId, CANDIDATE);
   }
 
   @Override
   public void addCandidateUsers(Collection<String> candidateUsers) {
-    this.candidateUsers.addAll(candidateUsers);
+    candidateUsers.forEach(this::addCandidateUser);
   }
 
   @Override
   public void addCandidateGroup(String groupId) {
-    candidateGroups.add(groupId);
+    addGroupIdentityLink(groupId, CANDIDATE);
   }
 
   @Override
   public void addCandidateGroups(Collection<String> candidateGroups) {
-    this.candidateGroups.addAll(candidateGroups);
+    candidateGroups.forEach(this::addCandidateGroup);
+  }
+
+
+  @Override
+  public void addUserIdentityLink(String userId, String type) {
+    candidates.add(identityLink(userId, null, type));
+  }
+
+  @Override
+  public void addGroupIdentityLink(String groupId, String type) {
+    candidates.add(identityLink(null, groupId, type));
+  }
+
+  @Override
+  public void deleteCandidateUser(String userId) {
+    deleteUserIdentityLink(userId, CANDIDATE);
+  }
+
+  @Override
+  public void deleteCandidateGroup(String groupId) {
+    deleteGroupIdentityLink(groupId, CANDIDATE);
+  }
+
+  @Override
+  public void deleteUserIdentityLink(String userId, String type) {
+    candidates.removeIf(identityLink -> type.equals(identityLink.getType()) && identityLink.getUserId() != null && userId.equals(identityLink.getUserId()));
+  }
+
+  @Override
+  public void deleteGroupIdentityLink(String groupId, String type) {
+    candidates.removeIf(identityLink -> type.equals(identityLink.getType()) && identityLink.getGroupId() != null && groupId.equals(identityLink.getGroupId()));
+  }
+
+  @Override
+  public Set<IdentityLink> getCandidates() {
+    return candidates;
   }
 
   @Override
@@ -261,41 +390,6 @@ public class DelegateTaskFake extends VariableScopeFake implements DelegateTask 
     return this;
   }
 
-
-  @Override
-  public void addUserIdentityLink(String userId, String identityLinkType) {
-    addCandidateUser(userId);
-  }
-
-  @Override
-  public void addGroupIdentityLink(String groupId, String identityLinkType) {
-    addCandidateGroup(groupId);
-  }
-
-  @Override
-  public void deleteCandidateUser(String userId) {
-    candidateUsers.remove(userId);
-  }
-
-  @Override
-  public void deleteCandidateGroup(String groupId) {
-    candidateGroups.remove(groupId);
-  }
-
-  @Override
-  public void deleteUserIdentityLink(String userId, String identityLinkType) {
-    deleteCandidateUser(userId);
-  }
-
-  @Override
-  public void deleteGroupIdentityLink(String groupId, String identityLinkType) {
-    deleteCandidateGroup(groupId);
-  }
-
-  @Override
-  public Set<IdentityLink> getCandidates() {
-    throw new UnsupportedOperationException("not implemented");
-  }
 
   @Override
   public BpmnModelInstance getBpmnModelInstance() {
