@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class VariableScopeFake implements VariableScope {
+public class VariableScopeFake<T extends VariableScopeFake> implements VariableScope {
 
   private final VariableMap global = Variables.createVariables();
   private final VariableMap local = Variables.createVariables();
@@ -23,7 +23,6 @@ public class VariableScopeFake implements VariableScope {
   public VariableScopeFake(String variableScopeKey) {
     this.variableScopeKey = variableScopeKey;
   }
-
 
   @Override
   public String getVariableScopeKey() {
@@ -105,9 +104,20 @@ public class VariableScopeFake implements VariableScope {
     global.putValue(variableName, value);
   }
 
+  public T withVariable(String variableName, Object value) {
+    setVariable(variableName, value);
+    return (T) this;
+  }
+
+
   @Override
   public void setVariableLocal(String variableName, Object value) {
     local.putValue(variableName, value);
+  }
+
+  public T withVariableLocal(String variableName, Object value) {
+    setVariableLocal(variableName, value);
+    return (T) this;
   }
 
   @Override
@@ -115,9 +125,19 @@ public class VariableScopeFake implements VariableScope {
     global.putAll(variables);
   }
 
+  public T withVariables(Map<String, ? extends Object> variables) {
+    setVariables(variables);
+    return (T) this;
+  }
+
   @Override
   public void setVariablesLocal(Map<String, ? extends Object> variables) {
     local.putAll(variables);
+  }
+
+  public T withVariablesLocal(Map<String, ? extends Object> variables) {
+    setVariablesLocal(variables);
+    return (T) this;
   }
 
   @Override

@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 import static org.camunda.bpm.engine.task.IdentityLinkType.CANDIDATE;
 
 @SuppressWarnings("unused")
-public class DelegateTaskFake extends VariableScopeFake implements DelegateTask, Serializable {
+public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implements DelegateTask, Serializable {
 
   public static Set<String> candidateUserIds(DelegateTask task) {
     return userIds(task, CANDIDATE);

@@ -1,13 +1,6 @@
 package org.camunda.bpm.extension.mockito;
 
 
-import static org.camunda.bpm.extension.mockito.function.NameForType.juelNameFor;
-
-import javax.annotation.Nonnull;
-
-import java.net.URL;
-import java.util.Collection;
-
 import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.CaseService;
 import org.camunda.bpm.engine.ExternalTaskService;
@@ -24,6 +17,9 @@ import org.camunda.bpm.engine.delegate.ExecutionListener;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.delegate.TaskListener;
 import org.camunda.bpm.engine.test.mock.Mocks;
+import org.camunda.bpm.extension.mockito.delegate.DelegateExecutionFake;
+import org.camunda.bpm.extension.mockito.delegate.DelegateTaskFake;
+import org.camunda.bpm.extension.mockito.delegate.VariableScopeFake;
 import org.camunda.bpm.extension.mockito.function.NameForType;
 import org.camunda.bpm.extension.mockito.mock.FluentExecutionListenerMock;
 import org.camunda.bpm.extension.mockito.mock.FluentJavaDelegateMock;
@@ -67,6 +63,14 @@ import org.camunda.bpm.extension.mockito.query.UserOperationLogQueryMock;
 import org.camunda.bpm.extension.mockito.query.UserQueryMock;
 import org.camunda.bpm.extension.mockito.query.VariableInstanceQueryMock;
 import org.camunda.bpm.extension.mockito.verify.MockitoVerification;
+
+import javax.annotation.Nonnull;
+import java.net.URL;
+import java.util.Collection;
+import java.util.Set;
+
+import static org.camunda.bpm.engine.task.IdentityLinkType.CANDIDATE;
+import static org.camunda.bpm.extension.mockito.function.NameForType.juelNameFor;
 
 @SuppressWarnings("unused")
 public final class CamundaMockito {
@@ -312,8 +316,7 @@ public final class CamundaMockito {
    * Registers mock instances for every public static nested class found in
    * parentClass.
    *
-   * @param parentClass
-   *          the parentClass to scan for nested public static types
+   * @param parentClass the parentClass to scan for nested public static types
    */
   public static void registerMockInstancesForNestedTypes(final Class<?> parentClass) {
     Expressions.registerMockInstancesForNestedTypes(parentClass);
@@ -324,9 +327,8 @@ public final class CamundaMockito {
    * {@link org.camunda.bpm.engine.test.mock.Mocks#register(String, Object)} for
    * all attributes with Named-types.
    *
-   * @param instance
-   *          instance who's fields are registered (maybe Junit test or jbehave
-   *          steps).
+   * @param instance instance who's fields are registered (maybe Junit test or jbehave
+   *                 steps).
    */
   public static void registerInstancesForFields(final Object instance) {
     Expressions.registerInstancesForFields(instance);
@@ -336,8 +338,7 @@ public final class CamundaMockito {
    * Registers new instances for every public static nested class found in
    * parentClass.
    *
-   * @param parentClass
-   *          the parentClass to scan for nested public static types
+   * @param parentClass the parentClass to scan for nested public static types
    */
   public static void registerNewInstancesForNestedTypes(final Class<?> parentClass) {
     Expressions.registerMockInstancesForNestedTypes(parentClass);
@@ -346,8 +347,7 @@ public final class CamundaMockito {
   /**
    * Creates and registers mock instance for every given type.
    *
-   * @param types
-   *          collection of types to mock and register
+   * @param types collection of types to mock and register
    * @see #registerMockInstances(java.util.Collection)
    */
   public static void registerMockInstances(final Class<?>... types) {
@@ -357,20 +357,17 @@ public final class CamundaMockito {
   /**
    * Creates and registers mock instance for every given type.
    *
-   * @param types
-   *          collection of types to mock and register
+   * @param types collection of types to mock and register
    */
   public static void registerMockInstances(final Collection<Class<?>> types) {
-   Expressions.registerMockInstances(types);
+    Expressions.registerMockInstances(types);
   }
 
   /**
    * Creates a mock for the given type and registers it.
    *
-   * @param name
-   *          the juel name under which the mock is registered
-   * @param type
-   *          the type of the mock to create
+   * @param name the juel name under which the mock is registered
+   * @param type the type of the mock to create
    * @return the registered mock instance
    */
   public static <T> T registerMockInstance(final String name, final Class<T> type) {
@@ -380,8 +377,7 @@ public final class CamundaMockito {
   /**
    * Creates a mock for the given type and registers it.
    *
-   * @param type
-   *          the type of the mock to create
+   * @param type the type of the mock to create
    * @return the registered mock instance
    */
   public static <T> T registerMockInstance(final Class<T> type) {
@@ -392,10 +388,8 @@ public final class CamundaMockito {
    * Creates a new instance for the given type and registers it under the given
    * name.
    *
-   * @param name
-   *          the name for the registered instance
-   * @param type
-   *          the type of the instance to create
+   * @param name the name for the registered instance
+   * @param type the type of the instance to create
    * @return the registered instance
    */
   public static <T> T registerNewInstance(final String name, final Class<T> type) {
@@ -406,8 +400,7 @@ public final class CamundaMockito {
    * Creates a new instance for the given type using the default constructor and
    * registers it.
    *
-   * @param type
-   *          the type of the instance to create
+   * @param type the type of the instance to create
    * @return the registered instance
    * @see #registerNewInstance(String, Class)
    */
@@ -419,8 +412,7 @@ public final class CamundaMockito {
    * If you already have the instance, register it directly. Name is guessed via
    * {@link NameForType}.
    *
-   * @param instance
-   *          the instance or mock to register
+   * @param instance the instance or mock to register
    * @return the registered instance
    */
   public static <T> T registerInstance(final T instance) {
@@ -431,10 +423,8 @@ public final class CamundaMockito {
    * Delegates to
    * {@link org.camunda.bpm.engine.test.mock.Mocks#register(String, Object)}
    *
-   * @param name
-   *          the juel name for the registered instance
-   * @param instance
-   *          the instance to register
+   * @param name     the juel name for the registered instance
+   * @param instance the instance to register
    * @return the registered instance
    */
   public static <T> T registerInstance(final String name, final T instance) {
@@ -442,8 +432,7 @@ public final class CamundaMockito {
   }
 
   /**
-   * @param name
-   *          juel name of the registered instance or mock
+   * @param name juel name of the registered instance or mock
    * @return registered instance or mock of type
    */
   @SuppressWarnings("unchecked")
@@ -452,8 +441,7 @@ public final class CamundaMockito {
   }
 
   /**
-   * @param type
-   *          the type of the registered instance or mock
+   * @param type the type of the registered instance or mock
    * @return registered instance or mock for type
    */
   public static <T> T getRegistered(final Class<?> type) {
@@ -466,7 +454,6 @@ public final class CamundaMockito {
   public static void reset() {
     Mocks.reset();
   }
-
 
 
   public static FilterQueryMock mockFilterQuery(final FilterService serviceMock) {
@@ -619,6 +606,26 @@ public final class CamundaMockito {
 
   public static ExternalTaskQueryMock mockExternalTaskQuery(final ExternalTaskService serviceMock) {
     return QueryMocks.mockExternalTaskQuery(serviceMock);
+  }
+
+  public static VariableScopeFake variableScopeFake() {
+    return new VariableScopeFake();
+  }
+
+  public static DelegateExecutionFake delegateExecutionFake() {
+    return new DelegateExecutionFake();
+  }
+
+  public static DelegateTaskFake delegateTaskFake() {
+    return new DelegateTaskFake();
+  }
+
+  public static Set<String> candidateUserIds(DelegateTask task) {
+    return DelegateTaskFake.candidateUserIds(task);
+  }
+
+  public static Set<String> candidateGroupIds(DelegateTask task) {
+    return DelegateTaskFake.candidateGroupIds(task);
   }
 
 

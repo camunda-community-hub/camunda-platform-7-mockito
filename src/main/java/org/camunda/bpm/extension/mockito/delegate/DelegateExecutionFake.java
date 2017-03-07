@@ -11,7 +11,7 @@ import org.camunda.bpm.model.bpmn.instance.FlowElement;
  * <p>
  * Not all operations are support, extend if needed.
  */
-public class DelegateExecutionFake extends VariableScopeFake implements DelegateExecution {
+public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFake> implements DelegateExecution {
 
   private String processInstanceId;
   private ProcessEngineServices processEngineServices;

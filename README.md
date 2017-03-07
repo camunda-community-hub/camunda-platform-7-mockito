@@ -145,6 +145,47 @@ If you do need to specify behaviour for the mocks, you can still get the mock vi
   }
 ```
 
+## Delegate[Task|Execution]Fake
+
+Unit-testing listeners and JavaDelegates can be difficult, because the methods are void and only
+ white-box testing via verify is possible. But most of the times, you just want to 
+ confirm that a certain variable was set (or a dueDate, a candidate, ...).
+  
+In these cases, use the Delegate fakes. The implement the interfaces DelegateTask and DelegateExecution,
+but are implemented as plain, fluent-styled Pojos.
+
+So to test if your TaskListener
+
+```java
+TaskListener taskListener = task -> {
+  if (EVENTNAME_CREATE.equals(task.getEventName()) && "the_task".equals(task.getTaskDefinitionKey())) {
+    task.addCandidateGroup((String) task.getVariableLocal("nextGroup"));
+  }
+};
+```
+actually adds a candidateGroup that is read from a taskLocal variable on create, you can write a Test like this one:
+
+```java
+@Test
+public void taskListenerSetsCandidateGroup() throws Exception {
+  // given a delegateTask 
+  DelegateTask delegateTask = delegateTaskFake()
+    .withTaskDefinitionKey("the_task")
+    .withEventName(EVENTNAME_CREATE)
+    .withVariableLocal("nextGroup", "foo");
+
+  // when
+  taskListener.notify(delegateTask);
+
+  // then the candidate group was set
+  assertThat(candidateGroupIds(delegateTask)).containsOnly("foo");
+
+}
+ 
+```
+
+
+
 **Limitations:**
 
 * Though it is possible to use arbitrary beans as expressions (myBean.doSomething()), we solely focus on 
