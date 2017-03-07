@@ -19,26 +19,6 @@ automate mocking of process applications.
 * Helpers for registering, retrieving and verifying mocks - convenience methods around Mocks.register().
 * Automatic mocking of all expressions and delegates in a process - without explicitly registering mocks, all instances are mocked by default, so no process will fail to run because a JUEL expression is using an unknown statement or identifier.
 
-## Release Notes
-
-### 3.0
-
-* switch to camunda 7.6.0
-* switch to java8
-* support all new query types
-* `CamundaMockito.*` now is the single import you need to use all features from `DelegateExpressions`, `Expressions` and `QueryMocks`.
-* DelegateExecution and DelegateTask now can be used via "fake" implementations which makes preparation and assertions much easier when testing dlegates and listeners. Use of typed variables is not supported for now, though.
-
-### 2.2
-
-* add support for asc() and desc() query methods (see #26)
-
-### 2.0
-
-* switch to camunda 7.2
-* remove org.camunda.bpm.extension.util.ProcessVariableMaps -> use Variables instead
-* remove dependencies to cdi (you will have to add them again to use the extension with cdi/ejb)
-* add support for spring expressions 
 
 ## Get started
 
@@ -184,9 +164,33 @@ public void taskListenerSetsCandidateGroup() throws Exception {
  
 ```
 
+## Release Notes
 
+### 3.1
 
-**Limitations:**
+* delegateTask now supports IdentityLinks (candidateUsers and -groups)
+* support of typed variables
+
+### 3.0
+
+* switch to camunda 7.6.0
+* switch to java8
+* support all new query types
+* `CamundaMockito.*` now is the single import you need to use all features from `DelegateExpressions`, `Expressions` and `QueryMocks`.
+* DelegateExecution and DelegateTask now can be used via "fake" implementations which makes preparation and assertions much easier when testing dlegates and listeners. Use of typed variables is not supported for now, though.
+
+### 2.2
+
+* add support for asc() and desc() query methods (see #26)
+
+### 2.0
+
+* switch to camunda 7.2
+* remove org.camunda.bpm.extension.util.ProcessVariableMaps -> use Variables instead
+* remove dependencies to cdi (you will have to add them again to use the extension with cdi/ejb)
+* add support for spring expressions 
+
+## Limitations
 
 * Though it is possible to use arbitrary beans as expressions (myBean.doSomething()), we solely focus on 
 Listeners (notify()) and Delegates (execute()) here, since this is the only way to apply automatic behavior. If you need
