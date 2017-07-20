@@ -2,68 +2,89 @@ package org.camunda.bpm.extension.mockito.process;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.bpm.engine.repository.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.variable.VariableMap;
-import org.camunda.bpm.extension.mockito.Expressions;
 import org.camunda.bpm.extension.mockito.function.DeployProcess;
 import org.camunda.bpm.model.bpmn.Bpmn;
-import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.builder.AbstractFlowNodeBuilder;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
+
+import static org.camunda.bpm.engine.variable.Variables.createVariables;
+import static org.camunda.bpm.extension.mockito.Expressions.registerInstance;
 
 public class ProcessMock {
 
   private String processId;
-  private Set<Consumer<DelegateExecution>> mockServiceFunctions = new LinkedHashSet<>();
+  private AbstractFlowNodeBuilder flowNodeBuilder;
 
   public ProcessMock(String processId) {
     this.processId = processId;
+    this.flowNodeBuilder = Bpmn.createExecutableProcess(processId)
+      .startEvent("start");
   }
 
   public ProcessMock onExecutionSetVariables(final VariableMap variables){
-    mockServiceFunctions.add((execution) -> {
-      execution.setVariables(variables);
-    });
-    return this;
+    return this.onExecutionDo("setVariablesServiceMock_"+ randomUUID(),
+      (execution) -> execution.setVariables(variables)
+    );
   }
 
   public ProcessMock onExecutionAddVariables(final VariableMap variables){
-    mockServiceFunctions.add((execution) -> {
-      variables.forEach(execution::setVariable);
-    });
-    return this;
+    return this.onExecutionDo("addVariablesServiceMock_"+ randomUUID(),
+      (execution) -> variables.forEach(execution::setVariable)
+    );
   }
 
   public ProcessMock onExecutionAddVariable(final String key, final Object val){
-    mockServiceFunctions.add((execution) -> {
-      execution.setVariable(key, val);
-    });
-    return this;
+    return this.onExecutionAddVariables(createVariables().putValue(key, val));
   }
 
   public ProcessMock onExecutionDo(final Consumer<DelegateExecution> consumer) {
-    mockServiceFunctions.add(consumer);
+    return this.onExecutionDo("serviceMock_"+ randomUUID(),
+      consumer
+    );
+  }
+
+  public ProcessMock onExecutionDo(final String serviceId, final Consumer<DelegateExecution> consumer) {
+    flowNodeBuilder = flowNodeBuilder.serviceTask(serviceId)
+      .camundaDelegateExpression("${id}".replace("id", serviceId));
+
+    registerInstance(serviceId, (JavaDelegate)execution -> {
+      consumer.accept(execution);
+    });
     return this;
   }
 
-  public void deploy(ProcessEngineRule rule){
-    DeployProcess.INSTANCE.apply(rule, initBpmModel(), this.processId);
+  public ProcessMock onExecutionSendMessage(final String message) {
+    return this;
   }
 
-  private BpmnModelInstance initBpmModel() {
-    final String mockServiceTaskId = processId + "MockServiceTask";
+  public ProcessMock onExecutionWaitForMessage(final String message) {
+    return this;
+  }
 
-    Expressions.registerInstance(mockServiceTaskId, (JavaDelegate)execution -> {
-      mockServiceFunctions.forEach(f -> f.accept(execution));
+  public ProcessMock onExecutionWaitForTimer(final String iso8601time) {
+    return this;
+  }
+
+  public ProcessMock onExecutionRunIntoError(final Throwable exception) {
+    return this.onExecutionDo("throwErrorServiceMock",execution -> {
+      throw new RuntimeException(exception);
     });
+  }
 
-    return Bpmn.createExecutableProcess(processId)
-      .startEvent("start")
-      .serviceTask(processId + "_serviceTask")
-        .camundaDelegateExpression("${id}".replace("id", mockServiceTaskId))
-      .endEvent("end")
-      .done();
+  public Deployment deploy(ProcessEngineRule rule){
+    return DeployProcess.INSTANCE.apply(rule,
+      flowNodeBuilder
+        .endEvent("end")
+        .done(),
+      this.processId);
+  }
+
+  private String randomUUID() {
+    return UUID.randomUUID().toString().substring(0, 8);
   }
 }
