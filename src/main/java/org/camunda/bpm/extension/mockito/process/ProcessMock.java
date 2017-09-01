@@ -30,28 +30,61 @@ public class ProcessMock {
       .startEvent("start");
   }
 
+  /**
+   * On execution, the MockProcess will set the given VariableMap to the execution
+   * (ATTENTION: This means all current process variables are replaced with the given Map!)
+   *
+   * @param variables
+   * @return
+   */
   public ProcessMock onExecutionSetVariables(final VariableMap variables){
     return this.onExecutionDo("setVariablesServiceMock_"+ randomUUID(),
       (execution) -> execution.setVariables(variables)
     );
   }
 
+  /**
+   * On execution, the MockProcess will add the given VariableMap to the execution
+   *
+   * @param variables
+   * @return
+   */
   public ProcessMock onExecutionAddVariables(final VariableMap variables){
     return this.onExecutionDo("addVariablesServiceMock_"+ randomUUID(),
       (execution) -> variables.forEach(execution::setVariable)
     );
   }
 
+  /**
+   * On execution, the MockProcess will add set the given process variable
+   *
+   * @param key ... key of the process variable
+   * @param val ... value of the process variable
+   * @return
+   */
   public ProcessMock onExecutionAddVariable(final String key, final Object val){
     return this.onExecutionAddVariables(createVariables().putValue(key, val));
   }
 
+  /**
+   * On execution, the MockProcess will call the given consumer with a DelegateExecution.
+   *
+   * @param consumer
+   * @return
+   */
   public ProcessMock onExecutionDo(final Consumer<DelegateExecution> consumer) {
     return this.onExecutionDo("serviceMock_"+ randomUUID(),
       consumer
     );
   }
 
+  /**
+   * On execution, the MockProcess will call the given consumer with a DelegateExecution.
+   *
+   * @param serviceId ... the id of the mock delegate
+   * @param consumer
+   * @return
+   */
   public ProcessMock onExecutionDo(final String serviceId, final Consumer<DelegateExecution> consumer) {
     flowNodeBuilder = flowNodeBuilder.serviceTask(serviceId)
       .camundaDelegateExpression("${id}".replace("id", serviceId));
@@ -62,14 +95,8 @@ public class ProcessMock {
     return this;
   }
 
-  public ProcessMock onExecutionWaitForTimerWithCycle(final String iso8601cycle) {
-    flowNodeBuilder = flowNodeBuilder.intermediateCatchEvent()
-      .timerWithCycle(iso8601cycle);
-    return this;
-  }
-
   /**
-   * On execution, the process will wait on a timer which is configured with an date
+   * On execution, the MockProcess will wait on a timer which is configured with an date
    *
    * @param date
    * @return
@@ -79,7 +106,7 @@ public class ProcessMock {
   }
 
   /**
-   * On execution, the process will wait on a timer which is configured with an ISO 8601 date.
+   * On execution, the MockProcess will wait on a timer which is configured with an ISO 8601 date.
    * E.g.: 2018-10-14T14:10:00Z
    *
    * @param iso8601date
@@ -92,7 +119,7 @@ public class ProcessMock {
   }
 
   /**
-   * On execution, the process will wait on a timer which is configured with an ISO 8601 duration.
+   * On execution, the MockProcess will wait on a timer which is configured with an ISO 8601 duration.
    * E.g.: PT60S ... will wait for 60 sec
    *
    * @param iso8601duration
@@ -104,20 +131,59 @@ public class ProcessMock {
     return this;
   }
 
+  /**
+   * On execution, the MockProcess will send the given message to all
+   *
+   * @param message
+   * @return
+   */
   public ProcessMock onExecutionSendMessage(final String message) {
-    return this;
+    return onExecutionDo(execution -> execution.getProcessEngineServices()
+      .getRuntimeService().correlateMessage(message));
   }
 
+  /**
+   * On execution, the MockProcess will send the given message to a process instance with the given businessId
+   *
+   * @param message
+   * @param businessId
+   * @return
+   */
+  public ProcessMock onExecutionSendMessage(final String message, final String businessId) {
+    return onExecutionDo(execution -> execution.getProcessEngineServices()
+      .getRuntimeService().correlateMessage(message, businessId));
+  }
+
+  /**
+   * On execution, the MockProcess will wait for the given message
+   *
+   * @param message
+   * @return
+   */
   public ProcessMock onExecutionWaitForMessage(final String message) {
+    flowNodeBuilder = flowNodeBuilder.intermediateCatchEvent()
+      .message(message);
     return this;
   }
 
+  /**
+   * On execution, the MockProcess will throw a RuntimeException for the given Throwable.
+   *
+   * @param exception
+   * @return
+   */
   public ProcessMock onExecutionRunIntoError(final Throwable exception) {
     return this.onExecutionDo("throwErrorServiceMock",execution -> {
       throw new RuntimeException(exception);
     });
   }
 
+  /**
+   * This will deploy the mock process.
+   *
+   * @param rule
+   * @return
+   */
   public Deployment deploy(ProcessEngineRule rule){
     return DeployProcess.INSTANCE.apply(rule,
       flowNodeBuilder

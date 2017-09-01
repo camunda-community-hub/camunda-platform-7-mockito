@@ -1,6 +1,7 @@
 package org.camunda.bpm.extension.mockito;
 
 import org.camunda.bpm.engine.impl.persistence.entity.TimerEntity;
+import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
@@ -28,6 +29,7 @@ public class SubprocessMockExample {
   public static final String PROCESS_ID = "myProcess";
   public static final String SUB_PROCESS_ID = "mySubProcess";
   public static final String SUB_PROCESS2_ID = "mySubProcess2";
+  public static final String MESSAGE_DOIT = "DOIT";
 
   @Rule
   public final ProcessEngineRule rule = new ProcessEngineRule(mostUsefulProcessEngineConfiguration().buildProcessEngine());
@@ -95,6 +97,51 @@ public class SubprocessMockExample {
     final Job timer = list.get(0);
     assertThat(timer).isInstanceOf(TimerEntity.class);
     assertThat(timer.getDuedate()).isEqualToIgnoringMillis(date);
+  }
+
+  @Test
+  public void register_subprocess_mock_withReceiveMessage() throws Exception {
+    registerSubProcessMock(SUB_PROCESS_ID)
+      .onExecutionWaitForMessage(MESSAGE_DOIT)
+      .deploy(rule);
+
+    final ProcessInstance processInstance = startProcess(PROCESS_ID);
+
+    final EventSubscription eventSubscription = runtimeService().createEventSubscriptionQuery().singleResult();
+    assertThat(eventSubscription).isNotNull();
+    assertThat(eventSubscription.getEventName()).isEqualTo(MESSAGE_DOIT);
+
+    runtimeService().correlateMessage(MESSAGE_DOIT);
+    assertThat(processInstance).isWaitingAt("user_task");
+  }
+
+  @Test
+  public void register_subprocess_mock_withSendMessage() throws Exception {
+    registerSubProcessMock(SUB_PROCESS_ID)
+      .onExecutionSendMessage(MESSAGE_DOIT)
+      .deploy(rule);
+
+    final String waitForMessageId = "waitForMessage";
+    final BpmnModelInstance waitForMessage = Bpmn.createExecutableProcess(waitForMessageId)
+      .startEvent("start")
+      .intermediateCatchEvent("waitForMessageCatchEvent")
+      .message(MESSAGE_DOIT)
+      .endEvent("end")
+      .done();
+
+    DeployProcess.INSTANCE.apply(rule, waitForMessage, waitForMessageId);
+
+    //Start monitoring process for testing
+    final ProcessInstance waitingProcessInstance = startProcess(waitForMessageId);
+    final EventSubscription eventSubscription = runtimeService().createEventSubscriptionQuery().singleResult();
+    assertThat(eventSubscription).isNotNull();
+    assertThat(eventSubscription.getEventName()).isEqualTo(MESSAGE_DOIT);
+
+    //Start our process with mocked subprocess
+    final ProcessInstance processInstance = startProcess(PROCESS_ID);
+    assertThat(processInstance).isWaitingAt("user_task");
+    //Our monitoring process should be finished
+    assertThat(waitingProcessInstance).isEnded();
   }
 
   @Test
