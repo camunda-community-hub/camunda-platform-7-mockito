@@ -9,7 +9,7 @@ import org.camunda.bpm.extension.mockito.function.DeployProcess;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.builder.AbstractFlowNodeBuilder;
 
-import java.util.*;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.camunda.bpm.engine.variable.Variables.createVariables;
@@ -17,8 +17,8 @@ import static org.camunda.bpm.extension.mockito.Expressions.registerInstance;
 
 public class ProcessMock {
 
-  private String processId;
-  private AbstractFlowNodeBuilder flowNodeBuilder;
+  protected String processId;
+  protected AbstractFlowNodeBuilder flowNodeBuilder;
 
   public ProcessMock(String processId) {
     this.processId = processId;
@@ -49,7 +49,8 @@ public class ProcessMock {
   }
 
   public ProcessMock onExecutionDo(final String serviceId, final Consumer<DelegateExecution> consumer) {
-    flowNodeBuilder = flowNodeBuilder.serviceTask(serviceId)
+    flowNodeBuilder = flowNodeBuilder
+      .serviceTask(serviceId)
       .camundaDelegateExpression("${id}".replace("id", serviceId));
 
     registerInstance(serviceId, (JavaDelegate)execution -> {

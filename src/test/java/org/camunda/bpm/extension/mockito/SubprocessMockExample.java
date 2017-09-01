@@ -47,6 +47,7 @@ public class SubprocessMockExample {
       .deploy(rule);
 
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
+    assertThat(processInstance).isWaitingAt("user_task");
     //TODO doesn't work with current camunda-bpm-assert version (1.*) and our assertj version (3.*)
     //assertThat(processInstance).hasVariables("foo", "bar");
     final Map<String, Object> variables = runtimeService().getVariables(processInstance.getId());
@@ -57,23 +58,16 @@ public class SubprocessMockExample {
   @Test
   public void register_subprocess_mock_withOwnConsumer() throws Exception {
     registerSubProcessMock(SUB_PROCESS_ID)
-      .onExecutionDo(execution -> {
-        execution.setVariable("foo", "bar");
-      })
+      .onExecutionDo(execution -> execution.setVariable("foo", "bar"))
       .deploy(rule);
 
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
+    assertThat(processInstance).isWaitingAt("user_task");
     //TODO doesn't work with current camunda-bpm-assert version (1.*) and our assertj version (3.*)
     //assertThat(processInstance).hasVariables("foo", "bar");
     final Map<String, Object> variables = runtimeService().getVariables(processInstance.getId());
     assertThat(variables).hasSize(1);
     assertThat(variables).containsEntry("foo", "bar");
-  }
-
-  private ProcessInstance startProcess(final String key) {
-    final ProcessInstance processInstance = rule.getRuntimeService().startProcessInstanceByKey(key);
-    assertThat(processInstance).isWaitingAt("user_task");
-    return processInstance;
   }
 
   @Test
@@ -100,11 +94,16 @@ public class SubprocessMockExample {
       .deploy(rule);
 
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
+    assertThat(processInstance).isWaitingAt("user_task");
     //TODO doesn't work with current camunda-bpm-assert version (1.*) and our assertj version (3.*)
     //assertThat(processInstance).hasVariables("foo", "bar");
     final Map<String, Object> variables = runtimeService().getVariables(processInstance.getId());
     assertThat(variables).hasSize(2);
     assertThat(variables).containsEntry("foo", "bar");
     assertThat(variables).containsEntry("bar", "foo");
+  }
+
+  private ProcessInstance startProcess(final String key) {
+    return rule.getRuntimeService().startProcessInstanceByKey(key);
   }
 }
