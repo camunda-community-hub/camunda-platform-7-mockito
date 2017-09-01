@@ -56,7 +56,7 @@ public class ProcessMock {
   }
 
   /**
-   * On execution, the MockProcess will add set the given process variable
+   * On execution, the MockProcess will add the given process variable
    *
    * @param key ... key of the process variable
    * @param val ... value of the process variable
@@ -79,7 +79,7 @@ public class ProcessMock {
   }
 
   /**
-   * On execution, the MockProcess will call the given consumer with a DelegateExecution.
+   * On execution, the MockProcess will execute the given consumer with a DelegateExecution.
    *
    * @param serviceId ... the id of the mock delegate
    * @param consumer
