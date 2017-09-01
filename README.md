@@ -165,7 +165,7 @@ public void taskListenerSetsCandidateGroup() throws Exception {
  
 ```
 
-## Mocking of subprocesses
+## Mocking of external subprocesses
 
 With ProcessExpressions.registerSubProcessMock() you can easily register a mocked process which is able to act with those behaviours:
 
@@ -179,15 +179,16 @@ With ProcessExpressions.registerSubProcessMock() you can easily register a mocke
 
 All of those methods could be combined on the fluent sub process mock builder. 
 
-This will e.g. register a process mock which does the following:
-1) Wait until the given message gets correlated to the mock
-2) Then wait until the given timer is reached
-3) After this, a process variable "foo" is set with a value of "bar"
+The following example will e.g. register a process mock which does the following:
+
+1) Wait until the given message `SomeMessage` gets correlated to the mock
+2) Then wait until the given date `waitUntilDate` is reached
+3) After this, a process variable `foo` is set with a value of `bar
 
 ```java
-    registerSubProcessMock(SUB_PROCESS_ID)
-      .onExecutionWaitForMessage(MESSAGE_DOIT)
-      .onExecutionWaitForTimerWithDate(waitUntil)
+    ProcessExpressions.registerSubProcessMock(SUB_PROCESS_ID)
+      .onExecutionWaitForMessage("SomeMessage")
+      .onExecutionWaitForTimerWithDate(waitUntilDate)
       .onExecutionSetVariables(createVariables().putValue("foo", "bar"))
       .deploy(rule);
 ```
