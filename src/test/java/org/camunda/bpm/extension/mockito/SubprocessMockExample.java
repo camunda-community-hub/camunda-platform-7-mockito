@@ -1,5 +1,7 @@
 package org.camunda.bpm.extension.mockito;
 
+import org.camunda.bpm.engine.impl.persistence.entity.TimerEntity;
+import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.extension.mockito.function.DeployProcess;
@@ -9,9 +11,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareAssertions.assertThat;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.jobQuery;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.runtimeService;
 import static org.camunda.bpm.engine.variable.Variables.createVariables;
 import static org.camunda.bpm.extension.mockito.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
@@ -47,6 +53,8 @@ public class SubprocessMockExample {
       .deploy(rule);
 
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
+    assertThat(processInstance).isWaitingAt("user_task");
+
     //TODO doesn't work with current camunda-bpm-assert version (1.*) and our assertj version (3.*)
     //assertThat(processInstance).hasVariables("foo", "bar");
     final Map<String, Object> variables = runtimeService().getVariables(processInstance.getId());
@@ -58,22 +66,59 @@ public class SubprocessMockExample {
   public void register_subprocess_mock_withOwnConsumer() throws Exception {
     registerSubProcessMock(SUB_PROCESS_ID)
       .onExecutionDo(execution -> {
-        execution.setVariable("foo", "bar");
+        execution.setVariable("foo", "barbar");
       })
       .deploy(rule);
 
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
+    assertThat(processInstance).isWaitingAt("user_task");
+
     //TODO doesn't work with current camunda-bpm-assert version (1.*) and our assertj version (3.*)
     //assertThat(processInstance).hasVariables("foo", "bar");
     final Map<String, Object> variables = runtimeService().getVariables(processInstance.getId());
     assertThat(variables).hasSize(1);
-    assertThat(variables).containsEntry("foo", "bar");
+    assertThat(variables).containsEntry("foo", "barbar");
   }
 
-  private ProcessInstance startProcess(final String key) {
-    final ProcessInstance processInstance = rule.getRuntimeService().startProcessInstanceByKey(key);
-    assertThat(processInstance).isWaitingAt("user_task");
-    return processInstance;
+  @Test
+  public void register_subprocess_mock_withTimerDate() throws Exception {
+    final Date date = Date.from(Instant.now().plusSeconds(60));
+
+    registerSubProcessMock(SUB_PROCESS_ID)
+      .onExecutionWaitForTimerWithDate(date)
+      .deploy(rule);
+
+    startProcess(PROCESS_ID);
+
+    final List<Job> list = jobQuery().list();
+    assertThat(list).hasSize(1);
+    final Job timer = list.get(0);
+    assertThat(timer).isInstanceOf(TimerEntity.class);
+    assertThat(timer.getDuedate()).isEqualToIgnoringMillis(date);
+  }
+
+  @Test
+  public void register_subprocess_mock_withTimerDuration() throws Exception {
+    registerSubProcessMock(SUB_PROCESS_ID)
+      .onExecutionWaitForTimerWithDuration("PT60S")
+      .deploy(rule);
+
+    startProcess(PROCESS_ID);
+
+    final List<Job> list = jobQuery().list();
+    assertThat(list).hasSize(1);
+    final Job timer = list.get(0);
+    assertThat(timer).isInstanceOf(TimerEntity.class);
+    assertThat(timer.getDuedate()).isEqualToIgnoringMillis(Date.from(Instant.now().plusSeconds(60)));
+  }
+
+  @Test(expected = RuntimeException.class)
+  public void register_subprocess_mock_withException() throws Exception {
+    registerSubProcessMock(SUB_PROCESS_ID)
+      .onExecutionRunIntoError(new Exception("No"))
+      .deploy(rule);
+
+    startProcess(PROCESS_ID);
   }
 
   @Test
@@ -100,11 +145,17 @@ public class SubprocessMockExample {
       .deploy(rule);
 
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
+    assertThat(processInstance).isWaitingAt("user_task");
+
     //TODO doesn't work with current camunda-bpm-assert version (1.*) and our assertj version (3.*)
     //assertThat(processInstance).hasVariables("foo", "bar");
     final Map<String, Object> variables = runtimeService().getVariables(processInstance.getId());
     assertThat(variables).hasSize(2);
     assertThat(variables).containsEntry("foo", "bar");
     assertThat(variables).containsEntry("bar", "foo");
+  }
+
+  private ProcessInstance startProcess(final String key) {
+    return rule.getRuntimeService().startProcessInstanceByKey(key);
   }
 }
