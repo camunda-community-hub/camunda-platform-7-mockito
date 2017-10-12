@@ -8,3 +8,6 @@
 .DS_Store
 target/
 pom.xml.versionsBackup
+
+# site
+src/site/

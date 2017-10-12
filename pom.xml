@@ -26,6 +26,9 @@
     <mockito.version>1.10.19</mockito.version>
     <hamcrest.version>1.3</hamcrest.version>
     <assertj.version>3.5.2</assertj.version>
+    <asciidoctor-maven-plugin.version>1.5.6</asciidoctor-maven-plugin.version>
+    <asciidoctorj.version>1.5.6</asciidoctorj.version>
+    <jruby.version>1.7.26</jruby.version>
 
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
     <!-- disable javadoc linter for JDK8 to not fail on incomplete javadoc -->
@@ -159,8 +162,84 @@
           <target>${version.java}</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.6</version>
+        <configuration>
+          <!-- disable generateReports if you don't want to include the built-in reports -->
+          <generateReports>true</generateReports>
+          <generateSitemap>true</generateSitemap>
+          <relativizeDecorationLinks>false</relativizeDecorationLinks>
+          <locales>en</locales>
+          <inputEncoding>UTF-8</inputEncoding>
+          <outputEncoding>UTF-8</outputEncoding>
+          <asciidoc>
+            <!-- optional site-wide AsciiDoc attributes -->
+            <attributes>
+              <icons>font</icons>
+              <source-highlighter>coderay</source-highlighter>
+              <coderay-css>style</coderay-css>
+              <toclevels>2</toclevels>
+            </attributes>
+          </asciidoc>
+          <stagingDirectory>${basedir}/docs</stagingDirectory>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctor-maven-plugin</artifactId>
+            <version>${asciidoctor-maven-plugin.version}</version>
+          </dependency>
+          <!-- Comment this section to use the default jruby artifact provided by the plugin -->
+          <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby-complete</artifactId>
+            <version>${jruby.version}</version>
+          </dependency>
+          <!-- Comment this section to use the default AsciidoctorJ artifact provided by the plugin -->
+          <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj</artifactId>
+            <version>${asciidoctorj.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <id>copy-markdown</id>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target name="copy markdown files to site">
+                <copy file="${basedir}/README.md" tofile="${basedir}/src/site/markdown/index.md" />
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+
+  <!--reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.8</version>
+      </plugin>
+    </plugins>
+  </reporting-->
 
   <licenses>
     <license>
@@ -190,6 +269,10 @@
       <!-- for maven 2 compatibility -->
       <uniqueVersion>true</uniqueVersion>
     </snapshotRepository>
+    <site>
+      <id>${project.artifactId}</id>
+      <url>${project.basedir}</url>
+    </site>
   </distributionManagement>
 
   <developers>

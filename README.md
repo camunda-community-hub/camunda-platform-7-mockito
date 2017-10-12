@@ -62,7 +62,13 @@ With the QueryMocks extension, you can do all this in just one line of code, see
 
 ## Mock Listener and Delegate behavior
 
-Mocking void methods usiong mockito is not very convenient, since you need to use the doAnswer(Answer<T>).when() construct, implement your own answer and pick up the parameter from the invocation context. JavaDelegate and ExecutionListener are providing their basic fuctionality using void methods.  In general, when working with the Delegate and Listener interfaces, there are basically two things they can do from the point of intercation between the process execution: modify process variables and raise errors. We can use this to test bpmn-processes without relying on the delegate implementation. 
+Mocking void methods using mockito is not very convenient, since you need to 
+use the doAnswer(Answer&lt;T&gt;).when() construct, implement your own answer and pick up the parameter from the 
+invocation context. JavaDelegate and ExecutionListener are providing their basic fuctionality using void methods.  
+In general, when working with the Delegate and Listener interfaces, there are basically two things they can do from the 
+point of interaction between the process execution: modify process variables and raise errors. 
+
+We can use this to test bpmn-processes without relying on the delegate implementation. 
 
 ```java
 public class FluentJavaDelegateMockTest {
@@ -166,29 +172,7 @@ public void taskListenerSetsCandidateGroup() throws Exception {
 
 ## Release Notes
 
-### 3.1
-
-* delegateTask now supports IdentityLinks (candidateUsers and -groups)
-* support of typed variables
-
-### 3.0
-
-* switch to camunda 7.6.0
-* switch to java8
-* support all new query types
-* `CamundaMockito.*` now is the single import you need to use all features from `DelegateExpressions`, `Expressions` and `QueryMocks`.
-* DelegateExecution and DelegateTask now can be used via "fake" implementations which makes preparation and assertions much easier when testing dlegates and listeners. Use of typed variables is not supported for now, though.
-
-### 2.2
-
-* add support for asc() and desc() query methods (see #26)
-
-### 2.0
-
-* switch to camunda 7.2
-* remove org.camunda.bpm.extension.util.ProcessVariableMaps -> use Variables instead
-* remove dependencies to cdi (you will have to add them again to use the extension with cdi/ejb)
-* add support for spring expressions 
+see https://camunda.github.io/camunda-bpm-mockito/release-notes/
 
 ## Limitations
 
@@ -212,7 +196,7 @@ This might and probably will change with future versions, it just has to be impl
 * [Simon Zambrovski](https://github.com/zambrovski)
 * [Christian Lipphardt](https://github.com/hawky-4s-)
 
-
+  
 ## License
 
 * [Apache License, Version 2.0](./LICENSE)
