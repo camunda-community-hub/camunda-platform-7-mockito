@@ -8,6 +8,14 @@
   <custom>
     <fluidoSkin>
       <topBarEnabled>true</topBarEnabled>
+      <navBarStyle>navbar-inverse</navBarStyle>
+      <!--topBarIcon>
+        <name>camunda bpm mockito</name>
+        <alt>camunda bpm mockito</alt>
+        <src>/images/camunda_logo.png</src>
+        <href>/index.html</href>
+      </topBarIcon-->
+
       <sideBarEnabled>false</sideBarEnabled>
       <sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
       <gitHub>
@@ -18,11 +26,15 @@
     </fluidoSkin>
   </custom>
   <body>
-    <menu ref="reports" inherit="top"/>
-    <menu ref="modules"/>
     <menu name="camunda-bpm-mockito">
-      <item href="hello.html" name="Hello"/>
-      <item href="article.html" name="Article"/>
+      <item href="index.html" name="About"/>
+      <item href="release-notes/index.html" name="Release Notes" />
     </menu>
+    <menu ref="reports" />
+
+
+    <links>
+      <item name="openhub" href="https://www.openhub.net/p/camunda-bpm-mockito"/>
+    </links>
   </body>
 </project>

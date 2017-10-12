@@ -1,0 +1,8 @@
+## 3.0.0
+
+* switch to camunda 7.6.0
+* switch to java8
+* support all new query types
+* `CamundaMockito.*` now is the single import you need to use all features from `DelegateExpressions`, `Expressions` and `QueryMocks`.
+* DelegateExecution and DelegateTask now can be used via "fake" implementations which makes preparation and assertions much easier when testing dlegates and listeners. Use of typed variables is not supported for now, though.
+
