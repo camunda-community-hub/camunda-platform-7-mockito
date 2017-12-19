@@ -1,0 +1,4 @@
+## 3.1.0
+
+* delegateTask now supports IdentityLinks (candidateUsers and -groups)
+* support of typed variables

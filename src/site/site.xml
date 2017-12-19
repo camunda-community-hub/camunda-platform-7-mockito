@@ -28,8 +28,7 @@
   <body>
     <menu name="camunda-bpm-mockito">
       <item href="index.html" name="About"/>
-      <item href="article.html" name="Article"/>
-      <item href="foo/its-me.html" name="Release Notes" />
+      <item href="release-notes/index.html" name="Release Notes" />
     </menu>
     <menu ref="reports" />
 
