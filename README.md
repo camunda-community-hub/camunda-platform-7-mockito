@@ -16,6 +16,7 @@ automate mocking of process applications.
 
 * Fluent mocking of query API - It is now very easy to mock a complex fluent query for the service API without any redundancy.
 * Fluent mocking of Listener and Delegate behavior - since delegate and listener methods are void, they can either modify process variables or raise an error. Instead of messing up with mockito's doAnswer() you can use these options with a fluent API.
+* Fluent mocking of Sub Processes - Sub process is able to wait for timer, set variable, wait for message, send message, throw exception or just do anything what you want.
 * Helpers for registering, retrieving and verifying mocks - convenience methods around Mocks.register().
 * Automatic mocking of all expressions and delegates in a process - without explicitly registering mocks, all instances are mocked by default, so no process will fail to run because a JUEL expression is using an unknown statement or identifier.
 
@@ -169,6 +170,36 @@ public void taskListenerSetsCandidateGroup() throws Exception {
 }
  
 ```
+
+## Mocking of external subprocesses
+
+With ProcessExpressions.registerSubProcessMock() you can easily register a mocked process which is able to act with those behaviours:
+
+* onExecutionAddVariable ... the MockProcess will add the given process variable
+* onExecutionWaitForTimerWithDate ... the MockProcess will wait for the given date
+* onExecutionWaitForTimerWithDuration ... the MockProcess will wait until the given duration is reached
+* onExecutionSendMessage ... the MockProcess will correlate the given message (to all or a single process)
+* onExecutionWaitForMessage ... the MockProcess will wait for the given message
+* onExecutionRunIntoError ... the MockProcess will throw the given Throwable as RuntimeException
+* onExecutionDo ... the MockProcess will execute the given consumer
+
+All of those methods could be combined on the fluent sub process mock builder. 
+
+The following example will e.g. register a process mock which does the following:
+
+1) Wait until the given message `SomeMessage` gets correlated to the mock
+2) Then wait until the given date `waitUntilDate` is reached
+3) After this, a process variable `foo` is set with a value of `bar
+
+```java
+    ProcessExpressions.registerSubProcessMock(SUB_PROCESS_ID)
+      .onExecutionWaitForMessage("SomeMessage")
+      .onExecutionWaitForTimerWithDate(waitUntilDate)
+      .onExecutionSetVariables(createVariables().putValue("foo", "bar"))
+      .deploy(rule);
+```
+
+More examples could be found in the following class `SubprocessMockExample`.
 
 ## Release Notes
 
