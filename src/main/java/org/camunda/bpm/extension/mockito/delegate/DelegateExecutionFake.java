@@ -3,8 +3,12 @@ package org.camunda.bpm.extension.mockito.delegate;
 
 import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.camunda.bpm.engine.runtime.Incident;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.FlowElement;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Fake delegateExecution to test simple delegates/listeners without mocking.
@@ -30,6 +34,8 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   private String id;
   private String eventName;
   private String businessKey;
+
+  private final Map<String,Incident> incidents = new HashMap<>();
 
   @Override
   public String getProcessInstanceId() {
@@ -154,6 +160,23 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   }
 
   @Override
+  public Incident createIncident(String incidentType, String configuration) {
+    return createIncident(incidentType, configuration, null);
+  }
+
+  @Override
+  public Incident createIncident(String incidentType, String configuration, String message) {
+    IncidentFake incident = new IncidentFake(this, incidentType, configuration, message, this.getCurrentActivityId());
+    incidents.put(incident.getId(), incident);
+    return incident;
+  }
+
+  @Override
+  public void resolveIncident(String incidentId) {
+    incidents.remove(incidentId);
+  }
+
+  @Override
   public String getId() {
     return id;
   }
@@ -198,6 +221,10 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public DelegateExecutionFake withProcessEngineServices(ProcessEngineServices processEngineServices) {
     this.processEngineServices = processEngineServices;
     return this;
+  }
+
+  public Map<String, Incident> getIncidents() {
+    return incidents;
   }
 
   public static class ProcessInstanceNotSetException extends IllegalStateException {

@@ -1,6 +1,7 @@
 package org.camunda.bpm.extension.mockito.delegate;
 
 
+import org.camunda.bpm.engine.runtime.Incident;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.extension.mockito.CamundaMockito;
 import org.junit.Test;
@@ -19,5 +20,16 @@ public class DelegateExecutionFakeTest {
 
     assertThat(delegate.getVariableLocal("foo")).isEqualTo(1);
     assertThat(delegate.getVariableLocal("bar")).isEqualTo(2);
+  }
+
+  @Test
+  public void create_and_resolve_incident() {
+    assertThat(delegate.getIncidents()).isEmpty();
+    Incident incident = delegate.createIncident("type", "config", "message");
+
+    assertThat(delegate.getIncidents().get(incident.getId())).isNotNull();
+
+    delegate.resolveIncident(incident.getId());
+    assertThat(delegate.getIncidents()).isEmpty();
   }
 }
