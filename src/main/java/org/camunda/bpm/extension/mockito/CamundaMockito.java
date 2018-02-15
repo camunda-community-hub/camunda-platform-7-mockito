@@ -24,6 +24,7 @@ import org.camunda.bpm.extension.mockito.function.NameForType;
 import org.camunda.bpm.extension.mockito.mock.FluentExecutionListenerMock;
 import org.camunda.bpm.extension.mockito.mock.FluentJavaDelegateMock;
 import org.camunda.bpm.extension.mockito.mock.FluentTaskListenerMock;
+import org.camunda.bpm.extension.mockito.process.CallActivityMock;
 import org.camunda.bpm.extension.mockito.query.ActivityStatisticsQueryMock;
 import org.camunda.bpm.extension.mockito.query.AuthorizationQueryMock;
 import org.camunda.bpm.extension.mockito.query.BatchQueryMock;
@@ -628,6 +629,9 @@ public final class CamundaMockito {
     return DelegateTaskFake.candidateGroupIds(task);
   }
 
+  public static CallActivityMock registerCallActivityMock(final String processDefinitionKey) {
+    return ProcessExpressions.registerCallActivityMock(processDefinitionKey);
+  }
 
   private CamundaMockito() {
   }
