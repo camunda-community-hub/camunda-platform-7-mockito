@@ -1,13 +1,14 @@
 package org.camunda.bpm.extension.mockito;
 
-import org.camunda.bpm.extension.mockito.process.ProcessMock;
+import org.camunda.bpm.extension.mockito.process.CallActivityMock;
 
-public class ProcessExpressions {
+public final class ProcessExpressions {
 
   private ProcessExpressions() {
+    // util class, do not instantiate
   }
 
-  public static ProcessMock registerSubProcessMock(String processId) {
-    return new ProcessMock(processId);
+  public static CallActivityMock registerCallActivityMock(final String processDefinitionKey) {
+    return new CallActivityMock(processDefinitionKey);
   }
 }

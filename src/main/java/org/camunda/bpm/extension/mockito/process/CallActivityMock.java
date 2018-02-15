@@ -18,13 +18,13 @@ import java.util.function.Consumer;
 import static org.camunda.bpm.engine.variable.Variables.createVariables;
 import static org.camunda.bpm.extension.mockito.Expressions.registerInstance;
 
-public class ProcessMock {
+public class CallActivityMock {
 
   private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
   private String processId;
   private AbstractFlowNodeBuilder flowNodeBuilder;
 
-  public ProcessMock(String processId) {
+  public CallActivityMock(final String processId) {
     this.processId = processId;
     this.flowNodeBuilder = Bpmn.createExecutableProcess(processId)
       .startEvent("start");
@@ -37,7 +37,7 @@ public class ProcessMock {
    * @param variables
    * @return
    */
-  public ProcessMock onExecutionSetVariables(final VariableMap variables){
+  public CallActivityMock onExecutionSetVariables(final VariableMap variables){
     return this.onExecutionDo("setVariablesServiceMock_"+ randomUUID(),
       (execution) -> execution.setVariables(variables)
     );
@@ -49,7 +49,7 @@ public class ProcessMock {
    * @param variables
    * @return
    */
-  public ProcessMock onExecutionAddVariables(final VariableMap variables){
+  public CallActivityMock onExecutionAddVariables(final VariableMap variables){
     return this.onExecutionDo("addVariablesServiceMock_"+ randomUUID(),
       (execution) -> variables.forEach(execution::setVariable)
     );
@@ -62,7 +62,7 @@ public class ProcessMock {
    * @param val ... value of the process variable
    * @return
    */
-  public ProcessMock onExecutionAddVariable(final String key, final Object val){
+  public CallActivityMock onExecutionAddVariable(final String key, final Object val){
     return this.onExecutionAddVariables(createVariables().putValue(key, val));
   }
 
@@ -72,7 +72,7 @@ public class ProcessMock {
    * @param consumer
    * @return
    */
-  public ProcessMock onExecutionDo(final Consumer<DelegateExecution> consumer) {
+  public CallActivityMock onExecutionDo(final Consumer<DelegateExecution> consumer) {
     return this.onExecutionDo("serviceMock_"+ randomUUID(),
       consumer
     );
@@ -85,7 +85,7 @@ public class ProcessMock {
    * @param consumer
    * @return
    */
-  public ProcessMock onExecutionDo(final String serviceId, final Consumer<DelegateExecution> consumer) {
+  public CallActivityMock onExecutionDo(final String serviceId, final Consumer<DelegateExecution> consumer) {
     flowNodeBuilder = flowNodeBuilder.serviceTask(serviceId)
       .camundaDelegateExpression("${id}".replace("id", serviceId));
 
@@ -101,7 +101,7 @@ public class ProcessMock {
    * @param date
    * @return
    */
-  public ProcessMock onExecutionWaitForTimerWithDate(final Date date) {
+  public CallActivityMock onExecutionWaitForTimerWithDate(final Date date) {
     return this.onExecutionWaitForTimerWithDate(df.format(date));
   }
 
@@ -112,7 +112,7 @@ public class ProcessMock {
    * @param iso8601date
    * @return
    */
-  public ProcessMock onExecutionWaitForTimerWithDate(final String iso8601date) {
+  public CallActivityMock onExecutionWaitForTimerWithDate(final String iso8601date) {
     flowNodeBuilder = flowNodeBuilder.intermediateCatchEvent()
       .timerWithDate(iso8601date);
     return this;
@@ -125,7 +125,7 @@ public class ProcessMock {
    * @param iso8601duration
    * @return
    */
-  public ProcessMock onExecutionWaitForTimerWithDuration(final String iso8601duration) {
+  public CallActivityMock onExecutionWaitForTimerWithDuration(final String iso8601duration) {
     flowNodeBuilder = flowNodeBuilder.intermediateCatchEvent()
       .timerWithDuration(iso8601duration);
     return this;
@@ -137,7 +137,7 @@ public class ProcessMock {
    * @param message
    * @return
    */
-  public ProcessMock onExecutionSendMessage(final String message) {
+  public CallActivityMock onExecutionSendMessage(final String message) {
     return onExecutionDo(execution -> execution.getProcessEngineServices()
       .getRuntimeService().correlateMessage(message));
   }
@@ -149,7 +149,7 @@ public class ProcessMock {
    * @param businessId
    * @return
    */
-  public ProcessMock onExecutionSendMessage(final String message, final String businessId) {
+  public CallActivityMock onExecutionSendMessage(final String message, final String businessId) {
     return onExecutionDo(execution -> execution.getProcessEngineServices()
       .getRuntimeService().correlateMessage(message, businessId));
   }
@@ -160,7 +160,7 @@ public class ProcessMock {
    * @param message
    * @return
    */
-  public ProcessMock onExecutionWaitForMessage(final String message) {
+  public CallActivityMock onExecutionWaitForMessage(final String message) {
     flowNodeBuilder = flowNodeBuilder.intermediateCatchEvent()
       .message(message);
     return this;
@@ -172,7 +172,7 @@ public class ProcessMock {
    * @param exception
    * @return
    */
-  public ProcessMock onExecutionRunIntoError(final Throwable exception) {
+  public CallActivityMock onExecutionRunIntoError(final Throwable exception) {
     return this.onExecutionDo("throwErrorServiceMock",execution -> {
       throw new RuntimeException(exception);
     });
@@ -184,7 +184,7 @@ public class ProcessMock {
    * @param rule
    * @return
    */
-  public Deployment deploy(ProcessEngineRule rule){
+  public Deployment deploy(final ProcessEngineRule rule){
     return DeployProcess.INSTANCE.apply(rule,
       flowNodeBuilder
         .endEvent("end")

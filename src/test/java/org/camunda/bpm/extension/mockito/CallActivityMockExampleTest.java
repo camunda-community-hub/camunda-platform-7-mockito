@@ -23,9 +23,9 @@ import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.jobQuer
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.runtimeService;
 import static org.camunda.bpm.engine.variable.Variables.createVariables;
 import static org.camunda.bpm.extension.mockito.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
-import static org.camunda.bpm.extension.mockito.ProcessExpressions.registerSubProcessMock;
+import static org.camunda.bpm.extension.mockito.ProcessExpressions.registerCallActivityMock;
 
-public class SubprocessMockExample {
+public class CallActivityMockExampleTest {
 
   public static final String PROCESS_ID = "myProcess";
   public static final String SUB_PROCESS_ID = "mySubProcess";
@@ -42,7 +42,7 @@ public class SubprocessMockExample {
 
   @Test
   public void register_subprocess_mock_addVar() throws Exception {
-    registerSubProcessMock(SUB_PROCESS_ID)
+    registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionAddVariable("foo", "bar")
       .deploy(rule);
 
@@ -58,7 +58,7 @@ public class SubprocessMockExample {
 
   @Test
   public void register_subprocess_mock_withOwnConsumer() throws Exception {
-    registerSubProcessMock(SUB_PROCESS_ID)
+    registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionDo(execution -> {
         execution.setVariable("foo", "barbar");
       })
@@ -76,7 +76,7 @@ public class SubprocessMockExample {
 
   @Test
   public void register_subprocess_mock_withReceiveMessage() throws Exception {
-    registerSubProcessMock(SUB_PROCESS_ID)
+    registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionWaitForMessage(MESSAGE_DOIT)
       .deploy(rule);
 
@@ -89,7 +89,7 @@ public class SubprocessMockExample {
 
   @Test
   public void register_subprocess_mock_withSendMessage() throws Exception {
-    registerSubProcessMock(SUB_PROCESS_ID)
+    registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionSendMessage(MESSAGE_DOIT)
       .deploy(rule);
 
@@ -118,7 +118,7 @@ public class SubprocessMockExample {
   public void register_subprocess_mock_withTimerDate() throws Exception {
     final Date date = Date.from(Instant.now().plusSeconds(60));
 
-    registerSubProcessMock(SUB_PROCESS_ID)
+    registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionWaitForTimerWithDate(date)
       .deploy(rule);
 
@@ -129,7 +129,7 @@ public class SubprocessMockExample {
 
   @Test
   public void register_subprocess_mock_withTimerDuration() throws Exception {
-    registerSubProcessMock(SUB_PROCESS_ID)
+    registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionWaitForTimerWithDuration("PT60S")
       .deploy(rule);
 
@@ -140,7 +140,7 @@ public class SubprocessMockExample {
 
   @Test(expected = RuntimeException.class)
   public void register_subprocess_mock_withException() throws Exception {
-    registerSubProcessMock(SUB_PROCESS_ID)
+    registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionRunIntoError(new Exception("No"))
       .deploy(rule);
 
@@ -163,10 +163,10 @@ public class SubprocessMockExample {
 
     DeployProcess.INSTANCE.apply(rule, processWithSubProcess, PROCESS_ID);
 
-    registerSubProcessMock(SUB_PROCESS_ID)
+    registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionSetVariables(createVariables().putValue("foo", "bar"))
       .deploy(rule);
-    registerSubProcessMock(SUB_PROCESS2_ID)
+    registerCallActivityMock(SUB_PROCESS2_ID)
       .onExecutionSetVariables(createVariables().putValue("bar", "foo"))
       .deploy(rule);
 
@@ -186,7 +186,7 @@ public class SubprocessMockExample {
     prepareProcessWithOneSubprocess();
 
     final Date waitUntil = Date.from(Instant.now().plusSeconds(60));
-    registerSubProcessMock(SUB_PROCESS_ID)
+    registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionWaitForMessage(MESSAGE_DOIT)
       .onExecutionWaitForTimerWithDate(waitUntil)
       .onExecutionSetVariables(createVariables().putValue("foo", "bar"))
