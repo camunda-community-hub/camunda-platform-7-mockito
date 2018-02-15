@@ -1,6 +1,8 @@
 # camunda-bpm-mockito
 
 
+[![Build Status](https://travis-ci.org/camunda/camunda-bpm-mockito.svg?branch=master)](https://travis-ci.org/camunda/camunda-bpm-mockito)
+[![codecov](https://codecov.io/gh/camunda/camunda-bpm-mockito/branch/master/graph/badge.svg)](https://codecov.io/gh/camunda/camunda-bpm-mockito) 
 [![Project Stats](https://www.openhub.net/p/camunda-bpm-mockito/widgets/project_thin_badge.gif)](https://www.openhub.net/p/camunda-bpm-mockito)
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito)
