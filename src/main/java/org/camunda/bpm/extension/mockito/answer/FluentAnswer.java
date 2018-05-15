@@ -72,7 +72,7 @@ public final class FluentAnswer<T> implements Answer<T> {
    */
   @Override
   public T answer(@Nonnull final InvocationOnMock invocation) throws Throwable {
-    if (invocation.getMethod().getReturnType().isAssignableFrom(type)) {
+    if (type.isAssignableFrom(invocation.getMethod().getReturnType())) {
       return (T) invocation.getMock();
     }
     return null;
