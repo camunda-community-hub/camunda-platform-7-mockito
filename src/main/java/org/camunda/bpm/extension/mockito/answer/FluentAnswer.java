@@ -2,6 +2,7 @@ package org.camunda.bpm.extension.mockito.answer;
 
 import javax.annotation.Nonnull;
 
+import org.camunda.bpm.engine.query.Query;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -15,7 +16,7 @@ import org.mockito.stubbing.Answer;
  * @param <T>
  *          the return type of the answer
  */
-public final class FluentAnswer<T> implements Answer<T> {
+public final class FluentAnswer<T extends Query<?, R>, R extends Object> implements Answer<T> {
 
   /**
    * Creates a new mock of given type with a fluent default answer already set
@@ -27,7 +28,7 @@ public final class FluentAnswer<T> implements Answer<T> {
    *          generic parameter for type of mock
    * @return new mock instance of type T with default fluent answer.
    */
-  public static <T> T createMock(Class<T> type) {
+  public static <T extends Query<?, R>, R extends Object> T createMock(Class<T> type) {
     return Mockito.mock(type, createAnswer(type));
   }
 
@@ -40,8 +41,8 @@ public final class FluentAnswer<T> implements Answer<T> {
    *          generic parameter of the return type
    * @return new Answer that returns the mock itself
    */
-  public static <T> FluentAnswer<T> createAnswer(Class<T> type) {
-    return new FluentAnswer<T>(type);
+  public static <T extends Query<?, R>, R extends Object> FluentAnswer<T, R> createAnswer(Class<T> type) {
+    return new FluentAnswer<T, R>(type);
   }
 
   /**
@@ -72,8 +73,12 @@ public final class FluentAnswer<T> implements Answer<T> {
    */
   @Override
   public T answer(@Nonnull final InvocationOnMock invocation) throws Throwable {
-    if (invocation.getMethod().getReturnType().isAssignableFrom(type)) {
-      return (T) invocation.getMock();
+    final Class<?> methodReturnType = invocation.getMethod().getReturnType();
+    if (type.isAssignableFrom(methodReturnType) // fluent api methods
+      || Query.class.isAssignableFrom(methodReturnType) // asc/desc
+    ) {
+      Object mock = invocation.getMock();
+      return (T)mock ;
     }
     return null;
   }
