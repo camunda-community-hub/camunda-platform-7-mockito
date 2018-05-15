@@ -1,5 +1,6 @@
 package org.camunda.bpm.extension.mockito.answer;
 
+import org.camunda.bpm.engine.query.Query;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -7,10 +8,10 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 
+import java.util.List;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -47,11 +48,13 @@ public class FluentAnswerTest {
     // when -> then
     assertThat(mock.typeMatch()).isEqualTo(mock);
     assertThat(mock.typeMatch("")).isEqualTo(mock);
+    assertThat(mock.asc()).isEqualTo(mock);
     assertThat(mock.string()).isEqualTo(string);
     assertThat(mock.superType()).isEqualTo(superType);
     assertThat(mock.superTypeInterface()).isEqualTo(superTypeInterface);
     // not stubbed method -> the result is not from the answer, but is null
     assertThat(mock.notStubbed()).isNull();
+
   }
 
   @Test
@@ -66,7 +69,7 @@ public class FluentAnswerTest {
   interface SomeAspect {
   }
 
-  static class FluentBuilder implements SomeAspect {
+  static class FluentBuilder implements SomeAspect, Query<FluentBuilder, Object> {
     private final String value;
 
     public FluentBuilder(String value) {
@@ -122,6 +125,35 @@ public class FluentAnswerTest {
       return "Hello";
     }
 
+    @Override
+    public FluentBuilder asc() {
+      return null;
+    }
+
+    @Override
+    public FluentBuilder desc() {
+      return null;
+    }
+
+    @Override
+    public long count() {
+      return 0;
+    }
+
+    @Override
+    public Object singleResult() {
+      return null;
+    }
+
+    @Override
+    public List<Object> list() {
+      return null;
+    }
+
+    @Override
+    public List<Object> listPage(final int firstResult, final int maxResults) {
+      return null;
+    }
   }
 
   static class FluentBuilderExtension extends FluentBuilder {
