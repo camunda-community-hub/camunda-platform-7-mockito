@@ -4,7 +4,6 @@ import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.delegate.DelegateCaseExecution;
 import org.camunda.bpm.engine.delegate.DelegateCaseVariableInstance;
 import org.camunda.bpm.engine.variable.impl.value.AbstractTypedValue;
-import org.camunda.bpm.engine.variable.type.ValueType;
 import org.camunda.bpm.engine.variable.value.TypedValue;
 
 public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableInstance {

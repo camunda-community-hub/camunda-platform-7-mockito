@@ -1,6 +1,5 @@
 package org.camunda.bpm.extension.mockito.delegate;
 
-import org.assertj.core.api.Assertions;
 import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.variable.impl.value.AbstractTypedValue;
 import org.camunda.bpm.engine.variable.type.ValueType;
