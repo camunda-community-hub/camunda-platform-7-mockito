@@ -72,6 +72,7 @@ public final class FluentAnswer<T extends Query<?, R>, R extends Object> impleme
    *           when anything fails
    */
   @Override
+  @SuppressWarnings("unchecked")
   public T answer(@Nonnull final InvocationOnMock invocation) throws Throwable {
     final Class<?> methodReturnType = invocation.getMethod().getReturnType();
     if (type.isAssignableFrom(methodReturnType) // fluent api methods

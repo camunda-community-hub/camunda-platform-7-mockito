@@ -1,11 +1,18 @@
 package org.camunda.bpm.extension.mockito.delegate;
 
 import org.camunda.bpm.engine.ProcessEngineServices;
+import org.camunda.bpm.engine.delegate.CaseVariableListener;
 import org.camunda.bpm.engine.delegate.DelegateCaseExecution;
 import org.camunda.bpm.engine.delegate.DelegateCaseVariableInstance;
 import org.camunda.bpm.engine.variable.impl.value.AbstractTypedValue;
+import org.camunda.bpm.engine.variable.type.ValueType;
 import org.camunda.bpm.engine.variable.value.TypedValue;
 
+import java.util.Optional;
+
+/**
+ * This {@link DelegateCaseVariableInstance} is useful when testing {@link CaseVariableListener}s in case plan items.
+ */
 public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableInstance {
 
   private String id;
@@ -13,7 +20,6 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   private String eventName;
   private DelegateCaseExecution sourceExecution;
   private ProcessEngineServices processEngineServices;
-  private String typedName;
   private TypedValue typedValue;
   private String processInstanceId;
   private String executionId;
@@ -24,6 +30,23 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   private String errorMessage;
   private String tenantId;
 
+  public DelegateCaseVariableInstanceFake create(String name, TypedValue value) {
+    return forEvent(CaseVariableListener.CREATE, name, value);
+  }
+
+  public DelegateCaseVariableInstanceFake update(String name, TypedValue value) {
+    return forEvent(CaseVariableListener.UPDATE, name, value);
+  }
+
+  public DelegateCaseVariableInstanceFake delete(String name, TypedValue typedValue) {
+    return forEvent(CaseVariableListener.DELETE, name, typedValue);
+  }
+
+  private DelegateCaseVariableInstanceFake forEvent(String eventName, String name, TypedValue value) {
+    return withEventName(eventName)
+      .withName(name)
+      .withValue(value);
+  }
 
   @Override
   public String getEventName() {
@@ -73,11 +96,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
 
   @Override
   public String getTypeName() {
-    return typedName;
-  }
-  public DelegateCaseVariableInstanceFake withTypedName(String name) {
-    this.typedName = name;
-    return this;
+    return Optional.ofNullable(typedValue).map(TypedValue::getType).map(ValueType::getName).orElse("undefined");
   }
 
   @Override

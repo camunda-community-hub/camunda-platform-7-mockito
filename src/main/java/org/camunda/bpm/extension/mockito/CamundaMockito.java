@@ -65,6 +65,7 @@ import org.camunda.bpm.extension.mockito.query.TenantQueryMock;
 import org.camunda.bpm.extension.mockito.query.UserOperationLogQueryMock;
 import org.camunda.bpm.extension.mockito.query.UserQueryMock;
 import org.camunda.bpm.extension.mockito.query.VariableInstanceQueryMock;
+import org.camunda.bpm.extension.mockito.service.RuntimeServiceFluentMock;
 import org.camunda.bpm.extension.mockito.verify.MockitoVerification;
 
 import javax.annotation.Nonnull;
@@ -637,6 +638,14 @@ public final class CamundaMockito {
 
   public static CallActivityMock registerCallActivityMock(final String processDefinitionKey) {
     return ProcessExpressions.registerCallActivityMock(processDefinitionKey);
+  }
+
+  public static RuntimeServiceFluentMock runtimeServiceFluentMock() {
+    return new RuntimeServiceFluentMock();
+  }
+
+  public static RuntimeServiceFluentMock runtimeServiceFluentMock(RuntimeService runtimeServiceMock) {
+    return new RuntimeServiceFluentMock(runtimeServiceMock);
   }
 
   private CamundaMockito() {

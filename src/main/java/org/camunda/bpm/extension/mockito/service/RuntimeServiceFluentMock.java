@@ -12,6 +12,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("unused")
 public class RuntimeServiceFluentMock {
 
   private final RuntimeService runtimeService;
