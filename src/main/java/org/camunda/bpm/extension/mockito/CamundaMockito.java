@@ -18,6 +18,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.delegate.TaskListener;
 import org.camunda.bpm.engine.test.mock.Mocks;
 import org.camunda.bpm.extension.mockito.delegate.DelegateCaseExecutionFake;
+import org.camunda.bpm.extension.mockito.delegate.DelegateCaseVariableInstanceFake;
 import org.camunda.bpm.extension.mockito.delegate.DelegateExecutionFake;
 import org.camunda.bpm.extension.mockito.delegate.DelegateTaskFake;
 import org.camunda.bpm.extension.mockito.delegate.VariableScopeFake;
@@ -619,6 +620,8 @@ public final class CamundaMockito {
   }
 
   public static DelegateCaseExecutionFake delegateCaseExecutionFake() { return new DelegateCaseExecutionFake(); }
+
+  public static DelegateCaseVariableInstanceFake delegateCaseVariableInstanceFake() { return new DelegateCaseVariableInstanceFake(); }
 
   public static DelegateTaskFake delegateTaskFake() {
     return new DelegateTaskFake();
