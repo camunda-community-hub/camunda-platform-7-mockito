@@ -5,22 +5,16 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.engine.variable.value.StringValue;
-import org.junit.Before;
+import org.camunda.bpm.extension.mockito.task.TaskFake;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class RuntimeServiceFluentMockTest {
 
   private RuntimeService runtimeService = mock(RuntimeService.class);
-  private Task task = mock(Task.class);
-
-  @Before
-  public void init() {
-    when(task.getExecutionId()).thenReturn("4711");
-  }
+  private Task task = TaskFake.builder().executionId("4711").build();
 
   @Test
   public void testSetVariableBehavior() {
