@@ -89,6 +89,16 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
   private String tenantId;
   private boolean completed;
   private ProcessEngineServices processEngineServices;
+  private DelegateExecution delegateExecution;
+  private DelegateCaseExecution delegateCaseExecution;
+
+  public DelegateTaskFake() {
+    this(null);
+  }
+
+  public DelegateTaskFake(final String id) {
+    withId(id);
+  }
 
   @Override
   public String getId() {
@@ -147,7 +157,11 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
 
   @Override
   public String getProcessInstanceId() {
-    return processInstanceId;
+    return valueFromCaseOrProcessExecution(
+      DelegateExecution::getProcessInstanceId,
+      c -> null,
+      processInstanceId
+    );
   }
 
   public DelegateTaskFake withProcessInstanceId(String processInstanceId) {
@@ -155,20 +169,12 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
     return this;
   }
 
-  @Override
-  public String getExecutionId() {
-    return executionId;
-  }
-
-  public DelegateTaskFake withExecutionI(String executionId) {
-    this.executionId = executionId;
-    return this;
-  }
-
 
   @Override
   public String getProcessDefinitionId() {
-    return processDefinitionId;
+    return Optional.ofNullable(delegateExecution)
+      .map(DelegateExecution::getProcessDefinitionId)
+      .orElse(processDefinitionId);
   }
 
   public DelegateTaskFake withProcessDefinitionId(String processDefinitionId) {
@@ -178,7 +184,9 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
 
   @Override
   public String getCaseInstanceId() {
-    return caseInstanceId;
+    return Optional.ofNullable(delegateCaseExecution)
+      .map(DelegateCaseExecution::getCaseInstanceId)
+      .orElse(caseInstanceId);
   }
 
   public DelegateTaskFake withCaseInstanceId(String caseInstanceId) {
@@ -188,7 +196,9 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
 
   @Override
   public String getCaseExecutionId() {
-    return caseExecutionId;
+    return Optional.ofNullable(delegateCaseExecution)
+      .map(DelegateCaseExecution::getId)
+      .orElse(caseExecutionId);
   }
 
   public DelegateTaskFake withCaseExecutionId(String caseExecutionId) {
@@ -198,7 +208,9 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
 
   @Override
   public String getCaseDefinitionId() {
-    return caseDefinitionId;
+    return Optional.ofNullable(delegateCaseExecution)
+      .map(DelegateCaseExecution::getCaseDefinitionId)
+      .orElse(caseDefinitionId);
   }
 
   public DelegateTaskFake withCaseDefinitionId(String caseDefinitionId) {
@@ -228,12 +240,43 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
 
   @Override
   public DelegateExecution getExecution() {
-    throw new UnsupportedOperationException("not implemented");
+    return delegateExecution;
+  }
+
+  /**
+   * Tries to cast execution to fake.
+   *
+   * @return delegate execution fake
+   */
+  public DelegateExecutionFake getExecutionFake() {
+    return (DelegateExecutionFake) getExecution();
+  }
+
+  @Override
+  public String getExecutionId() {
+    return Optional.ofNullable(delegateExecution).map(DelegateExecution::getId).orElse(executionId);
+  }
+
+  public DelegateTaskFake withExecutionId(String executionId) {
+    this.executionId = executionId;
+    return this;
+  }
+
+  public DelegateTaskFake withExecution(DelegateExecution execution) {
+    this.delegateExecution = execution;
+
+    return this;
   }
 
   @Override
   public DelegateCaseExecution getCaseExecution() {
-    throw new UnsupportedOperationException("not implemented");
+    return delegateCaseExecution;
+  }
+
+  public DelegateTaskFake withCaseExecution(DelegateCaseExecution caseExecution) {
+    this.delegateCaseExecution = caseExecution;
+
+    return this;
   }
 
   @Override
@@ -280,7 +323,11 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
 
       @Override
       public String getTenantId() {
-        return getTenantId();
+        return valueFromCaseOrProcessExecution(
+          DelegateExecution::getTenantId,
+          DelegateCaseExecution::getTenantId,
+          tenantId
+        );
       }
 
       @Override
@@ -403,7 +450,11 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
 
   @Override
   public String getTenantId() {
-    return tenantId;
+    return valueFromCaseOrProcessExecution(
+      DelegateExecution::getTenantId,
+      DelegateCaseExecution::getTenantId,
+      tenantId
+    );
   }
 
   public DelegateTaskFake withTenantId(String tenantId) {
@@ -423,7 +474,10 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
 
   @Override
   public ProcessEngineServices getProcessEngineServices() {
-    return processEngineServices;
+    return valueFromCaseOrProcessExecution(
+      DelegateExecution::getProcessEngineServices,
+      DelegateCaseExecution::getProcessEngineServices,
+      processEngineServices);
   }
 
   public DelegateTaskFake withProcessEngineServices(ProcessEngineServices processEngineServices) {
@@ -431,5 +485,17 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
     return this;
   }
 
+  private <T> T valueFromCaseOrProcessExecution(
+    Function<DelegateExecution, T> fromProcess,
+    Function<DelegateCaseExecution, T> fromCase,
+    T fromTask) {
+
+    return Optional.ofNullable(delegateExecution)
+      .map(fromProcess)
+      .orElse(Optional.ofNullable(delegateCaseExecution)
+        .map(fromCase)
+        .orElse(fromTask)
+      );
+  }
 
 }

@@ -21,6 +21,14 @@ public class DelegateCaseExecutionFake extends VariableScopeFake<DelegateCaseExe
   private ProcessEngineServices processEngineServices;
   private CaseExecutionState caseExecutionState;
 
+  public DelegateCaseExecutionFake() {
+      this(null);
+  }
+
+  public DelegateCaseExecutionFake(String id) {
+    withId(id);
+  }
+
   @Override
   public String getId() {
     return id;

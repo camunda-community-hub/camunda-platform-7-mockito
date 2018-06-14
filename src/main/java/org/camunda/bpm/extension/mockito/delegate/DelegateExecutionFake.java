@@ -37,6 +37,14 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
 
   private final Map<String,Incident> incidents = new HashMap<>();
 
+  public DelegateExecutionFake() {
+    this(null);
+  }
+
+  public DelegateExecutionFake(final String id) {
+    this.id = id;
+  }
+
   @Override
   public String getProcessInstanceId() {
     return processInstanceId;
