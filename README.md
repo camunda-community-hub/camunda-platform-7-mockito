@@ -32,7 +32,7 @@ Just include camunda-bpm-mockito in the test scope of your project:
   <groupId>org.camunda.bpm.extension.mockito</groupId>
   <artifactId>camunda-bpm-mockito</artifactId>
   <scope>test</scope>
-  <version>3.2.0</version>
+  <version>3.2.1</version>
 </dependency>
 ```
 
