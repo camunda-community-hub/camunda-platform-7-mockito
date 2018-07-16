@@ -6,6 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
+import org.mockito.exceptions.misusing.WrongTypeOfReturnValue;
 import org.mockito.invocation.InvocationOnMock;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public class FluentAnswerTest {
   @Test
   public void shouldThrowClassCastExceptionUsingSubtypes() {
 
-    expected.expect(ClassCastException.class);
+    expected.expect(WrongTypeOfReturnValue.class);
 
     FluentBuilder mock = FluentAnswer.createMock(FluentBuilder.class);
     when(mock.subType()).thenReturn(new FluentBuilderExtension());

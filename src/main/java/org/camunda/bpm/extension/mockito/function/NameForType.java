@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 public enum NameForType implements Function<Class<?>, String> {
   INSTANCE;
 
-  static final String ENHANCER = "$$EnhancerByMockitoWithCGLIB$$";
+  static final String ENHANCER = "$MockitoMock$";
 
   /**
    * Does instance.getClass() but is mock-aware.
