@@ -188,4 +188,21 @@ public class DelegateCaseExecutionFake extends VariableScopeFake<DelegateCaseExe
     this.processEngineServices = processEngineServices;
     return this;
   }
+
+  @Override public String toString() {
+    return "DelegateCaseExecutionFake{" +
+      "id='" + id + '\'' +
+      ", caseInstanceId='" + caseInstanceId + '\'' +
+      ", eventName='" + eventName + '\'' +
+      ", businessKey='" + businessKey + '\'' +
+      ", caseBusinessKey='" + caseBusinessKey + '\'' +
+      ", caseDefinitionId='" + caseDefinitionId + '\'' +
+      ", parentId='" + parentId + '\'' +
+      ", activityId='" + activityId + '\'' +
+      ", activityName='" + activityName + '\'' +
+      ", tenantId='" + tenantId + '\'' +
+      ", processEngineServices=" + processEngineServices +
+      ", caseExecutionState=" + caseExecutionState +
+      '}';
+  }
 }

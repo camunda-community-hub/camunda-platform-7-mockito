@@ -12,7 +12,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class VariableScopeFake<T extends VariableScopeFake> extends AbstractVariableScope implements VariableScope {
+@SuppressWarnings("unchecked")
+public abstract class VariableScopeFake<T extends VariableScopeFake> extends AbstractVariableScope implements VariableScope {
 
   protected VariableStore<CoreVariableInstance> variableStore = new VariableStore<>();
   protected VariableInstanceFactory<CoreVariableInstance> variableInstanceFactory = (name, value, isTransient) -> new SimpleVariableInstance(name, value);

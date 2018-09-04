@@ -613,7 +613,7 @@ public final class CamundaMockito {
   }
 
   public static VariableScopeFake variableScopeFake() {
-    return new VariableScopeFake();
+    return new VariableScopeFake(){};
   }
 
   public static DelegateExecutionFake delegateExecutionFake() {

@@ -42,7 +42,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   }
 
   public DelegateExecutionFake(final String id) {
-    this.id = id;
+    withId(id);
   }
 
   @Override
@@ -239,4 +239,26 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
     // empty
   }
 
+  @Override public String toString() {
+    return "DelegateExecutionFake{" +
+      "processInstanceId='" + processInstanceId + '\'' +
+      ", processEngineServices=" + processEngineServices +
+      ", processBusinessKey='" + processBusinessKey + '\'' +
+      ", processDefinitionId='" + processDefinitionId + '\'' +
+      ", parentId='" + parentId + '\'' +
+      ", currentActivityId='" + currentActivityId + '\'' +
+      ", currentActivityName='" + currentActivityName + '\'' +
+      ", activityInstanceId='" + activityInstanceId + '\'' +
+      ", parentActivityInstanceId='" + parentActivityInstanceId + '\'' +
+      ", currentTransitionId='" + currentTransitionId + '\'' +
+      ", processInstance=" + processInstance +
+      ", superExecution=" + superExecution +
+      ", canceled=" + canceled +
+      ", tenantId='" + tenantId + '\'' +
+      ", id='" + id + '\'' +
+      ", eventName='" + eventName + '\'' +
+      ", businessKey='" + businessKey + '\'' +
+      ", incidents=" + incidents +
+      '}';
+  }
 }

@@ -503,4 +503,31 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
       );
   }
 
+  @Override public String toString() {
+    return "DelegateTaskFake{" +
+      "id='" + id + '\'' +
+      ", candidates=" + candidates +
+      ", name='" + name + '\'' +
+      ", description='" + description + '\'' +
+      ", priority=" + priority +
+      ", processInstanceId='" + processInstanceId + '\'' +
+      ", executionId='" + executionId + '\'' +
+      ", processDefinitionId='" + processDefinitionId + '\'' +
+      ", caseInstanceId='" + caseInstanceId + '\'' +
+      ", caseExecutionId='" + caseExecutionId + '\'' +
+      ", caseDefinitionId='" + caseDefinitionId + '\'' +
+      ", createTime=" + createTime +
+      ", taskDefinitionKey='" + taskDefinitionKey + '\'' +
+      ", eventName='" + eventName + '\'' +
+      ", owner='" + owner + '\'' +
+      ", assignee='" + assignee + '\'' +
+      ", dueDate=" + dueDate +
+      ", deleteReason='" + deleteReason + '\'' +
+      ", tenantId='" + tenantId + '\'' +
+      ", completed=" + completed +
+      ", processEngineServices=" + processEngineServices +
+      ", delegateExecution=" + delegateExecution +
+      ", delegateCaseExecution=" + delegateCaseExecution +
+      '}';
+  }
 }

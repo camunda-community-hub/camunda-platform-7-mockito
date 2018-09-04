@@ -89,4 +89,16 @@ public class IncidentFake implements Incident {
   public String getJobDefinitionId() {
     return jobDefinitionId;
   }
+
+  @Override public String toString() {
+    return "IncidentFake{" +
+      "id='" + id + '\'' +
+      ", timestamp=" + timestamp +
+      ", execution=" + execution +
+      ", type='" + type + '\'' +
+      ", message='" + message + '\'' +
+      ", configuration='" + configuration + '\'' +
+      ", jobDefinitionId='" + jobDefinitionId + '\'' +
+      '}';
+  }
 }

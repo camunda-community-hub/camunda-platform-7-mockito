@@ -30,6 +30,13 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   private String errorMessage;
   private String tenantId;
 
+  public DelegateCaseVariableInstanceFake() {
+    this(null);
+  }
+  public DelegateCaseVariableInstanceFake(String id) {
+    withId(id);
+  }
+
   public DelegateCaseVariableInstanceFake create(String name, TypedValue value) {
     return forEvent(CaseVariableListener.CREATE, name, value);
   }
@@ -189,5 +196,24 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public DelegateCaseVariableInstanceFake withTenantId(String tenantId) {
     this.tenantId = tenantId;
     return this;
+  }
+
+  @Override public String toString() {
+    return "DelegateCaseVariableInstanceFake{" +
+      "id='" + id + '\'' +
+      ", name='" + name + '\'' +
+      ", eventName='" + eventName + '\'' +
+      ", sourceExecution=" + sourceExecution +
+      ", processEngineServices=" + processEngineServices +
+      ", typedValue=" + typedValue +
+      ", processInstanceId='" + processInstanceId + '\'' +
+      ", executionId='" + executionId + '\'' +
+      ", caseInstanceId='" + caseInstanceId + '\'' +
+      ", caseExecutionId='" + caseExecutionId + '\'' +
+      ", taskId='" + taskId + '\'' +
+      ", activityInstanceId='" + activityInstanceId + '\'' +
+      ", errorMessage='" + errorMessage + '\'' +
+      ", tenantId='" + tenantId + '\'' +
+      '}';
   }
 }

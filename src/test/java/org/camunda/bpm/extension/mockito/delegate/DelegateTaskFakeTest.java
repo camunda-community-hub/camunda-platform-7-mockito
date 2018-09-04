@@ -161,7 +161,15 @@ public class DelegateTaskFakeTest {
 
   }
 
-
+  @Test
+  public void has_toString() {
+    delegate.withId("1");
+    delegate.withAssignee("kermit");
+    assertThat(delegate.toString())
+      .startsWith("DelegateTaskFake{")
+      .contains("id='1'")
+      .contains("assignee='kermit'");
+  }
 
   private void initIdentityLinks() {
     delegate.addUserIdentityLink("user1", ASSIGNEE);
