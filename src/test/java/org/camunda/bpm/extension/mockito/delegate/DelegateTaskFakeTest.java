@@ -54,6 +54,13 @@ public class DelegateTaskFakeTest {
   }
 
   @Test
+  public void setAssignee() {
+    assertThat(delegate.getAssignee()).isNull();
+    delegate.withAssignee("kermit");
+    assertThat(delegate.getAssignee()).isEqualTo("kermit");
+  }
+
+  @Test
   public void addAndDeleteUserAssignee() {
     delegate.addUserIdentityLink("foo", ASSIGNEE);
     delegate.addUserIdentityLink("bar", OWNER);

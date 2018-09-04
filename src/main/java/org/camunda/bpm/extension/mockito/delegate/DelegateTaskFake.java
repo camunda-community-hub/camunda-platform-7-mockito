@@ -417,6 +417,11 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
     this.assignee = assignee;
   }
 
+  public DelegateTaskFake withAssignee(String assignee) {
+    setAssignee(assignee);
+    return this;
+  }
+
   @Override
   public Date getDueDate() {
     return dueDate;
