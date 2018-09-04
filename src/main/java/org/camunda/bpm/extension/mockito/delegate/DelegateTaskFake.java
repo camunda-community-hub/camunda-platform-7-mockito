@@ -273,6 +273,10 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
     return delegateCaseExecution;
   }
 
+  public DelegateCaseExecutionFake getCaseExecutionFake() {
+    return (DelegateCaseExecutionFake) getCaseExecution();
+  }
+
   public DelegateTaskFake withCaseExecution(DelegateCaseExecution caseExecution) {
     this.delegateCaseExecution = caseExecution;
 
