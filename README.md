@@ -7,8 +7,6 @@
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito)
 
-> :bangbang: With release 3.0.0 the groupId changed, it is now `org.camunda.bpm.extension.mockito` :bangbang:
-
 **simplify process mocking and testing**
 
 camunda-bpm-mockito is a community extension for the Camunda BPM process engine that aims to simplify and 
@@ -32,9 +30,10 @@ Just include camunda-bpm-mockito in the test scope of your project:
   <groupId>org.camunda.bpm.extension.mockito</groupId>
   <artifactId>camunda-bpm-mockito</artifactId>
   <scope>test</scope>
-  <version>3.2.1</version>
+  <version>4.0.0</version>
 </dependency>
 ```
+
 
 ## Mocking of queries
 
