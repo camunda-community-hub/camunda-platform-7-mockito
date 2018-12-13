@@ -79,6 +79,20 @@ public class ProcessInstanceFake implements ProcessInstance {
     return tenantId;
   }
 
+  @Override
+  public String toString() {
+    return "ProcessInstanceFake{" +
+      "id='" + id + '\'' +
+      ", businessKey='" + businessKey + '\'' +
+      ", processInstanceId='" + processInstanceId + '\'' +
+      ", processDefinitionId='" + processDefinitionId + '\'' +
+      ", tenantId='" + tenantId + '\'' +
+      ", caseInstanceId='" + caseInstanceId + '\'' +
+      ", ended=" + ended +
+      ", suspended=" + suspended +
+      '}';
+  }
+
   public static class ProcessInstanceFakeBuilder {
     private String id;
     private String businessKey;

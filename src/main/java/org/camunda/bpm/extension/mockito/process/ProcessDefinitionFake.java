@@ -117,6 +117,26 @@ public class ProcessDefinitionFake implements ProcessDefinition {
     this.suspended = suspended;
   }
 
+  @Override
+  public String toString() {
+    return "ProcessDefinitionFake{" +
+      "id='" + id + '\'' +
+      ", category='" + category + '\'' +
+      ", name='" + name + '\'' +
+      ", key='" + key + '\'' +
+      ", version=" + version +
+      ", resourceName='" + resourceName + '\'' +
+      ", deploymentId='" + deploymentId + '\'' +
+      ", diagramResourceName='" + diagramResourceName + '\'' +
+      ", tenantId='" + tenantId + '\'' +
+      ", description='" + description + '\'' +
+      ", hasStartForm=" + hasStartForm +
+      ", historyTimeToLive=" + historyTimeToLive +
+      ", versionTag='" + versionTag + '\'' +
+      ", suspended=" + suspended +
+      '}';
+  }
+
   public static class ProcessDefinitionFakeBuilder {
     private String id;
     private String category;

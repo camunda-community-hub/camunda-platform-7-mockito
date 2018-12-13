@@ -162,6 +162,29 @@ public class CaseInstanceFake implements CaseInstance {
     this.available = available;
   }
 
+  @Override
+  public String toString() {
+    return "CaseInstanceFake{" +
+      "disabled=" + disabled +
+      ", terminated=" + terminated +
+      ", completed=" + completed +
+      ", required=" + required +
+      ", enabled=" + enabled +
+      ", active=" + active +
+      ", available=" + available +
+      ", activityDescription='" + activityDescription + '\'' +
+      ", activityId='" + activityId + '\'' +
+      ", activityName='" + activityName + '\'' +
+      ", activityType='" + activityType + '\'' +
+      ", businessKey='" + businessKey + '\'' +
+      ", id='" + id + '\'' +
+      ", caseInstanceId='" + caseInstanceId + '\'' +
+      ", caseDefinitionId='" + caseDefinitionId + '\'' +
+      ", parentId='" + parentId + '\'' +
+      ", tenantId='" + tenantId + '\'' +
+      '}';
+  }
+
   public static class CaseInstanceFakeBuilder {
     private boolean disabled = false;
     private boolean terminated = false;

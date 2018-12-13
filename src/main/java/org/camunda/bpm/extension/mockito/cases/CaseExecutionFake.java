@@ -144,6 +144,27 @@ public class CaseExecutionFake implements CaseExecution {
     this.available = available;
   }
 
+  @Override
+  public String toString() {
+    return "CaseExecutionFake{" +
+      "id='" + id + '\'' +
+      ", caseInstanceId='" + caseInstanceId + '\'' +
+      ", caseDefinitionId='" + caseDefinitionId + '\'' +
+      ", activityId='" + activityId + '\'' +
+      ", activityName='" + activityName + '\'' +
+      ", activityType='" + activityType + '\'' +
+      ", activityDescription='" + activityDescription + '\'' +
+      ", parentId='" + parentId + '\'' +
+      ", tenantId='" + tenantId + '\'' +
+      ", disabled=" + disabled +
+      ", terminated=" + terminated +
+      ", required=" + required +
+      ", enabled=" + enabled +
+      ", active=" + active +
+      ", available=" + available +
+      '}';
+  }
+
   public static class CaseExecutionFakeBuilder {
 
     private boolean disabled = false;

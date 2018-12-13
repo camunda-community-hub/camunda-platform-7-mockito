@@ -30,8 +30,16 @@ public class TaskFake implements Task {
   private String formKey;
   private DelegationState delegationState;
 
-  @java.beans.ConstructorProperties({"id", "name", "description", "priority", "owner", "assignee", "processDefinitionId", "caseDefinitionId", "executionId", "processInstanceId", "caseInstanceId", "caseExecutionId", "createTime", "taskDefinitionKey", "dueDate", "followUpDate", "parentTaskId", "suspended", "tenantId", "formKey", "delegationState"})
-  TaskFake(final String id, final String name, final String description, final int priority, final String owner, final String assignee, final String processDefinitionId, final String caseDefinitionId, final String executionId, final String processInstanceId, final String caseInstanceId, final String caseExecutionId, final Date createTime, final String taskDefinitionKey, final Date dueDate, final Date followUpDate, final String parentTaskId, final boolean suspended, final String tenantId, final String formKey, final DelegationState delegationState) {
+  @java.beans.ConstructorProperties({"id", "name", "description", "priority", "owner", "assignee",
+    "processDefinitionId", "caseDefinitionId", "executionId", "processInstanceId", "caseInstanceId",
+    "caseExecutionId", "createTime", "taskDefinitionKey", "dueDate", "followUpDate", "parentTaskId",
+    "suspended", "tenantId", "formKey", "delegationState"})
+  TaskFake(final String id, final String name, final String description, final int priority, final String owner,
+           final String assignee, final String processDefinitionId, final String caseDefinitionId,
+           final String executionId, final String processInstanceId, final String caseInstanceId,
+           final String caseExecutionId, final Date createTime, final String taskDefinitionKey,
+           final Date dueDate, final Date followUpDate, final String parentTaskId, final boolean suspended,
+           final String tenantId, final String formKey, final DelegationState delegationState) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -263,6 +271,33 @@ public class TaskFake implements Task {
   @Override
   public void setTenantId(final String tenantId) {
     this.tenantId = tenantId;
+  }
+
+  @Override
+  public String toString() {
+    return "TaskFake{" +
+      "id='" + id + '\'' +
+      ", name='" + name + '\'' +
+      ", description='" + description + '\'' +
+      ", priority=" + priority +
+      ", owner='" + owner + '\'' +
+      ", assignee='" + assignee + '\'' +
+      ", processDefinitionId='" + processDefinitionId + '\'' +
+      ", caseDefinitionId='" + caseDefinitionId + '\'' +
+      ", executionId='" + executionId + '\'' +
+      ", processInstanceId='" + processInstanceId + '\'' +
+      ", caseInstanceId='" + caseInstanceId + '\'' +
+      ", caseExecutionId='" + caseExecutionId + '\'' +
+      ", createTime=" + createTime +
+      ", taskDefinitionKey='" + taskDefinitionKey + '\'' +
+      ", dueDate=" + dueDate +
+      ", followUpDate=" + followUpDate +
+      ", parentTaskId='" + parentTaskId + '\'' +
+      ", suspended=" + suspended +
+      ", tenantId='" + tenantId + '\'' +
+      ", formKey='" + formKey + '\'' +
+      ", delegationState=" + delegationState +
+      '}';
   }
 
   public static class TaskFakeBuilder {
