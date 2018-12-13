@@ -117,7 +117,7 @@ public class ProcessDefinitionFake implements ProcessDefinition {
     this.suspended = suspended;
   }
 
-  static class ProcessDefinitionFakeBuilder {
+  public static class ProcessDefinitionFakeBuilder {
     private String id;
     private String category;
     private String name;

@@ -79,7 +79,7 @@ public class ProcessInstanceFake implements ProcessInstance {
     return tenantId;
   }
 
-  static class ProcessInstanceFakeBuilder {
+  public static class ProcessInstanceFakeBuilder {
     private String id;
     private String businessKey;
     private String processInstanceId;
