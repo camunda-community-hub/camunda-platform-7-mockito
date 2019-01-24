@@ -4,6 +4,10 @@ import org.camunda.bpm.engine.repository.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 
+/**
+ * @deprecated to avoid dependency to 4.12 this will be removed/altered with 4.10
+ */
+@Deprecated
 public enum DeployProcess {
 
   INSTANCE;
