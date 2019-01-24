@@ -77,7 +77,8 @@ import static org.camunda.bpm.engine.task.IdentityLinkType.CANDIDATE;
 import static org.camunda.bpm.extension.mockito.function.NameForType.juelNameFor;
 
 @SuppressWarnings("unused")
-public final class CamundaMockito {
+public enum CamundaMockito {
+  ;
 
   /**
    * Takes a BPMN resource and registers mocks for all delegateExpressions.
@@ -646,8 +647,5 @@ public final class CamundaMockito {
 
   public static RuntimeServiceFluentMock runtimeServiceFluentMock(RuntimeService runtimeServiceMock) {
     return new RuntimeServiceFluentMock(runtimeServiceMock);
-  }
-
-  private CamundaMockito() {
   }
 }
