@@ -1,8 +1,32 @@
 package org.camunda.bpm.extension.mockito.cases;
 
+import org.camunda.bpm.engine.CaseService;
 import org.camunda.bpm.engine.runtime.CaseInstance;
+import org.camunda.bpm.engine.variable.VariableMap;
+import org.camunda.bpm.extension.mockito.QueryMocks;
+import org.mockito.ArgumentMatchers;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
 
 public class CaseInstanceFake implements CaseInstance {
+
+  public static CaseInstanceFake randomId() {
+    return id(UUID.randomUUID().toString());
+  }
+
+  public static CaseInstanceFake id(String id) {
+    return CaseInstanceFake.builder().id(id).build();
+  }
 
   private boolean disabled;
   private boolean terminated;
@@ -21,6 +45,8 @@ public class CaseInstanceFake implements CaseInstance {
   private final String parentId;
   private final String activityDescription;
   private final String tenantId;
+  private final VariableMap variables;
+
 
   public static CaseInstanceFakeBuilder builder() {
     return new CaseInstanceFakeBuilder();
@@ -29,7 +55,7 @@ public class CaseInstanceFake implements CaseInstance {
   public CaseInstanceFake(boolean disabled, boolean terminated, boolean completed, boolean required, boolean enabled,
                           boolean active, boolean available, String businessKey, String id, String caseInstanceId,
                           String caseDefinitionId, String activityId, String activityName, String activityType,
-                          String parentId, String activityDescription, String tenantId) {
+                          String parentId, String activityDescription, String tenantId, VariableMap variables) {
     this.disabled = disabled;
     this.terminated = terminated;
     this.completed = completed;
@@ -47,6 +73,7 @@ public class CaseInstanceFake implements CaseInstance {
     this.parentId = parentId;
     this.activityDescription = activityDescription;
     this.tenantId = tenantId;
+    this.variables = variables;
   }
 
   @Override
@@ -162,6 +189,15 @@ public class CaseInstanceFake implements CaseInstance {
     this.available = available;
   }
 
+  public Object getVariable(String key) {
+    return variables.get(key);
+  }
+
+  public CaseInstanceFake setVariable(String key, Object value) {
+    variables.putValue(key, value);
+    return this;
+  }
+
   @Override
   public String toString() {
     return "CaseInstanceFake{" +
@@ -185,140 +221,42 @@ public class CaseInstanceFake implements CaseInstance {
       '}';
   }
 
-  public static class CaseInstanceFakeBuilder {
-    private boolean disabled = false;
-    private boolean terminated = false;
-    private boolean completed = false;
-    private boolean required = false;
-    private boolean enabled = false;
-    private boolean active = false;
-    private boolean available = false;
-    private String businessKey;
-    private String id;
-    private String caseInstanceId;
-    private String caseDefinitionId;
-    private String activityId;
-    private String activityName;
-    private String activityType;
-    private String parentId;
-    private String activityDescription;
-    private String tenantId;
+  public static AtomicReference<CaseInstanceFake> prepareMock(CaseService caseServiceMock, String caseInstanceId) {
+    // create an instance with id
+    AtomicReference<CaseInstanceFake> caseInstanceFake = new AtomicReference<>();
 
-    public CaseInstanceFakeBuilder disabled(boolean disabled) {
-      this.disabled = disabled;
-      return this;
-    }
+    when(caseServiceMock.createCaseInstanceByKey(anyString(), anyString(), anyMap())).thenAnswer(invocation -> {
+      CaseInstanceFakeBuilder builder = builder().caseInstanceId(caseInstanceId)
+        .caseDefinitionId(invocation.getArgument(0) + ":1")
+        .businessKey(invocation.getArgument(1));
 
-    public CaseInstanceFakeBuilder terminated(boolean terminated) {
-      this.terminated = terminated;
-      return this;
-    }
+      ((Map<String, Object>) invocation.getArgument(2)).forEach((k, v) -> builder.variable(k, v));
 
-    public CaseInstanceFakeBuilder completed(boolean completed) {
-      this.completed = completed;
-      return this;
-    }
+      caseInstanceFake.set(builder.build());
 
-    public CaseInstanceFakeBuilder required(boolean required) {
-      this.required = required;
-      return this;
-    }
+      // let every caseInstance query return our instance
+      QueryMocks.mockCaseInstanceQuery(caseServiceMock)
+        .singleResult(Optional.ofNullable(caseInstanceFake.get())
+          .orElse(null));
 
-    public CaseInstanceFakeBuilder enabled(boolean enabled) {
-      this.enabled = enabled;
-      return this;
-    }
 
-    public CaseInstanceFakeBuilder active(boolean active) {
-      this.active = active;
-      return this;
-    }
+      return caseInstanceFake.get();
+    });
 
-    public CaseInstanceFakeBuilder available(boolean available) {
-      this.available = available;
-      return this;
-    }
 
-    public CaseInstanceFakeBuilder businessKey(String businessKey) {
-      this.businessKey = businessKey;
-      return this;
-    }
+    // answer getVariable by asking the fakes variableMap
+    when(caseServiceMock.getVariable(ArgumentMatchers.eq(caseInstanceId), anyString()))
+      .then(invocation -> Optional.ofNullable(caseInstanceFake.get())
+        .map(i -> i.getVariable(invocation.getArgument(1))).orElse(null));
 
-    public CaseInstanceFakeBuilder id(String id) {
-      this.id = id;
-      return this;
-    }
+    // modify fakes variableMap on setVariable
+    doAnswer(invocation -> {
+      caseInstanceFake.get().setVariable(invocation.getArgument(1), invocation.getArgument(2));
 
-    public CaseInstanceFakeBuilder caseInstanceId(String caseInstanceId) {
-      this.caseInstanceId = caseInstanceId;
-      return this;
-    }
+      return null;
+    }).when(caseServiceMock).setVariable(eq(caseInstanceId), anyString(), any());
 
-    public CaseInstanceFakeBuilder caseDefinitionId(String caseDefinitionId) {
-      this.caseDefinitionId = caseDefinitionId;
-      return this;
-    }
-
-    public CaseInstanceFakeBuilder activityId(String activityId) {
-      this.activityId = activityId;
-      return this;
-    }
-
-    public CaseInstanceFakeBuilder activityName(String activityName) {
-      this.activityName = activityName;
-      return this;
-    }
-
-    public CaseInstanceFakeBuilder activityType(String activityType) {
-      this.activityType = activityType;
-      return this;
-    }
-
-    public CaseInstanceFakeBuilder parentId(String parentId) {
-      this.parentId = parentId;
-      return this;
-    }
-
-    public CaseInstanceFakeBuilder activityDescription(String activityDescription) {
-      this.activityDescription = activityDescription;
-      return this;
-    }
-
-    public CaseInstanceFakeBuilder tenantId(String tenantId) {
-      this.tenantId = tenantId;
-      return this;
-    }
-
-    @Override
-    public String toString() {
-      return "CaseInstanceFakeBuilder{" +
-        "disabled=" + disabled +
-        ", terminated=" + terminated +
-        ", completed=" + completed +
-        ", required=" + required +
-        ", enabled=" + enabled +
-        ", active=" + active +
-        ", available=" + available +
-        ", businessKey='" + businessKey + '\'' +
-        ", id='" + id + '\'' +
-        ", caseInstanceId='" + caseInstanceId + '\'' +
-        ", caseDefinitionId='" + caseDefinitionId + '\'' +
-        ", activityId='" + activityId + '\'' +
-        ", activityName='" + activityName + '\'' +
-        ", activityType='" + activityType + '\'' +
-        ", parentId='" + parentId + '\'' +
-        ", activityDescription='" + activityDescription + '\'' +
-        ", tenantId='" + tenantId + '\'' +
-        '}';
-    }
-
-    public CaseInstanceFake build() {
-      return new CaseInstanceFake(
-        disabled, terminated, completed, required, enabled,
-        active, available, businessKey, id, caseInstanceId,
-        caseDefinitionId, activityId, activityName, activityType,
-        parentId, activityDescription, tenantId
-      );
-    }
+    return caseInstanceFake;
   }
+
 }

@@ -1,8 +1,15 @@
 package org.camunda.bpm.extension.mockito.cases;
 
+import org.camunda.bpm.engine.CaseService;
+import org.camunda.bpm.engine.runtime.CaseInstance;
+import org.camunda.bpm.engine.variable.Variables;
 import org.junit.Test;
 
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class CaseInstanceFakeTest {
 
@@ -91,4 +98,26 @@ public class CaseInstanceFakeTest {
 
   }
 
+
+  @Test
+  public void prepare_with_service_mock() {
+    CaseService caseService = mock(CaseService.class);
+    String uuid = UUID.randomUUID().toString();
+    String businessKey = "12";
+
+    AtomicReference<CaseInstanceFake> reference = CaseInstanceFake.prepareMock(caseService, uuid);
+
+    assertThat(reference.get()).isNull();
+
+    CaseInstance instance = caseService.createCaseInstanceByKey("case", businessKey, Variables.putValue("foo", "bar"));
+    assertThat(reference.get()).isNotNull();
+    assertThat(instance.getCaseInstanceId()).isEqualTo(uuid);
+
+    assertThat(caseService.getVariable(uuid, "foo")).isEqualTo("bar");
+
+    caseService.setVariable(uuid, "hello", 456);
+    assertThat(caseService.getVariable(uuid, "hello")).isEqualTo(456);
+
+    assertThat(caseService.createCaseInstanceQuery().singleResult()).isEqualTo(reference.get());
+  }
 }
