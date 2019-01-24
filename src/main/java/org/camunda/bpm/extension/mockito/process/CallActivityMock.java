@@ -46,8 +46,8 @@ public class CallActivityMock {
   /**
    * On execution, the MockProcess will add the given VariableMap to the execution
    *
-   * @param variables
-   * @return
+   * @param variables the variables to add
+   * @return self
    */
   public CallActivityMock onExecutionAddVariables(final VariableMap variables){
     return this.onExecutionDo("addVariablesServiceMock_"+ randomUUID(),
@@ -60,7 +60,7 @@ public class CallActivityMock {
    *
    * @param key ... key of the process variable
    * @param val ... value of the process variable
-   * @return
+   * @return self
    */
   public CallActivityMock onExecutionAddVariable(final String key, final Object val){
     return this.onExecutionAddVariables(createVariables().putValue(key, val));
@@ -69,8 +69,8 @@ public class CallActivityMock {
   /**
    * On execution, the MockProcess will call the given consumer with a DelegateExecution.
    *
-   * @param consumer
-   * @return
+   * @param consumer the javaDelegate code to be called on execution
+   * @return self
    */
   public CallActivityMock onExecutionDo(final Consumer<DelegateExecution> consumer) {
     return this.onExecutionDo("serviceMock_"+ randomUUID(),
