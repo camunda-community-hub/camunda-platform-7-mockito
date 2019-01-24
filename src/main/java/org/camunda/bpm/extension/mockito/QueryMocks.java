@@ -51,7 +51,8 @@ import org.camunda.bpm.extension.mockito.query.UserQueryMock;
 import org.camunda.bpm.extension.mockito.query.VariableInstanceQueryMock;
 
 @SuppressWarnings("unused")
-public final class QueryMocks {
+public enum QueryMocks {
+  ;
 
   public static FilterQueryMock mockFilterQuery(final FilterService serviceMock) {
     return new FilterQueryMock().forService(serviceMock);
@@ -207,14 +208,6 @@ public final class QueryMocks {
 
   public static ExternalTaskQueryMock mockExternalTaskQuery(final ExternalTaskService serviceMock) {
     return new ExternalTaskQueryMock().forService(serviceMock);
-  }
-
-
-  /**
-   * This is a util class, do not instantiate!
-   */
-  private QueryMocks() {
-    // empty
   }
 
 }

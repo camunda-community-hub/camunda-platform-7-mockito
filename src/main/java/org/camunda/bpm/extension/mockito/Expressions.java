@@ -29,16 +29,10 @@ import org.slf4j.LoggerFactory;
  * {@link DelegateExpressions} instead.
  */
 @SuppressWarnings("unused")
-public final class Expressions {
+public enum Expressions {
+  ;
 
   private static final Logger LOG = LoggerFactory.getLogger(Expressions.class);
-
-  /**
-   * Util class, do not instantiate!
-   */
-  private Expressions() {
-    // hide constructor
-  }
 
   /**
    * Registers mock instances for every public static nested class found in

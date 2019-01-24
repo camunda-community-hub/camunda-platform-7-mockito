@@ -28,14 +28,8 @@ import org.camunda.bpm.extension.mockito.verify.TaskListenerVerification;
  * Util class for mocking DelegateExpressions as used in the modeller.
  */
 @SuppressWarnings("unused")
-public final class DelegateExpressions {
-
-  /**
-   * Hide default constructor
-   */
-  private DelegateExpressions() {
-    // do not instantiate
-  }
+public enum DelegateExpressions {
+  ;
 
   /**
    * Takes a BPMN resource and registers mocks for all delegateExpressions.
