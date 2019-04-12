@@ -1,13 +1,13 @@
 package org.camunda.bpm.extension.mockito.mock;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.VariableScope;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
 import org.mockito.Mockito;
+
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Common super class for all fluent mocks.
@@ -17,7 +17,6 @@ import org.mockito.Mockito;
  * @param <P>
  *          type of method argument (DelegateExecution, DelegateTask)
  */
-@SuppressWarnings("unchecked")
 abstract class FluentMock<T, P extends VariableScope> {
 
   protected final T mock;
@@ -49,6 +48,14 @@ abstract class FluentMock<T, P extends VariableScope> {
    * @param variableMap the process variables this delegate sets when executed
    */
   public abstract void onExecutionSetVariables(final VariableMap variableMap);
+
+  /**
+   * @param key of the process variables this delegate sets when executed
+   * @param value of the process variables this delegate sets when executed
+   */
+  public void onExecutionSetVariable(final String key, final Object value) {
+    onExecutionSetVariables(Variables.putValue(key, value));
+  }
 
   /**
    * @param variables the process variables this delegate sets when executed

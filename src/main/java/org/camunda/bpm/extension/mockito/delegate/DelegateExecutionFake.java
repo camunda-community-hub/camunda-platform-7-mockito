@@ -17,6 +17,7 @@ import java.util.Map;
  */
 public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFake> implements DelegateExecution {
 
+  private static final long serialVersionUID = -8413557219169444178L;
   private String processInstanceId;
   private ProcessEngineServices processEngineServices;
   private String processBusinessKey;
@@ -45,11 +46,15 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
     withId(id);
   }
 
+  public static DelegateExecutionFake of() {
+    return new DelegateExecutionFake();
+  }
+
   @Override
   public String getProcessInstanceId() {
     return processInstanceId;
   }
-  public DelegateExecutionFake withProcessInstanceId(String processInstanceId) {
+  public DelegateExecutionFake withProcessInstanceId(final String processInstanceId) {
     this.processInstanceId = processInstanceId;
     return this;
   }
@@ -58,7 +63,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getProcessBusinessKey() {
     return processBusinessKey;
   }
-  public DelegateExecutionFake withProcessBusinessKey(String processBusinessKey) {
+  public DelegateExecutionFake withProcessBusinessKey(final String processBusinessKey) {
     this.processBusinessKey = processBusinessKey;
     return this;
   }
@@ -67,7 +72,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getProcessDefinitionId() {
     return processDefinitionId;
   }
-  public DelegateExecutionFake withProcessDefinitionId(String processDefinitionId) {
+  public DelegateExecutionFake withProcessDefinitionId(final String processDefinitionId) {
     this.processDefinitionId = processDefinitionId;
     return this;
   }
@@ -76,7 +81,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getParentId() {
     return parentId;
   }
-  public DelegateExecutionFake withParentId(String parentId) {
+  public DelegateExecutionFake withParentId(final String parentId) {
     this.parentId = parentId;
     return this;
   }
@@ -85,7 +90,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getCurrentActivityId() {
     return currentActivityId;
   }
-  public DelegateExecutionFake withCurrentActivityId(String currentActivityId) {
+  public DelegateExecutionFake withCurrentActivityId(final String currentActivityId) {
     this.currentActivityId = currentActivityId;
     return this;
   }
@@ -94,7 +99,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getCurrentActivityName() {
     return currentActivityName;
   }
-  public DelegateExecutionFake withCurrentActivityName(String currentActivityName) {
+  public DelegateExecutionFake withCurrentActivityName(final String currentActivityName) {
     this.currentActivityName = currentActivityName;
     return this;
   }
@@ -103,7 +108,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getActivityInstanceId() {
     return activityInstanceId;
   }
-  public DelegateExecutionFake withActivityInstanceId(String activityInstanceId) {
+  public DelegateExecutionFake withActivityInstanceId(final String activityInstanceId) {
     this.activityInstanceId = activityInstanceId;
     return this;
   }
@@ -112,7 +117,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getParentActivityInstanceId() {
     return parentActivityInstanceId;
   }
-  public DelegateExecutionFake withParentActivityInstanceId(String parentActivityInstanceId) {
+  public DelegateExecutionFake withParentActivityInstanceId(final String parentActivityInstanceId) {
     this.parentActivityInstanceId = parentActivityInstanceId;
     return this;
   }
@@ -121,7 +126,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getCurrentTransitionId() {
     return currentTransitionId;
   }
-  public DelegateExecutionFake withCurrentTransitionId(String currentTransitionId) {
+  public DelegateExecutionFake withCurrentTransitionId(final String currentTransitionId) {
     this.currentTransitionId = currentTransitionId;
     return this;
   }
@@ -130,7 +135,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public DelegateExecution getProcessInstance() {
     return processInstance;
   }
-  public DelegateExecutionFake withProcessInstance(DelegateExecution processInstance) {
+  public DelegateExecutionFake withProcessInstance(final DelegateExecution processInstance) {
     this.processInstance = processInstance;
     return this;
   }
@@ -139,7 +144,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public DelegateExecution getSuperExecution() {
     return superExecution;
   }
-  public DelegateExecutionFake withSuperExecution(DelegateExecution  superExecution) {
+  public DelegateExecutionFake withSuperExecution(final DelegateExecution  superExecution) {
     this.superExecution = superExecution;
     return this;
   }
@@ -148,7 +153,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public boolean isCanceled() {
     return canceled;
   }
-  public DelegateExecutionFake withCanceled(boolean canceled) {
+  public DelegateExecutionFake withCanceled(final boolean canceled) {
     this.canceled = canceled;
     return this;
   }
@@ -157,30 +162,30 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getTenantId() {
     return tenantId;
   }
-  public DelegateExecutionFake withTenantId(String tenantId) {
+  public DelegateExecutionFake withTenantId(final String tenantId) {
     this.tenantId = tenantId;
     return this;
   }
 
   @Override
-  public void setVariable(String variableName, Object value, String activityId) {
+  public void setVariable(final String variableName, final Object value, final String activityId) {
     setVariable(variableName, value);
   }
 
   @Override
-  public Incident createIncident(String incidentType, String configuration) {
+  public Incident createIncident(final String incidentType, final String configuration) {
     return createIncident(incidentType, configuration, null);
   }
 
   @Override
-  public Incident createIncident(String incidentType, String configuration, String message) {
-    IncidentFake incident = new IncidentFake(this, incidentType, configuration, message, this.getCurrentActivityId());
+  public Incident createIncident(final String incidentType, final String configuration, final String message) {
+    final IncidentFake incident = new IncidentFake(this, incidentType, configuration, message, this.getCurrentActivityId());
     incidents.put(incident.getId(), incident);
     return incident;
   }
 
   @Override
-  public void resolveIncident(String incidentId) {
+  public void resolveIncident(final String incidentId) {
     incidents.remove(incidentId);
   }
 
@@ -188,7 +193,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getId() {
     return id;
   }
-  public DelegateExecutionFake withId(String id) {
+  public DelegateExecutionFake withId(final String id) {
     this.id = id;
     return this;
   }
@@ -197,7 +202,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getEventName() {
     return eventName;
   }
-  public DelegateExecutionFake withEventName(String eventName) {
+  public DelegateExecutionFake withEventName(final String eventName) {
     this.eventName = eventName;
     return this;
   }
@@ -206,7 +211,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getBusinessKey() {
     return businessKey;
   }
-  public DelegateExecutionFake withBusinessKey(String businessKey) {
+  public DelegateExecutionFake withBusinessKey(final String businessKey) {
     this.businessKey = businessKey;
     return this;
   }
@@ -226,7 +231,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
     return processEngineServices;
   }
 
-  public DelegateExecutionFake withProcessEngineServices(ProcessEngineServices processEngineServices) {
+  public DelegateExecutionFake withProcessEngineServices(final ProcessEngineServices processEngineServices) {
     this.processEngineServices = processEngineServices;
     return this;
   }
@@ -236,6 +241,7 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   }
 
   public static class ProcessInstanceNotSetException extends IllegalStateException {
+    private static final long serialVersionUID = 1739284977147050452L;
     // empty
   }
 
