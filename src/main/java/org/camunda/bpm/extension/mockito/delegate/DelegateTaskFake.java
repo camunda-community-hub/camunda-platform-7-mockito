@@ -1,5 +1,6 @@
 package org.camunda.bpm.extension.mockito.delegate;
 
+import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.delegate.DelegateCaseExecution;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -26,8 +27,8 @@ import java.util.stream.Collectors;
 
 import static org.camunda.bpm.engine.task.IdentityLinkType.CANDIDATE;
 
-@SuppressWarnings("unused")
-public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implements DelegateTask, Serializable {
+@SuppressWarnings({"WeakerAccess","UnusedReturnValue", "unused"})
+public class DelegateTaskFake extends DelegateFake<DelegateTaskFake> implements DelegateTask, Serializable {
 
   public static Set<String> candidateUserIds(DelegateTask task) {
     return userIds(task, CANDIDATE);
@@ -88,6 +89,7 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
   private String deleteReason;
   private String tenantId;
   private boolean completed;
+  private ProcessEngine processEngine;
   private ProcessEngineServices processEngineServices;
   private DelegateExecution delegateExecution;
   private DelegateCaseExecution delegateCaseExecution;
@@ -486,12 +488,17 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
     return valueFromCaseOrProcessExecution(
       DelegateExecution::getProcessEngineServices,
       DelegateCaseExecution::getProcessEngineServices,
-      processEngineServices);
+      processEngineServicesAwareFake.getProcessEngineServices()
+    );
   }
 
-  public DelegateTaskFake withProcessEngineServices(ProcessEngineServices processEngineServices) {
-    this.processEngineServices = processEngineServices;
-    return this;
+  @Override
+  public ProcessEngine getProcessEngine() {
+    return valueFromCaseOrProcessExecution(
+      DelegateExecution::getProcessEngine,
+      DelegateCaseExecution::getProcessEngine,
+      processEngineServicesAwareFake.getProcessEngine()
+    );
   }
 
   private <T> T valueFromCaseOrProcessExecution(
@@ -529,7 +536,8 @@ public class DelegateTaskFake extends VariableScopeFake<DelegateTaskFake> implem
       ", deleteReason='" + deleteReason + '\'' +
       ", tenantId='" + tenantId + '\'' +
       ", completed=" + completed +
-      ", processEngineServices=" + processEngineServices +
+      ", processEngine='" + getProcessEngine() + '\'' +
+      ", processEngineServices=" + getProcessEngineServices() +
       ", delegateExecution=" + delegateExecution +
       ", delegateCaseExecution=" + delegateCaseExecution +
       '}';

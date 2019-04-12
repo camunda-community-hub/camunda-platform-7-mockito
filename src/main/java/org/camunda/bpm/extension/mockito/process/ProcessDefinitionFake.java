@@ -17,6 +17,7 @@ public class ProcessDefinitionFake implements ProcessDefinition {
   private final boolean hasStartForm;
   private final int historyTimeToLive;
   private final String versionTag;
+  private final boolean startableInTasklist;
 
   private boolean suspended;
 
@@ -26,7 +27,7 @@ public class ProcessDefinitionFake implements ProcessDefinition {
 
   ProcessDefinitionFake(String id, String category, String name, String key, int version, String resourceName, String deploymentId,
                         String diagramResourceName, String tenantId, String description, boolean hasStartForm, boolean suspended,
-                        int historyTimeToLive, String versionTag) {
+                        int historyTimeToLive, String versionTag, boolean startableInTasklist) {
     this.id = id;
     this.category = category;
     this.name = name;
@@ -41,6 +42,7 @@ public class ProcessDefinitionFake implements ProcessDefinition {
     this.suspended = suspended;
     this.historyTimeToLive = historyTimeToLive;
     this.versionTag = versionTag;
+    this.startableInTasklist = startableInTasklist;
   }
 
   @Override
@@ -113,6 +115,11 @@ public class ProcessDefinitionFake implements ProcessDefinition {
     return versionTag;
   }
 
+  @Override
+  public boolean isStartableInTasklist() {
+    return startableInTasklist;
+  }
+
   public void setSuspended(boolean suspended) {
     this.suspended = suspended;
   }
@@ -134,6 +141,7 @@ public class ProcessDefinitionFake implements ProcessDefinition {
       ", historyTimeToLive=" + historyTimeToLive +
       ", versionTag='" + versionTag + '\'' +
       ", suspended=" + suspended +
+      ", startableInTasklist=" + startableInTasklist +
       '}';
   }
 
@@ -152,6 +160,7 @@ public class ProcessDefinitionFake implements ProcessDefinition {
     private boolean suspended = false;
     private int historyTimeToLive = 0;
     private String versionTag;
+    private boolean startableInTasklist;
 
     public ProcessDefinitionFakeBuilder id(String id) {
       this.id = id;
@@ -248,8 +257,8 @@ public class ProcessDefinitionFake implements ProcessDefinition {
         id, category, name, key, version, resourceName,
         deploymentId, diagramResourceName, tenantId,
         description, hasStartForm, suspended, historyTimeToLive,
-        versionTag
-      );
+        versionTag,
+        startableInTasklist);
     }
   }
 }

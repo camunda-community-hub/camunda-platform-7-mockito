@@ -1,12 +1,12 @@
 package org.camunda.bpm.extension.mockito.delegate;
 
-import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.delegate.DelegateCaseExecution;
 import org.camunda.bpm.engine.impl.cmmn.execution.CaseExecutionState;
 import org.camunda.bpm.model.cmmn.CmmnModelInstance;
 import org.camunda.bpm.model.cmmn.instance.CmmnElement;
 
-public class DelegateCaseExecutionFake extends VariableScopeFake<DelegateCaseExecutionFake> implements DelegateCaseExecution {
+@SuppressWarnings({"WeakerAccess","UnusedReturnValue", "unused"})
+public class DelegateCaseExecutionFake extends DelegateFake<DelegateCaseExecutionFake> implements DelegateCaseExecution {
 
   private String id;
   private String caseInstanceId;
@@ -18,7 +18,6 @@ public class DelegateCaseExecutionFake extends VariableScopeFake<DelegateCaseExe
   private String activityId;
   private String activityName;
   private String tenantId;
-  private ProcessEngineServices processEngineServices;
   private CaseExecutionState caseExecutionState;
 
   public DelegateCaseExecutionFake() {
@@ -179,15 +178,6 @@ public class DelegateCaseExecutionFake extends VariableScopeFake<DelegateCaseExe
     throw new UnsupportedOperationException("not implemented");
   }
 
-  @Override
-  public ProcessEngineServices getProcessEngineServices() {
-    return processEngineServices;
-  }
-
-  public DelegateCaseExecutionFake withProcessEngineServices(ProcessEngineServices processEngineServices) {
-    this.processEngineServices = processEngineServices;
-    return this;
-  }
 
   @Override public String toString() {
     return "DelegateCaseExecutionFake{" +
@@ -201,7 +191,8 @@ public class DelegateCaseExecutionFake extends VariableScopeFake<DelegateCaseExe
       ", activityId='" + activityId + '\'' +
       ", activityName='" + activityName + '\'' +
       ", tenantId='" + tenantId + '\'' +
-      ", processEngineServices=" + processEngineServices +
+      ", processEngine='" + getProcessEngine() + '\'' +
+      ", processEngineServices=" + getProcessEngineServices() +
       ", caseExecutionState=" + caseExecutionState +
       '}';
   }
