@@ -1,5 +1,6 @@
 package org.camunda.bpm.extension.mockito.delegate;
 
+import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.delegate.CaseVariableListener;
 import org.camunda.bpm.engine.delegate.DelegateCaseExecution;
@@ -19,6 +20,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   private String name;
   private String eventName;
   private DelegateCaseExecution sourceExecution;
+  private ProcessEngine processEngine;
   private ProcessEngineServices processEngineServices;
   private TypedValue typedValue;
   private String processInstanceId;
@@ -75,7 +77,14 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
 
   @Override
   public ProcessEngineServices getProcessEngineServices() {
-    return processEngineServices;
+    return processEngineServices != null
+      ? processEngineServices
+      : Optional.ofNullable(processEngine).map(ProcessEngineServices.class::cast).orElse(null);
+  }
+
+  @Override
+  public ProcessEngine getProcessEngine() {
+    return processEngine;
   }
 
   public DelegateCaseVariableInstanceFake withProcessEngineServices(ProcessEngineServices processEngineServices) {

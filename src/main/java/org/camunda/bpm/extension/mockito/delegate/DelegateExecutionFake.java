@@ -1,7 +1,6 @@
 package org.camunda.bpm.extension.mockito.delegate;
 
 
-import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.runtime.Incident;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
@@ -15,11 +14,11 @@ import java.util.Map;
  * <p>
  * Not all operations are support, extend if needed.
  */
-public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFake> implements DelegateExecution {
+@SuppressWarnings({"WeakerAccess","UnusedReturnValue", "unused"})
+public class DelegateExecutionFake extends DelegateFake<DelegateExecutionFake> implements DelegateExecution {
 
   private static final long serialVersionUID = -8413557219169444178L;
   private String processInstanceId;
-  private ProcessEngineServices processEngineServices;
   private String processBusinessKey;
   private String processDefinitionId;
   private String parentId;
@@ -63,6 +62,12 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   public String getProcessBusinessKey() {
     return processBusinessKey;
   }
+
+  @Override
+  public void setProcessBusinessKey(String processBusinessKey) {
+    withProcessBusinessKey(processBusinessKey);
+  }
+
   public DelegateExecutionFake withProcessBusinessKey(final String processBusinessKey) {
     this.processBusinessKey = processBusinessKey;
     return this;
@@ -226,15 +231,6 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
     throw new UnsupportedOperationException("not implemented");
   }
 
-  @Override
-  public ProcessEngineServices getProcessEngineServices() {
-    return processEngineServices;
-  }
-
-  public DelegateExecutionFake withProcessEngineServices(final ProcessEngineServices processEngineServices) {
-    this.processEngineServices = processEngineServices;
-    return this;
-  }
 
   public Map<String, Incident> getIncidents() {
     return incidents;
@@ -248,7 +244,8 @@ public class DelegateExecutionFake extends VariableScopeFake<DelegateExecutionFa
   @Override public String toString() {
     return "DelegateExecutionFake{" +
       "processInstanceId='" + processInstanceId + '\'' +
-      ", processEngineServices=" + processEngineServices +
+      ", processEngine='" + getProcessEngine() + '\'' +
+      ", processEngineServices=" + getProcessEngineServices() +
       ", processBusinessKey='" + processBusinessKey + '\'' +
       ", processDefinitionId='" + processDefinitionId + '\'' +
       ", parentId='" + parentId + '\'' +
