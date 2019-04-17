@@ -1,22 +1,28 @@
 package org.camunda.bpm.extension.mockito.function;
 
+import org.camunda.bpm.engine.ProcessEngineServices;
+import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.repository.Deployment;
-import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 
-/**
- * @deprecated to avoid dependency to 4.12 this will be removed/altered with 4.10
- */
-@Deprecated
-public enum DeployProcess {
+import java.util.function.BiFunction;
 
-  INSTANCE;
+public class DeployProcess implements BiFunction<String, BpmnModelInstance, Deployment> {
 
-  public Deployment apply(ProcessEngineRule rule, BpmnModelInstance instance, String processId) {
-    final Deployment deployment = rule.getRepositoryService().createDeployment()
+  private final RepositoryService repositoryService;
+
+  public DeployProcess(RepositoryService repositoryService) {
+    this.repositoryService = repositoryService;
+  }
+
+  public DeployProcess(ProcessEngineServices processEngineServices) {
+    this(processEngineServices.getRepositoryService());
+  }
+
+
+  public Deployment apply(String processId, BpmnModelInstance instance) {
+    return repositoryService.createDeployment()
       .addModelInstance(processId + ".bpmn", instance)
       .deploy();
-    rule.manageDeployment(deployment);
-    return deployment;
   }
 }

@@ -27,24 +27,24 @@ import static org.camunda.bpm.extension.mockito.ProcessExpressions.registerCallA
 
 public class CallActivityMockExampleTest {
 
-  public static final String PROCESS_ID = "myProcess";
-  public static final String SUB_PROCESS_ID = "mySubProcess";
-  public static final String SUB_PROCESS2_ID = "mySubProcess2";
-  public static final String MESSAGE_DOIT = "DOIT";
+  private static final String PROCESS_ID = "myProcess";
+  private static final String SUB_PROCESS_ID = "mySubProcess";
+  private static final String SUB_PROCESS2_ID = "mySubProcess2";
+  private static final String MESSAGE_DOIT = "DOIT";
 
   @Rule
   public final ProcessEngineRule camunda = new ProcessEngineRule(mostUsefulProcessEngineConfiguration().buildProcessEngine());
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     prepareProcessWithOneSubprocess();
   }
 
   @Test
-  public void register_subprocess_mock_addVar() throws Exception {
-    registerCallActivityMock(SUB_PROCESS_ID)
+  public void register_subprocess_mock_addVar() {
+    camunda.manageDeployment(registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionAddVariable("foo", "bar")
-      .deploy(camunda);
+      .deploy(camunda));
 
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
     isWaitingAt(processInstance, "user_task");
@@ -57,12 +57,12 @@ public class CallActivityMockExampleTest {
   }
 
   @Test
-  public void register_subprocess_mock_withOwnConsumer() throws Exception {
-    registerCallActivityMock(SUB_PROCESS_ID)
+  public void register_subprocess_mock_withOwnConsumer() {
+    camunda.manageDeployment(registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionDo(execution -> {
         execution.setVariable("foo", "barbar");
       })
-      .deploy(camunda);
+      .deploy(camunda));
 
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
     isWaitingAt(processInstance, "user_task");
@@ -75,10 +75,10 @@ public class CallActivityMockExampleTest {
   }
 
   @Test
-  public void register_subprocess_mock_withReceiveMessage() throws Exception {
-    registerCallActivityMock(SUB_PROCESS_ID)
+  public void register_subprocess_mock_withReceiveMessage() {
+    camunda.manageDeployment(registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionWaitForMessage(MESSAGE_DOIT)
-      .deploy(camunda);
+      .deploy(camunda));
 
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
     assertThatProcessIsWaitingForMessage(MESSAGE_DOIT);
@@ -88,10 +88,12 @@ public class CallActivityMockExampleTest {
   }
 
   @Test
-  public void register_subprocess_mock_withSendMessage() throws Exception {
-    registerCallActivityMock(SUB_PROCESS_ID)
-      .onExecutionSendMessage(MESSAGE_DOIT)
-      .deploy(camunda);
+  public void register_subprocess_mock_withSendMessage() {
+    camunda.manageDeployment(
+      registerCallActivityMock(SUB_PROCESS_ID)
+        .onExecutionSendMessage(MESSAGE_DOIT)
+        .deploy(camunda)
+    );
 
     final String waitForMessageId = "waitForMessage";
     final BpmnModelInstance waitForMessage = Bpmn.createExecutableProcess(waitForMessageId)
@@ -101,7 +103,7 @@ public class CallActivityMockExampleTest {
       .endEvent("end")
       .done();
 
-    DeployProcess.INSTANCE.apply(camunda, waitForMessage, waitForMessageId);
+    camunda.manageDeployment(new DeployProcess(camunda).apply(waitForMessageId, waitForMessage));
 
     //Start monitoring process for testing
     final ProcessInstance waitingProcessInstance = startProcess(waitForMessageId);
@@ -115,7 +117,7 @@ public class CallActivityMockExampleTest {
   }
 
   @Test
-  public void register_subprocess_mock_withTimerDate() throws Exception {
+  public void register_subprocess_mock_withTimerDate() {
     final Date date = Date.from(Instant.now().plusSeconds(60));
 
     registerCallActivityMock(SUB_PROCESS_ID)
@@ -128,10 +130,10 @@ public class CallActivityMockExampleTest {
   }
 
   @Test
-  public void register_subprocess_mock_withTimerDuration() throws Exception {
-    registerCallActivityMock(SUB_PROCESS_ID)
+  public void register_subprocess_mock_withTimerDuration() {
+    camunda.manageDeployment(registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionWaitForTimerWithDuration("PT60S")
-      .deploy(camunda);
+      .deploy(camunda));
 
     startProcess(PROCESS_ID);
 
@@ -139,16 +141,16 @@ public class CallActivityMockExampleTest {
   }
 
   @Test(expected = RuntimeException.class)
-  public void register_subprocess_mock_withException() throws Exception {
-    registerCallActivityMock(SUB_PROCESS_ID)
+  public void register_subprocess_mock_withException() {
+    camunda.manageDeployment(registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionRunIntoError(new Exception("No"))
-      .deploy(camunda);
+      .deploy(camunda));
 
     startProcess(PROCESS_ID);
   }
 
   @Test
-  public void register_subprocesses_mocks_withVariables() throws Exception {
+  public void register_subprocesses_mocks_withVariables() {
     final BpmnModelInstance processWithSubProcess = Bpmn.createExecutableProcess(PROCESS_ID)
       .startEvent("start")
       .callActivity("call_subprocess")
@@ -161,7 +163,7 @@ public class CallActivityMockExampleTest {
       .endEvent("end")
       .done();
 
-    DeployProcess.INSTANCE.apply(camunda, processWithSubProcess, PROCESS_ID);
+    camunda.manageDeployment(new DeployProcess(camunda).apply(PROCESS_ID, processWithSubProcess));
 
     registerCallActivityMock(SUB_PROCESS_ID)
       .onExecutionSetVariables(createVariables().putValue("foo", "bar"))
@@ -182,7 +184,7 @@ public class CallActivityMockExampleTest {
   }
 
   @Test
-  public void register_subprocesses_mocks_withWaitMessage_and_timer_and_setVariable() throws Exception {
+  public void register_subprocesses_mocks_withWaitMessage_and_timer_and_setVariable() {
     prepareProcessWithOneSubprocess();
 
     final Date waitUntil = Date.from(Instant.now().plusSeconds(60));
@@ -222,7 +224,7 @@ public class CallActivityMockExampleTest {
       .endEvent("end")
       .done();
 
-    DeployProcess.INSTANCE.apply(camunda, processWithSubProcess, PROCESS_ID);
+    camunda.manageDeployment(new DeployProcess(camunda).apply(PROCESS_ID, processWithSubProcess));
   }
 
   private void assertThatProcessIsWaitingForMessage(String message) {
