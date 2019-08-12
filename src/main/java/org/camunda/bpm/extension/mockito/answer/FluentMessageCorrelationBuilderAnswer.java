@@ -40,9 +40,8 @@ public final class FluentMessageCorrelationBuilderAnswer implements Answer<Messa
   @SuppressWarnings("unchecked")
   public MessageCorrelationBuilder answer(@Nonnull final InvocationOnMock invocation) throws Throwable {
     final Class<?> methodReturnType = invocation.getMethod().getReturnType();
-    if (MessageCorrelationBuilder.class.isAssignableFrom(methodReturnType) // fluent api methods
-      || Query.class.isAssignableFrom(methodReturnType) // asc/desc
-    ) {
+    if (MessageCorrelationBuilder.class.isAssignableFrom(methodReturnType)) {
+      // fluent api methods
       Object mock = invocation.getMock();
       return (MessageCorrelationBuilder) mock;
     }
