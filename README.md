@@ -212,6 +212,50 @@ The following example will e.g. register a process mock which does the following
 
 More examples could be found in the following class `SubprocessMockExample`.
 
+## Mocking of message correlation builder
+
+Sometimes you have services or delegates responsible for the execution of message correlation 
+with your process engine. Camunda provides a fluent builder API for creation a message correlation
+and running it.
+
+In order to test those, you can use the following helper:
+
+``` java
+public class MessageCorrelationMockExample {
+
+  private final RuntimeService runtimeService = mock(RuntimeService.class);
+  private MessageCorrelationBuilder correlation;
+
+  @Test
+  public void mock_messageCorrelation() {
+
+    // setup mock for message
+    correlation = ProcessExpressions.mockMessageCorrelation(runtimeService, "MESSAGE_NAME");
+    
+    // or for all messages
+    // correlation = ProcessExpressions.mockMessageCorrelation(runtimeService);
+
+    // execute correlation, e.g. in a class under test (service, delegate, whatever)
+    runtimeService
+      .createMessageCorrelation("MESSAGE_NAME")
+      .processDefinitionId("some_process_id")
+      .processInstanceBusinessKey("my-business-key")
+      .setVariable("myVar1", "value-1")
+      .correlate();
+
+    // verify
+    verify(correlation).correlate();
+    verify(correlation).processDefinitionId("some_process_id");
+    verify(correlation).processInstanceBusinessKey("my-business-key");
+    verify(correlation).setVariable("myVar1", "value-1");
+
+    verifyNoMoreInteractions(correlation);
+
+  }
+}
+```
+
+
 ## Release Notes
 
 see https://camunda.github.io/camunda-bpm-mockito/release-notes/
