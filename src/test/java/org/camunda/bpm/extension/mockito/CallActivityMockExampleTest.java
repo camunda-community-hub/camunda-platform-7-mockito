@@ -201,7 +201,7 @@ public class CallActivityMockExampleTest {
     camunda.getRuntimeService().correlateMessage(MESSAGE_DOIT);
 
     //Message should wait for date
-    Job job = assertThatTimerIsWaitingUntil(waitUntil);
+    final Job job = assertThatTimerIsWaitingUntil(waitUntil);
     execute(job);
 
     //Process should wait at user task
@@ -227,18 +227,18 @@ public class CallActivityMockExampleTest {
     camunda.manageDeployment(new DeployProcess(camunda).apply(PROCESS_ID, processWithSubProcess));
   }
 
-  private void assertThatProcessIsWaitingForMessage(String message) {
+  private void assertThatProcessIsWaitingForMessage(final String message) {
     final EventSubscription eventSubscription = camunda.getRuntimeService().createEventSubscriptionQuery().singleResult();
     assertThat(eventSubscription).isNotNull();
     assertThat(eventSubscription.getEventName()).isEqualTo(message);
   }
 
-  private Job assertThatTimerIsWaitingUntil(Date date) {
+  private Job assertThatTimerIsWaitingUntil(final Date date) {
     final List<Job> list = jobQuery().list();
     assertThat(list).hasSize(1);
     final Job timer = list.get(0);
     assertThat(timer).isInstanceOf(TimerEntity.class);
-    assertThat(timer.getDuedate()).isEqualToIgnoringMillis(date);
+    assertThat(timer.getDuedate()).isCloseTo(date, 1000);
     return timer;
   }
 
@@ -247,12 +247,12 @@ public class CallActivityMockExampleTest {
   }
 
 
-  private void isWaitingAt(ProcessInstance processInstance, String activityId) {
+  private void isWaitingAt(final ProcessInstance processInstance, final String activityId) {
     assertThat(camunda.getRuntimeService().createProcessInstanceQuery().processInstanceId(processInstance.getId()).activityIdIn(activityId).active().singleResult()).isNotNull();
   }
 
-  private void isEnded(ProcessInstance processInstance) {
-    Optional<HistoricProcessInstance> hi = Optional.ofNullable(camunda.getHistoryService().createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).singleResult())
+  private void isEnded(final ProcessInstance processInstance) {
+    final Optional<HistoricProcessInstance> hi = Optional.ofNullable(camunda.getHistoryService().createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).singleResult())
       .filter(h -> h.getEndTime() != null);
 
     assertThat(hi).isNotEmpty().as("instance not ended");
@@ -262,7 +262,7 @@ public class CallActivityMockExampleTest {
     return camunda.getManagementService().createJobQuery().active();
   }
 
-  private void execute(Job job) {
+  private void execute(final Job job) {
     camunda.getManagementService().executeJob(job.getId());
   }
 }
