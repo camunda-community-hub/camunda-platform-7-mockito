@@ -296,5 +296,10 @@
       <organization>Holisticon AG</organization>
       <organizationUrl>http://holisticon.de</organizationUrl>
     </developer>
+    <developer>
+      <name>Simon Zambrovski</name>
+      <organization>Holisticon AG</organization>
+      <organizationUrl>http://holisticon.de</organizationUrl>
+    </developer>
   </developers>
 </project>

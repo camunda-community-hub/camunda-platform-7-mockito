@@ -2,6 +2,10 @@
 
 :toc:
 
+include::release-notes/_v410.adoc[]
+
+include::release-notes/_v400.adoc[]
+
 include::release-notes/_v310.adoc[]
 
 include::release-notes/_v300.adoc[]

@@ -13,7 +13,7 @@ public class DelegateExecutionFakeTest {
   private final DelegateExecutionFake delegate = CamundaMockito.delegateExecutionFake();
 
   @Test
-  public void withVariableLocal() throws Exception {
+  public void with_variable_local() {
     delegate.withVariableLocal("foo", 1)
       .withVariablesLocal(Variables.putValue("bar", 2))
       .withBusinessKey("123");
@@ -31,5 +31,11 @@ public class DelegateExecutionFakeTest {
 
     delegate.resolveIncident(incident.getId());
     assertThat(delegate.getIncidents()).isEmpty();
+  }
+
+  @Test
+  public void model_element_type() {
+    delegate.withBpmnModelElementInstanceType("userTask");
+    assertThat(delegate.getBpmnModelElementInstance().getElementType().getTypeName()).isEqualTo("userTask");
   }
 }
