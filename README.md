@@ -307,7 +307,7 @@ This might and probably will change with future versions, it just has to be impl
 
 * [Jan Galinski](https://github.com/jangalinski)
 * [Simon Zambrovski](https://github.com/zambrovski)
-* [Christian Lipphardt](https://github.com/hawky-4s-)
+* ??
 
   
 ## License
