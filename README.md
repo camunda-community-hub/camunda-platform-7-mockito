@@ -1,5 +1,3 @@
-<img rc="https://raw.githubusercontent.com/mockito/mockito.github.io/master/img/logo%402x.png" align="right" width="200" />
-
 # camunda-bpm-mockito
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito)
