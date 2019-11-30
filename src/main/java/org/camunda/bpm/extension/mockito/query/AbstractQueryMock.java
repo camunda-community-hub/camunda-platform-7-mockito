@@ -61,9 +61,8 @@ abstract class AbstractQueryMock<M extends AbstractQueryMock<M, Q, R, S>, Q exte
   protected AbstractQueryMock(@Nonnull final Class<Q> queryType, @Nonnull final Class<S> serviceType) {
     query = FluentAnswer.createMock(queryType);
     createMethod = createMethod(queryType, serviceType);
-
-    list(new ArrayList<R>());
-    singleResult(null);
+    // No default values for singleResult() and list() anymore, as it is default already
+    // and causes UnnecessaryStubbingException if list() is not used on the stub.
   }
 
   private Method createMethod(@Nonnull final Class<Q> queryType, @Nonnull Class<S> serviceType) {

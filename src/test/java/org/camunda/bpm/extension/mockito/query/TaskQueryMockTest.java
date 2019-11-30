@@ -1,25 +1,30 @@
 package org.camunda.bpm.extension.mockito.query;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
-import java.util.Date;
-
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.engine.task.TaskQuery;
-//import org.camunda.bpm.extension.mockito.QueryMocks1;
 import org.camunda.bpm.extension.mockito.CamundaMockito;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Date;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+
+//import org.camunda.bpm.extension.mockito.QueryMocks1;
+
+@RunWith(MockitoJUnitRunner.class)
 public class TaskQueryMockTest {
 
-  private final TaskService taskService = mock(TaskService.class);
+  @Mock
+  private TaskService taskService;
 
-  private final Task singleResult = mock(Task.class);
+  @Mock
+  private Task singleResult;
 
   @Test
   public void should_mock_query_and_return_singleResult() {

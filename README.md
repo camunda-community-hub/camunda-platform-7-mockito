@@ -1,15 +1,11 @@
 # camunda-bpm-mockito
 
-
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito)
 [![Build Status](https://travis-ci.org/camunda/camunda-bpm-mockito.svg?branch=master)](https://travis-ci.org/camunda/camunda-bpm-mockito)
 [![codecov](https://codecov.io/gh/camunda/camunda-bpm-mockito/branch/master/graph/badge.svg)](https://codecov.io/gh/camunda/camunda-bpm-mockito) 
 [![Project Stats](https://www.openhub.net/p/camunda-bpm-mockito/widgets/project_thin_badge.gif)](https://www.openhub.net/p/camunda-bpm-mockito)
+ [![Apache License V.2](https://img.shields.io/badge/license-Apache%20V.2-blue.svg)](./LICENSE)
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito)
-
-
-:bangbang: starting with version 4.x we compile against mockito 2.x only.  It might work with 1.x, but use at your own risk. If you are stuck with mockito 1.x, consider upgrading or use the latest 3.2.1 release of camunda-bpm-mockito.
-New features will only be added to the 4.x release henceforth.
 
 **simplify process mocking and testing**
 
@@ -34,14 +30,14 @@ Just include camunda-bpm-mockito in the test scope of your project:
   <groupId>org.camunda.bpm.extension.mockito</groupId>
   <artifactId>camunda-bpm-mockito</artifactId>
   <scope>test</scope>
-  <version>4.10.0</version>
+  <version>4.11.0</version>
 </dependency>
 ```
 
 gradle (kts):
 
 ```
-   testImplementation("org.camunda.bpm.extension.mockito:camunda-bpm-mockito:4.10.0")
+   testImplementation("org.camunda.bpm.extension.mockito:camunda-bpm-mockito:4.11.0")
 ```
 
 
@@ -307,7 +303,7 @@ This might and probably will change with future versions, it just has to be impl
 
 * [Jan Galinski](https://github.com/jangalinski)
 * [Simon Zambrovski](https://github.com/zambrovski)
-* [Christian Lipphardt](https://github.com/hawky-4s-)
+* ??
 
   
 ## License
