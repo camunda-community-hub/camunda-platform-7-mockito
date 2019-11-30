@@ -86,6 +86,7 @@ public class DelegateTaskFake extends DelegateFake<DelegateTaskFake> implements 
   private String owner;
   private String assignee;
   private Date dueDate;
+  private Date followUpDate;
   private String deleteReason;
   private String tenantId;
   private boolean completed;
@@ -466,6 +467,21 @@ public class DelegateTaskFake extends DelegateFake<DelegateTaskFake> implements 
       DelegateCaseExecution::getTenantId,
       tenantId
     );
+  }
+
+  @Override
+  public Date getFollowUpDate() {
+    return followUpDate;
+  }
+
+  @Override
+  public void setFollowUpDate(Date followUpDate) {
+    this.followUpDate = followUpDate;
+  }
+
+  public DelegateTaskFake withFollowUpDate(Date followUpDate) {
+    setFollowUpDate(followUpDate);
+    return this;
   }
 
   public DelegateTaskFake withTenantId(String tenantId) {

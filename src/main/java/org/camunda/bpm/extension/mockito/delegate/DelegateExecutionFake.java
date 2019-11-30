@@ -189,7 +189,7 @@ public class DelegateExecutionFake extends DelegateFake<DelegateExecutionFake> i
 
   @Override
   public Incident createIncident(final String incidentType, final String configuration, final String message) {
-    final IncidentFake incident = new IncidentFake(this, incidentType, configuration, message, this.getCurrentActivityId());
+    final IncidentFake incident = new IncidentFake(this, incidentType, configuration, message, this.getCurrentActivityId(), null);
     incidents.put(incident.getId(), incident);
     return incident;
   }

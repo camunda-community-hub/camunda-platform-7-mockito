@@ -17,7 +17,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <version.java>1.8</version.java>
 
-    <camunda.version>7.11.0</camunda.version>
+    <camunda.version>7.12.0</camunda.version>
 
     <slf4j.version>1.7.25</slf4j.version>
     <commons-lang3.version>3.5</commons-lang3.version>
