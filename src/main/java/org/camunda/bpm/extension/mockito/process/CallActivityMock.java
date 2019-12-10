@@ -23,7 +23,7 @@ import static org.camunda.bpm.extension.mockito.Expressions.registerInstance;
 public class CallActivityMock {
 	
 	/**
-	 * Interface used as a callback to set some attributes of the mocked process model (e.g. versioTag, name etc.)
+	 * Interface used as a callback to set some attributes of the mocked process model (e.g. versionTag, name etc.)
 	 */
 	public interface MockedModelConfigurer {
 		void setProcessModelAttributes(ProcessBuilder processBuilder);
