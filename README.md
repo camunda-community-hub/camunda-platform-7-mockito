@@ -180,7 +180,7 @@ public void taskListenerSetsCandidateGroup() throws Exception {
 
 ## Mocking of external subprocesses
 
-With ProcessExpressions.registerSubProcessMock() you can easily register a mocked process which is able to act with those behaviours:
+With ProcessExpressions.registerCallActivityMock() you can easily register a mocked process which is able to act with the following behaviours:
 
 * onExecutionAddVariable ... the MockProcess will add the given process variable
 * onExecutionWaitForTimerWithDate ... the MockProcess will wait for the given date
