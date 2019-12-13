@@ -9,6 +9,7 @@ import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.extension.mockito.function.DeployProcess;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.builder.AbstractFlowNodeBuilder;
+import org.camunda.bpm.model.bpmn.builder.ProcessBuilder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,15 +21,29 @@ import static org.camunda.bpm.engine.variable.Variables.createVariables;
 import static org.camunda.bpm.extension.mockito.Expressions.registerInstance;
 
 public class CallActivityMock {
+	
+	/**
+	 * Interface used as a callback to set some attributes of the mocked process model (e.g. versionTag, name etc.)
+	 */
+	public interface MockedModelConfigurer {
+		void setProcessModelAttributes(ProcessBuilder processBuilder);
+	}
 
   private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
   private String processId;
   private AbstractFlowNodeBuilder flowNodeBuilder;
 
-  public CallActivityMock(final String processId) {
+  public CallActivityMock(final String processId, final MockedModelConfigurer modelConfigurer) {
     this.processId = processId;
-    this.flowNodeBuilder = Bpmn.createExecutableProcess(processId)
-      .startEvent("start");
+    ProcessBuilder processBuilder = Bpmn.createExecutableProcess(processId);
+    if (modelConfigurer != null) {
+    	modelConfigurer.setProcessModelAttributes(processBuilder);
+    }
+    this.flowNodeBuilder = processBuilder.startEvent("start");
+  }
+  
+  public CallActivityMock(final String processId) {
+  	this(processId, null);
   }
 
   /**
