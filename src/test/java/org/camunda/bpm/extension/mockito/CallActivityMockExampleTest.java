@@ -238,12 +238,7 @@ public class CallActivityMockExampleTest {
     assertThat(list).hasSize(1);
     final Job timer = list.get(0);
     assertThat(timer).isInstanceOf(TimerEntity.class);
-
-    int tolerance = 500; // Tolerance (in milliseconds) for date comparison
-    long expextedDateMillis = date.getTime();
-    assertThat(timer.getDuedate())
-      .isAfterOrEqualTo(new Date(expextedDateMillis - tolerance))
-      .isBeforeOrEqualTo(new Date(expextedDateMillis + tolerance));
+    assertThat(timer.getDuedate()).isInSameSecondWindowAs(date); // Check the time distance (second boundary does not matter)
     return timer;
   }
 
