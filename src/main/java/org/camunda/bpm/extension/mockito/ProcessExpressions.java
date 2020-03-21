@@ -29,7 +29,7 @@ public enum ProcessExpressions {
    * @return A mock for the called process (its behaviour should be configured via further calls)
    */
   public static CallActivityMock registerCallActivityMock(final String processDefinitionKey) {
-    return registerCallActivityMock(processDefinitionKey, null);
+    return new CallActivityMock(processDefinitionKey);
   }
 
   /**
