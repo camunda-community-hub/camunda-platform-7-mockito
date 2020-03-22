@@ -36,6 +36,7 @@ public class CallActivityMockForSpringContext extends CallActivityMock {
 
   @Override
   protected void registerJavaDelegateMock(String delegateReferenceName, JavaDelegate delegate) {
+    // Since mock delegate names are generated as random strings, we don't have to unregister an existing bean
     springBeanRegistry.registerSingleton(delegateReferenceName, delegate);
   }
 
