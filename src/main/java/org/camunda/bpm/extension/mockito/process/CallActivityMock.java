@@ -21,7 +21,7 @@ import static org.camunda.bpm.engine.variable.Variables.createVariables;
 import static org.camunda.bpm.extension.mockito.Expressions.registerInstance;
 
 public class CallActivityMock {
-	
+
 	/**
 	 * Interface used as a callback to set some attributes of the mocked process model (e.g. versionTag, name etc.)
 	 */
@@ -41,9 +41,21 @@ public class CallActivityMock {
     }
     this.flowNodeBuilder = processBuilder.startEvent("start");
   }
-  
+
   public CallActivityMock(final String processId) {
   	this(processId, null);
+  }
+
+  /**
+   * Registers a delegate under the specified name within the appropriate context. The implementation in this class uses the thread local
+   * mock registry, but subclasses might use e.g. a Spring context.
+   *
+   * @param delegateReferenceName Name under which the delegate should be registered. After the registration, the delegate can be
+   *   referenced in process models as '${name}'.
+   * @param delegate The delegate instance to register
+   */
+  protected void registerJavaDelegateMock(String delegateReferenceName, JavaDelegate delegate) {
+    registerInstance(delegateReferenceName, delegate);
   }
 
   /**
@@ -105,7 +117,7 @@ public class CallActivityMock {
     flowNodeBuilder = flowNodeBuilder.serviceTask(serviceId)
       .camundaDelegateExpression("${id}".replace("id", serviceId));
 
-    registerInstance(serviceId, (JavaDelegate) consumer::accept);
+    registerJavaDelegateMock(serviceId, (JavaDelegate) consumer::accept);
     return this;
   }
 
