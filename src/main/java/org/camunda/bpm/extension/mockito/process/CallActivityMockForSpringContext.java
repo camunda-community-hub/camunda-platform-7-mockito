@@ -2,6 +2,8 @@ package org.camunda.bpm.extension.mockito.process;
 
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * Implementation that registers the delegates mocks for the mocked subprocess to the gived spring bean context.
@@ -18,9 +20,18 @@ public class CallActivityMockForSpringContext extends CallActivityMock {
    * @param springBeanRegistry Spring context to place the implementations of the activities in the mocked process to
    */
   public CallActivityMockForSpringContext(final String processId, final MockedModelConfigurer modelConfigurer,
-      final SingletonBeanRegistry springBeanRegistry) {
+    final SingletonBeanRegistry springBeanRegistry) {
     super(processId, modelConfigurer);
     this.springBeanRegistry = springBeanRegistry;
+  }
+
+  /**
+   * Variant with an ApplicationContext as the parameter. This is usually easier to get access to in the tests
+   * (e.g. via autowiring).
+   */
+  public CallActivityMockForSpringContext(final String processId, final MockedModelConfigurer modelConfigurer,
+    final ApplicationContext applicationContext) {
+    this(processId, modelConfigurer, getSingletonBeanRegistry(applicationContext));
   }
 
   /**
@@ -28,6 +39,21 @@ public class CallActivityMockForSpringContext extends CallActivityMock {
    */
   public CallActivityMockForSpringContext(final String processId, final SingletonBeanRegistry springBeanRegistry) {
     this(processId, null, springBeanRegistry);
+  }
+
+  /**
+   * Variant with an ApplicationContext as the parameter. This is usually easier to get access to in the tests
+   * (e.g. via autowiring).
+   */
+  public CallActivityMockForSpringContext(final String processId, final ApplicationContext applicationContext) {
+    this(processId, getSingletonBeanRegistry(applicationContext));
+  }
+
+  private static SingletonBeanRegistry getSingletonBeanRegistry(ApplicationContext applicationContext) {
+    if (!(applicationContext instanceof ConfigurableApplicationContext)) {
+      throw new IllegalArgumentException("applicationContext is not an instance of ConfigurableApplicationContext");
+    }
+    return ((ConfigurableApplicationContext) applicationContext).getBeanFactory();
   }
 
   public SingletonBeanRegistry getSpringBeanRegistry() {
