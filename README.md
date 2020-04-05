@@ -6,6 +6,8 @@
 [![Project Stats](https://www.openhub.net/p/camunda-bpm-mockito/widgets/project_thin_badge.gif)](https://www.openhub.net/p/camunda-bpm-mockito)
  [![Apache License V.2](https://img.shields.io/badge/license-Apache%20V.2-blue.svg)](./LICENSE)
 
+<!-- START doctoc -->
+<!-- END doctoc -->
 
 **simplify process mocking and testing**
 
