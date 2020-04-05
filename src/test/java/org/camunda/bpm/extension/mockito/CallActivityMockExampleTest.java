@@ -238,7 +238,7 @@ public class CallActivityMockExampleTest {
     assertThat(list).hasSize(1);
     final Job timer = list.get(0);
     assertThat(timer).isInstanceOf(TimerEntity.class);
-    assertThat(timer.getDuedate()).isEqualToIgnoringMillis(date);
+    assertThat(timer.getDuedate()).isInSameSecondWindowAs(date); // Check the time distance (second boundary does not matter)
     return timer;
   }
 
@@ -255,7 +255,7 @@ public class CallActivityMockExampleTest {
     Optional<HistoricProcessInstance> hi = Optional.ofNullable(camunda.getHistoryService().createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).singleResult())
       .filter(h -> h.getEndTime() != null);
 
-    assertThat(hi).isNotEmpty().as("instance not ended");
+    assertThat(hi).as("instance not ended").isNotEmpty();
   }
 
   private JobQuery jobQuery() {
