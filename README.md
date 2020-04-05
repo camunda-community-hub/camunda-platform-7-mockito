@@ -6,8 +6,25 @@
 [![Project Stats](https://www.openhub.net/p/camunda-bpm-mockito/widgets/project_thin_badge.gif)](https://www.openhub.net/p/camunda-bpm-mockito)
  [![Apache License V.2](https://img.shields.io/badge/license-Apache%20V.2-blue.svg)](./LICENSE)
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Get started](#get-started)
+- [Mocking of queries](#mocking-of-queries)
+- [Mock Listener and Delegate behavior](#mock-listener-and-delegate-behavior)
+- [Easy register and verify mocks](#easy-register-and-verify-mocks)
+- [Auto mock all delegates and listeners](#auto-mock-all-delegates-and-listeners)
+- [Delegate[Task|Execution]Fake](#delegatetaskexecutionfake)
+- [Mocking of external subprocesses](#mocking-of-external-subprocesses)
+- [Mocking of message correlation builder](#mocking-of-message-correlation-builder)
+- [Release Notes](#release-notes)
+- [Limitations](#limitations)
+- [Resources](#resources)
+- [Maintainer](#maintainer)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 **simplify process mocking and testing**
 
