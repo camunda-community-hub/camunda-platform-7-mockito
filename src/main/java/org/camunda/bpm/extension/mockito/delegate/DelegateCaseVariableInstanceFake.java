@@ -24,6 +24,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   private ProcessEngineServices processEngineServices;
   private TypedValue typedValue;
   private String processInstanceId;
+  private String processDefinitionId;
   private String executionId;
   private String caseInstanceId;
   private String caseExecutionId;
@@ -35,6 +36,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public DelegateCaseVariableInstanceFake() {
     this(null);
   }
+
   public DelegateCaseVariableInstanceFake(String id) {
     withId(id);
   }
@@ -61,6 +63,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public String getEventName() {
     return eventName;
   }
+
   public DelegateCaseVariableInstanceFake withEventName(String eventName) {
     this.eventName = eventName;
     return this;
@@ -70,6 +73,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public DelegateCaseExecution getSourceExecution() {
     return sourceExecution;
   }
+
   public DelegateCaseVariableInstanceFake withSourceExecution(DelegateCaseExecution sourceExecution) {
     this.sourceExecution = sourceExecution;
     return this;
@@ -96,6 +100,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public String getId() {
     return id;
   }
+
   public DelegateCaseVariableInstanceFake withId(String id) {
     this.id = id;
     return this;
@@ -105,6 +110,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public String getName() {
     return name;
   }
+
   public DelegateCaseVariableInstanceFake withName(String name) {
     this.name = name;
     return this;
@@ -139,8 +145,19 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public String getProcessInstanceId() {
     return processInstanceId;
   }
+
   public DelegateCaseVariableInstanceFake withProcessInstanceId(String processInstanceId) {
     this.processInstanceId = processInstanceId;
+    return this;
+  }
+
+  @Override
+  public String getProcessDefinitionId() {
+    return processDefinitionId;
+  }
+
+  public DelegateCaseVariableInstanceFake withProcessDefinitionId() {
+    this.processDefinitionId = processDefinitionId;
     return this;
   }
 
@@ -148,6 +165,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public String getExecutionId() {
     return executionId;
   }
+
   public DelegateCaseVariableInstanceFake withExecutionId(String executionId) {
     this.executionId = executionId;
     return this;
@@ -157,6 +175,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public String getCaseInstanceId() {
     return caseInstanceId;
   }
+
   public DelegateCaseVariableInstanceFake withCaseInstanceId(String caseInstanceId) {
     this.caseInstanceId = caseInstanceId;
     return this;
@@ -166,6 +185,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public String getCaseExecutionId() {
     return caseExecutionId;
   }
+
   public DelegateCaseVariableInstanceFake withCaseExecutionId(String caseExecutionId) {
     this.caseExecutionId = caseExecutionId;
     return this;
@@ -175,6 +195,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public String getTaskId() {
     return taskId;
   }
+
   public DelegateCaseVariableInstanceFake withTaskId(String taskId) {
     this.taskId = taskId;
     return this;
@@ -184,6 +205,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public String getActivityInstanceId() {
     return activityInstanceId;
   }
+
   public DelegateCaseVariableInstanceFake withActivityInstanceId(String activityInstanceId) {
     this.activityInstanceId = activityInstanceId;
     return this;
@@ -193,6 +215,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public String getErrorMessage() {
     return errorMessage;
   }
+
   public DelegateCaseVariableInstanceFake withErrorMessage(String errorMessage) {
     this.errorMessage = errorMessage;
     return this;
@@ -202,12 +225,14 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   public String getTenantId() {
     return tenantId;
   }
+
   public DelegateCaseVariableInstanceFake withTenantId(String tenantId) {
     this.tenantId = tenantId;
     return this;
   }
 
-  @Override public String toString() {
+  @Override
+  public String toString() {
     return "DelegateCaseVariableInstanceFake{" +
       "id='" + id + '\'' +
       ", name='" + name + '\'' +
@@ -216,6 +241,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
       ", processEngineServices=" + processEngineServices +
       ", typedValue=" + typedValue +
       ", processInstanceId='" + processInstanceId + '\'' +
+      ", processDefinitionId='" + processDefinitionId + '\'' +
       ", executionId='" + executionId + '\'' +
       ", caseInstanceId='" + caseInstanceId + '\'' +
       ", caseExecutionId='" + caseExecutionId + '\'' +

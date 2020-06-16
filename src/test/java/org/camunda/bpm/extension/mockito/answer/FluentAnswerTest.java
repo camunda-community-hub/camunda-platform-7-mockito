@@ -152,6 +152,11 @@ public class FluentAnswerTest {
     }
 
     @Override
+    public List<Object> unlimitedList() {
+      return list();
+    }
+
+    @Override
     public List<Object> listPage(final int firstResult, final int maxResults) {
       return null;
     }
