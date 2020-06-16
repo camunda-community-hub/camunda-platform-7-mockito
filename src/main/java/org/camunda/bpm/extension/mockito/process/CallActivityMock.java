@@ -21,17 +21,18 @@ import static org.camunda.bpm.engine.variable.Variables.createVariables;
 import static org.camunda.bpm.extension.mockito.Expressions.registerInstance;
 
 public class CallActivityMock {
-	
+
 	/**
 	 * Interface used as a callback to set some attributes of the mocked process model (e.g. versionTag, name etc.)
 	 */
+	@FunctionalInterface
 	public interface MockedModelConfigurer {
 		void setProcessModelAttributes(ProcessBuilder processBuilder);
 	}
 
   private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  private String processId;
-  private AbstractFlowNodeBuilder flowNodeBuilder;
+  private final String processId;
+  private AbstractFlowNodeBuilder<?, ?> flowNodeBuilder;
 
   public CallActivityMock(final String processId, final MockedModelConfigurer modelConfigurer) {
     this.processId = processId;
@@ -41,7 +42,7 @@ public class CallActivityMock {
     }
     this.flowNodeBuilder = processBuilder.startEvent("start");
   }
-  
+
   public CallActivityMock(final String processId) {
   	this(processId, null);
   }
@@ -191,6 +192,19 @@ public class CallActivityMock {
       throw new RuntimeException(exception);
     });
   }
+
+  /**
+   * On execution, the MockProcess will wait for the given signal
+   *
+   * @param signalName the signal to receive
+   * @return self
+   */
+  public CallActivityMock onExecutionWaitForSignal(final String signalName) {
+    flowNodeBuilder = flowNodeBuilder.intermediateCatchEvent()
+      .signal(signalName);
+    return this;
+  }
+
 
   /**
    * This will deploy the mock process.

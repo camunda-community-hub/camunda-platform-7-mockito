@@ -31,6 +31,8 @@ public class CallActivityMockExampleTest {
   private static final String SUB_PROCESS_ID = "mySubProcess";
   private static final String SUB_PROCESS2_ID = "mySubProcess2";
   private static final String MESSAGE_DOIT = "DOIT";
+  private static final String SIGNAL_ALLDOIT = "ALLDOIT";
+  private static final String TASK_USERTASK = "user_task";
 
   @Rule
   public final ProcessEngineRule camunda = new ProcessEngineRule(mostUsefulProcessEngineConfiguration().buildProcessEngine());
@@ -47,7 +49,7 @@ public class CallActivityMockExampleTest {
       .deploy(camunda));
 
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
-    isWaitingAt(processInstance, "user_task");
+    isWaitingAt(processInstance, TASK_USERTASK);
 
     //TODO doesn't work with current camunda-bpm-assert version (1.*) and our assertj version (3.*)
     //assertThat(processInstance).hasVariables("foo", "bar");
@@ -65,7 +67,7 @@ public class CallActivityMockExampleTest {
       .deploy(camunda));
 
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
-    isWaitingAt(processInstance, "user_task");
+    isWaitingAt(processInstance, TASK_USERTASK);
 
     //TODO doesn't work with current camunda-bpm-assert version (1.*) and our assertj version (3.*)
     //assertThat(processInstance).hasVariables("foo", "bar");
@@ -84,7 +86,20 @@ public class CallActivityMockExampleTest {
     assertThatProcessIsWaitingForMessage(MESSAGE_DOIT);
 
     camunda.getRuntimeService().correlateMessage(MESSAGE_DOIT);
-    isWaitingAt(processInstance, "user_task");
+    isWaitingAt(processInstance, TASK_USERTASK);
+  }
+
+  @Test
+  public void register_subprocess_mock_withReceiveSignal() {
+    camunda.manageDeployment(registerCallActivityMock(SUB_PROCESS_ID)
+      .onExecutionWaitForSignal(SIGNAL_ALLDOIT)
+      .deploy(camunda));
+
+    final ProcessInstance processInstance = startProcess(PROCESS_ID);
+    assertThatProcessIsWaitingForSignal(SIGNAL_ALLDOIT);
+
+    camunda.getRuntimeService().createSignalEvent(SIGNAL_ALLDOIT).send();
+    isWaitingAt(processInstance, TASK_USERTASK);
   }
 
   @Test
@@ -111,7 +126,7 @@ public class CallActivityMockExampleTest {
 
     //Start our process with mocked subprocess
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
-    isWaitingAt(processInstance, "user_task");
+    isWaitingAt(processInstance, TASK_USERTASK);
     //Our monitoring process should be finished
     isEnded(waitingProcessInstance);
   }
@@ -159,7 +174,7 @@ public class CallActivityMockExampleTest {
       .callActivity("call_subprocess2")
       .calledElement(SUB_PROCESS2_ID)
       .camundaOut("bar", "bar")
-      .userTask("user_task")
+      .userTask(TASK_USERTASK)
       .endEvent("end")
       .done();
 
@@ -173,7 +188,7 @@ public class CallActivityMockExampleTest {
       .deploy(camunda);
 
     final ProcessInstance processInstance = startProcess(PROCESS_ID);
-    isWaitingAt(processInstance, "user_task");
+    isWaitingAt(processInstance, TASK_USERTASK);
 
     //TODO doesn't work with current camunda-bpm-assert version (1.*) and our assertj version (3.*)
     //assertThat(processInstance).hasVariables("foo", "bar");
@@ -205,7 +220,7 @@ public class CallActivityMockExampleTest {
     execute(job);
 
     //Process should wait at user task
-    isWaitingAt(processInstance, "user_task");
+    isWaitingAt(processInstance, TASK_USERTASK);
 
     //TODO doesn't work with current camunda-bpm-assert version (1.*) and our assertj version (3.*)
     //assertThat(processInstance).hasVariables("foo", "bar");
@@ -220,7 +235,7 @@ public class CallActivityMockExampleTest {
       .callActivity("call_subprocess")
       .camundaOut("foo", "foo")
       .calledElement(SUB_PROCESS_ID)
-      .userTask("user_task")
+      .userTask(TASK_USERTASK)
       .endEvent("end")
       .done();
 
@@ -231,6 +246,12 @@ public class CallActivityMockExampleTest {
     final EventSubscription eventSubscription = camunda.getRuntimeService().createEventSubscriptionQuery().singleResult();
     assertThat(eventSubscription).isNotNull();
     assertThat(eventSubscription.getEventName()).isEqualTo(message);
+  }
+
+  private void assertThatProcessIsWaitingForSignal(String signalName) {
+    final EventSubscription eventSubscription = camunda.getRuntimeService().createEventSubscriptionQuery().singleResult();
+    assertThat(eventSubscription).isNotNull();
+    assertThat(eventSubscription.getEventName()).isEqualTo(signalName);
   }
 
   private Job assertThatTimerIsWaitingUntil(Date date) {
