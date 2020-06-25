@@ -65,18 +65,26 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
-    - if: github.event.release
-      name: Update version in pom.xml (Release only)
-      run: mvn -B versions:set -DnewVersion=${{ github.event.release.tag_name }} -DgenerateBackupPoms=false
     - name: Run Maven (${{ steps.release-detection.outputs.type }})
       run: mvn -B clean install
-    - name: Publish package (${{ steps.release-detection.outputs.type }})
+    - if: ! github.event.release
+      name: Publish SNAPSHOT
       run: |-
-        mvn -B deploy -DskiptTests=true -Dgpg.passphrase="${GPG_PASSPHRASE}"
-
+        mvn -B deploy -DskipTests=true -Dgpg.passphrase="${GPG_PASSPHRASE}"
         sed -i 's@:camunda-nexus:.*$@:central:https://oss.sonatype.org/content/repositories/snapshots/@g' target/nexus-staging/deferred/.index
+        echo "::warning file=target/nexus-staging/deferred/.index::outputting staging index"
         cat target/nexus-staging/deferred/.index
         mvn -s $GITHUB_WORKSPACE/settings.xml -B org.sonatype.plugins:nexus-staging-maven-plugin:deploy-staged -DskipTests=true -Dgpg.passphrase="${GPG_PASSPHRASE}"
+    - if: github.event.release
+      name: Publish Maven Release
+      run: |-
+        mvn -s $GITHUB_WORKSPACE/settings.xml -B release:prepare release:perform \
+          -Darguments="-DskipTests -s $GITHUB_WORKSPACE/settings.xml" \
+          -DskipTests=true \
+          -Dgpg.passphrase="${GPG_PASSPHRASE}" \
+          -Dresume=false \
+          -Dtag=${{ github.event.release.tag_name }} \
+          -DreleaseVersion=${{ github.event.release.tag_name }}
     - name: Archive artifacts
       run: |-
         ZIPFILE=${{github.event.repository.name}}-${{github.event.release.tag_name}}.zip
