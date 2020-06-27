@@ -9,6 +9,7 @@ import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.community.mockito.function.DeployProcess;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.builder.AbstractFlowNodeBuilder;
+import org.camunda.bpm.model.bpmn.builder.EndEventBuilder;
 import org.camunda.bpm.model.bpmn.builder.ProcessBuilder;
 
 import java.text.DateFormat;
@@ -22,29 +23,30 @@ import static org.camunda.community.mockito.Expressions.registerInstance;
 
 public class CallActivityMock {
 
-	/**
-	 * Interface used as a callback to set some attributes of the mocked process model (e.g. versionTag, name etc.)
-	 */
-	@FunctionalInterface
-	public interface MockedModelConfigurer {
-		void setProcessModelAttributes(ProcessBuilder processBuilder);
-	}
+  /**
+   * Interface used as a callback to set some attributes of the mocked process model (e.g. versionTag, name etc.)
+   */
+  @FunctionalInterface
+  public interface MockedModelConfigurer {
+    void setProcessModelAttributes(ProcessBuilder processBuilder);
+  }
 
   private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
   private final String processId;
   private AbstractFlowNodeBuilder<?, ?> flowNodeBuilder;
+  private String escalation;
 
   public CallActivityMock(final String processId, final MockedModelConfigurer modelConfigurer) {
     this.processId = processId;
     ProcessBuilder processBuilder = Bpmn.createExecutableProcess(processId);
     if (modelConfigurer != null) {
-    	modelConfigurer.setProcessModelAttributes(processBuilder);
+      modelConfigurer.setProcessModelAttributes(processBuilder);
     }
     this.flowNodeBuilder = processBuilder.startEvent("start");
   }
 
   public CallActivityMock(final String processId) {
-  	this(processId, null);
+    this(processId, null);
   }
 
   /**
@@ -66,8 +68,8 @@ public class CallActivityMock {
    * @param variables variables to set
    * @return this mock instance
    */
-  public CallActivityMock onExecutionSetVariables(final VariableMap variables){
-    return this.onExecutionDo("setVariablesServiceMock_"+ randomUUID(),
+  public CallActivityMock onExecutionSetVariables(final VariableMap variables) {
+    return this.onExecutionDo("setVariablesServiceMock_" + randomUUID(),
       (execution) -> execution.setVariables(variables)
     );
   }
@@ -78,8 +80,8 @@ public class CallActivityMock {
    * @param variables the variables to add
    * @return self
    */
-  public CallActivityMock onExecutionAddVariables(final VariableMap variables){
-    return this.onExecutionDo("addVariablesServiceMock_"+ randomUUID(),
+  public CallActivityMock onExecutionAddVariables(final VariableMap variables) {
+    return this.onExecutionDo("addVariablesServiceMock_" + randomUUID(),
       (execution) -> variables.forEach(execution::setVariable)
     );
   }
@@ -91,7 +93,7 @@ public class CallActivityMock {
    * @param val ... value of the process variable
    * @return self
    */
-  public CallActivityMock onExecutionAddVariable(final String key, final Object val){
+  public CallActivityMock onExecutionAddVariable(final String key, final Object val) {
     return this.onExecutionAddVariables(createVariables().putValue(key, val));
   }
 
@@ -102,7 +104,7 @@ public class CallActivityMock {
    * @return self
    */
   public CallActivityMock onExecutionDo(final Consumer<DelegateExecution> consumer) {
-    return this.onExecutionDo("serviceMock_"+ randomUUID(),
+    return this.onExecutionDo("serviceMock_" + randomUUID(),
       consumer
     );
   }
@@ -111,7 +113,7 @@ public class CallActivityMock {
    * On execution, the MockProcess will execute the given consumer with a DelegateExecution.
    *
    * @param serviceId ... the id of the mock delegate
-   * @param consumer delegate for service task
+   * @param consumer  delegate for service task
    * @return self
    */
   public CallActivityMock onExecutionDo(final String serviceId, final Consumer<DelegateExecution> consumer) {
@@ -172,7 +174,7 @@ public class CallActivityMock {
   /**
    * On execution, the MockProcess will send the given message to a process instance with the given businessId
    *
-   * @param message the message to receive
+   * @param message    the message to receive
    * @param businessId the process business key
    * @return self
    */
@@ -200,7 +202,7 @@ public class CallActivityMock {
    * @return self
    */
   public CallActivityMock onExecutionRunIntoError(final Throwable exception) {
-    return this.onExecutionDo("throwErrorServiceMock",execution -> {
+    return this.onExecutionDo("throwErrorServiceMock", execution -> {
       throw new RuntimeException(exception);
     });
   }
@@ -217,16 +219,33 @@ public class CallActivityMock {
     return this;
   }
 
+  /**
+   * On execution, the MockProcess will throw escalation for the given code
+   *
+   * If called multiple times, this method adds only the last escalation to the end event.
+   *
+   * @param escalationCode the escalation code
+   * @return self
+   */
+  public CallActivityMock onExecutionThrowEscalation(final String escalationCode) {
+    this.escalation = escalationCode;
+    return this;
+  }
 
   /**
    * This will deploy the mock process.
-   *
    */
-  public Deployment deploy(final RepositoryService repositoryService){
-    return new DeployProcess(repositoryService).apply(processId, flowNodeBuilder.endEvent("end").done());
+  public Deployment deploy(final RepositoryService repositoryService) {
+    EndEventBuilder endEvent = flowNodeBuilder.endEvent("end");
+
+    if (this.escalation != null) {
+      endEvent = endEvent.escalation(this.escalation);
+    }
+
+    return new DeployProcess(repositoryService).apply(processId, endEvent.done());
   }
 
-  public Deployment deploy(final ProcessEngineServices processEngineServices){
+  public Deployment deploy(final ProcessEngineServices processEngineServices) {
     return this.deploy(processEngineServices.getRepositoryService());
   }
 

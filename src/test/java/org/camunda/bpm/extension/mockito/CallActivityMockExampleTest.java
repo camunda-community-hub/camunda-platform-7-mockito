@@ -1,6 +1,7 @@
 package org.camunda.community.mockito;
 
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
+import org.camunda.bpm.engine.impl.persistence.entity.ProcessInstanceWithVariablesImpl;
 import org.camunda.bpm.engine.impl.persistence.entity.TimerEntity;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.engine.runtime.Job;
@@ -20,10 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.camunda.bpm.engine.variable.Variables.createVariables;
 import static org.camunda.community.mockito.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
 import static org.camunda.community.mockito.ProcessExpressions.registerCallActivityMock;
+import static org.camunda.bpm.model.xml.test.assertions.ModelAssertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 public class CallActivityMockExampleTest {
 
@@ -227,6 +229,36 @@ public class CallActivityMockExampleTest {
     final Map<String, Object> variables = camunda.getRuntimeService().getVariables(processInstance.getId());
     assertThat(variables).hasSize(1);
     assertThat(variables).containsEntry("foo", "bar");
+  }
+
+  @Test
+  public void register_subprocess_mock_throwEscalation() {
+    String escalationCode = "SOME_ERROR";
+    String subprocessId = "call_subprocess";
+    String escalationEndId = "EscalationEnd";
+
+    BpmnModelInstance processWithSubProcess = Bpmn.createExecutableProcess(PROCESS_ID)
+      .startEvent("start")
+      .callActivity(subprocessId)
+      .calledElement(SUB_PROCESS_ID)
+      .boundaryEvent()
+      .escalation(escalationCode)
+      .endEvent(escalationEndId)
+      .moveToActivity(subprocessId)
+      .userTask(TASK_USERTASK)
+      .endEvent("end")
+      .done();
+
+    camunda.manageDeployment(new DeployProcess(camunda).apply(PROCESS_ID, processWithSubProcess));
+
+    camunda.manageDeployment(registerCallActivityMock(SUB_PROCESS_ID)
+      .onExecutionThrowEscalation(escalationCode)
+      .deploy(camunda));
+
+    ProcessInstance processInstance = startProcess(PROCESS_ID);
+
+    isEnded(processInstance);
+    assertEquals(escalationEndId, ((ProcessInstanceWithVariablesImpl) processInstance).getExecutionEntity().getActivityId());
   }
 
   private void prepareProcessWithOneSubprocess() {
