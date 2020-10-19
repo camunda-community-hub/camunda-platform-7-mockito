@@ -32,6 +32,7 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   private String activityInstanceId;
   private String errorMessage;
   private String tenantId;
+  private String batchId;
 
   public DelegateCaseVariableInstanceFake() {
     this(null);
@@ -194,6 +195,15 @@ public class DelegateCaseVariableInstanceFake implements DelegateCaseVariableIns
   @Override
   public String getTaskId() {
     return taskId;
+  }
+
+  public DelegateCaseVariableInstanceFake withBatchId(String batchId) {
+    this.batchId = batchId;
+    return this;
+  }
+  @Override
+  public String getBatchId() {
+    return null;
   }
 
   public DelegateCaseVariableInstanceFake withTaskId(String taskId) {
