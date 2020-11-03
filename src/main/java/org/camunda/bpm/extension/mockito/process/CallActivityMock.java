@@ -48,6 +48,18 @@ public class CallActivityMock {
   }
 
   /**
+   * Registers a delegate under the specified name within the appropriate context. The implementation in this class uses the thread local
+   * mock registry, but subclasses might use e.g. a Spring context.
+   *
+   * @param delegateReferenceName Name under which the delegate should be registered. After the registration, the delegate can be
+   *   referenced in process models as '${name}'.
+   * @param delegate The delegate instance to register
+   */
+  protected void registerJavaDelegateMock(String delegateReferenceName, JavaDelegate delegate) {
+    registerInstance(delegateReferenceName, delegate);
+  }
+
+  /**
    * On execution, the MockProcess will set the given VariableMap to the execution
    * (ATTENTION: This means all current process variables are replaced with the given Map!)
    *
@@ -106,7 +118,7 @@ public class CallActivityMock {
     flowNodeBuilder = flowNodeBuilder.serviceTask(serviceId)
       .camundaDelegateExpression("${id}".replace("id", serviceId));
 
-    registerInstance(serviceId, (JavaDelegate) consumer::accept);
+    registerJavaDelegateMock(serviceId, (JavaDelegate) consumer::accept);
     return this;
   }
 

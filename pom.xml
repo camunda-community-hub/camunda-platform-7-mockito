@@ -135,7 +135,7 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
       <version>4.1.7.RELEASE</version>
-      <scope>test</scope>
+      <scope>provided</scope>
     </dependency>
 
 
