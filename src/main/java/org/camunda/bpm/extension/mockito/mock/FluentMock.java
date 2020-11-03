@@ -17,7 +17,7 @@ import java.util.Map.Entry;
  * @param <P>
  *          type of method argument (DelegateExecution, DelegateTask)
  */
-abstract class FluentMock<T, P extends VariableScope> {
+public abstract class FluentMock<T, P extends VariableScope> {
 
   protected final T mock;
   protected final Class<P> parameterType;

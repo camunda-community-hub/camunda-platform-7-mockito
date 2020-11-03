@@ -9,7 +9,7 @@ import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.extension.mockito.answer.JavaDelegateAnswer;
 import org.mockito.Mockito;
 
-public final class FluentJavaDelegateMock extends FluentMock<JavaDelegate, DelegateExecution> implements JavaDelegate {
+public class FluentJavaDelegateMock extends FluentMock<JavaDelegate, DelegateExecution> implements JavaDelegate {
 
   public FluentJavaDelegateMock() {
     super(mock(JavaDelegate.class), DelegateExecution.class);
