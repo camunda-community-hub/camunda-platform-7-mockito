@@ -299,7 +299,7 @@
     </snapshotRepository>
     <site>
       <id>${project.artifactId}</id>
-      <url>${project.basedir}</url>
+      <url>file://${project.basedir}</url>
     </site>
   </distributionManagement>
 
