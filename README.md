@@ -13,6 +13,7 @@
 - [Get started](#get-started)
 - [Mocking of queries](#mocking-of-queries)
 - [Mock Listener and Delegate behavior](#mock-listener-and-delegate-behavior)
+  - [Possible Actions](#possible-actions)
 - [Easy register and verify mocks](#easy-register-and-verify-mocks)
 - [Auto mock all delegates and listeners](#auto-mock-all-delegates-and-listeners)
 - [Delegate[Task|Execution]Fake](#delegatetaskexecutionfake)
