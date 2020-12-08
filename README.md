@@ -49,7 +49,7 @@ Just include camunda-bpm-mockito in the test scope of your project:
   <groupId>org.camunda.bpm.extension.mockito</groupId>
   <artifactId>camunda-bpm-mockito</artifactId>
   <scope>test</scope>
-  <version>4.13.0</version>
+  <version>5.14.0</version>
 </dependency>
 ```
 
@@ -121,6 +121,38 @@ public class FluentJavaDelegateMockTest {
     registeredDelegate.execute(mock(DelegateExecution.class));
   }
 }
+```
+
+### Possible Actions
+
+* Set single variable
+
+You can set a single variable on execution with: 
+
+```
+DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
+  .onExecutionSetVariable("key", "value");
+```
+
+* Set multiple varibales
+
+You can set multiple variables on execution with:
+
+```
+DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
+  .onExecutionSetVariables(createVariables()
+    .putValue("foo", "bar")
+    .putValue("foo2", "bar2")
+  );
+```
+
+* Throw bpmn error
+
+You can throw an error on execution with:
+
+```
+DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
+  .onExecutionThrowBpmnError("code", MESSAGE);
 ```
 
 ## Easy register and verify mocks
