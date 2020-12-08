@@ -172,7 +172,8 @@ To verify the Mock execution, you can use
 ## Auto mock all delegates and listeners
 
 With the autoMock() feature, you can register all Delegates and Listeners at once, without explicitly adding "register"-statements to your testcase.
-If you do need to specify behaviour for the mocks, you can still get the mock via "getRegisteredJavaDelegateMock" (for delegates).
+If you do need to specify behaviour for the mocks, you can still get the mock via `getJavaDelegateMock` for delegates. 
+And `getExecutionListenerMock` / `getTaskListenerMock` for listeners.
 
 ```java
 @Test
