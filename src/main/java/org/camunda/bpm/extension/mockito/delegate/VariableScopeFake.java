@@ -1,12 +1,9 @@
 package org.camunda.bpm.extension.mockito.delegate;
 
+import io.holunda.camunda.bpm.data.factory.VariableFactory;
 import org.camunda.bpm.engine.delegate.VariableScope;
 import org.camunda.bpm.engine.impl.core.variable.CoreVariableInstance;
-import org.camunda.bpm.engine.impl.core.variable.scope.AbstractVariableScope;
-import org.camunda.bpm.engine.impl.core.variable.scope.SimpleVariableInstance;
-import org.camunda.bpm.engine.impl.core.variable.scope.VariableInstanceFactory;
-import org.camunda.bpm.engine.impl.core.variable.scope.VariableInstanceLifecycleListener;
-import org.camunda.bpm.engine.impl.core.variable.scope.VariableStore;
+import org.camunda.bpm.engine.impl.core.variable.scope.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,12 +50,22 @@ public abstract class VariableScopeFake<T extends VariableScopeFake> extends Abs
     return (T) this;
   }
 
-  public T withVariables(Map<String, ? extends Object> variables) {
+  public <V> T withVariable(VariableFactory<V> variable, V value) {
+    variable.on(this).set(value);
+    return (T) this;
+  }
+
+  public <V> T withVariableLocal(VariableFactory<V> variable, V value) {
+    variable.on(this).setLocal(value);
+    return (T) this;
+  }
+
+  public T withVariables(Map<String, ?> variables) {
     setVariables(variables);
     return (T) this;
   }
 
-  public T withVariablesLocal(Map<String, ? extends Object> variables) {
+  public T withVariablesLocal(Map<String, ?> variables) {
     setVariablesLocal(variables);
     return (T) this;
   }

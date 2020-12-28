@@ -1,60 +1,61 @@
 package org.camunda.bpm.extension.mockito.mock;
 
-import org.assertj.core.api.Assertions;
+import io.holunda.camunda.bpm.data.CamundaBpmData;
+import io.holunda.camunda.bpm.data.factory.VariableFactory;
 import org.camunda.bpm.engine.delegate.BpmnError;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.extension.mockito.DelegateExpressions;
 import org.camunda.bpm.extension.mockito.delegate.DelegateExecutionFake;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import static org.mockito.Mockito.mock;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class FluentJavaDelegateMockTest {
 
   private static final String BEAN_NAME = "foo";
   private static final String MESSAGE = "message";
 
-  @Rule
-  public final ExpectedException thrown = ExpectedException.none();
+  private final FluentJavaDelegateMock delegate = DelegateExpressions.registerJavaDelegateMock(BEAN_NAME);
+  private final DelegateExecutionFake execution = DelegateExecutionFake.of();
 
   @Test
-  public void throws_bpmnError() throws Exception {
-
-    // expect exception
-    thrown.expect(BpmnError.class);
-    thrown.expectMessage(MESSAGE);
-
-    DelegateExpressions.registerJavaDelegateMock(BEAN_NAME).onExecutionThrowBpmnError("code", MESSAGE);
-
-    final JavaDelegate registeredDelegate = DelegateExpressions.getJavaDelegateMock(BEAN_NAME);
+  public void throws_bpmnError() {
+    delegate.onExecutionThrowBpmnError("code", MESSAGE);
 
     // test succeeds when exception is thrown
-    registeredDelegate.execute(mock(DelegateExecution.class));
+    assertThatThrownBy(() -> delegate.execute(execution))
+      .isInstanceOf(BpmnError.class)
+      .hasMessage(MESSAGE);
 
   }
 
   @Test
-  public void throws_exception() throws Exception {
-    thrown.expect(NullPointerException.class);
+  public void throws_exception() {
+    delegate.onExecutionThrowException(new NullPointerException());
 
-    DelegateExpressions.registerJavaDelegateMock(BEAN_NAME).onExecutionThrowException(new NullPointerException());
-
-    DelegateExpressions.getJavaDelegateMock(BEAN_NAME).execute(mock(DelegateExecution.class));
+    assertThatThrownBy(() -> delegate.execute(execution))
+      .isInstanceOf(NullPointerException.class);
   }
 
   @Test
   public void set_single_variable() throws Exception {
-    DelegateExpressions.registerJavaDelegateMock(BEAN_NAME).onExecutionSetVariable("foo", "bar");
+    delegate.onExecutionSetVariable("foo", "bar");
 
-    final JavaDelegate registeredDelegate = DelegateExpressions.getJavaDelegateMock(BEAN_NAME);
+    delegate.execute(execution);
 
-    final DelegateExecutionFake fake = DelegateExecutionFake.of();
-    registeredDelegate.execute(fake);
+    assertThat(execution.hasVariable("foo")).isTrue();
+    assertThat((String) execution.getVariable("foo")).isEqualTo("bar");
+  }
 
-    Assertions.assertThat(fake.hasVariable("foo")).isTrue();
-    Assertions.assertThat((String)fake.getVariable("foo")).isEqualTo("bar");
+  @Test
+  public void set_single_variable_via_factory() throws Exception {
+    VariableFactory<String> foo = CamundaBpmData.stringVariable("foo");
+
+    delegate.onExecutionSetVariable(foo, "bar");
+
+    delegate.execute(execution);
+
+    assertThat(execution.hasVariable("foo")).isTrue();
+    assertThat(foo.from(execution).get()).isEqualTo("bar");
   }
 }
