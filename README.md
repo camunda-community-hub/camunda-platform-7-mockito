@@ -1,5 +1,7 @@
 # camunda-bpm-mockito
 
+[![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
+
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito)
 [![Build Status](https://travis-ci.org/camunda/camunda-bpm-mockito.svg?branch=master)](https://travis-ci.org/camunda/camunda-bpm-mockito)
 [![codecov](https://codecov.io/gh/camunda/camunda-bpm-mockito/branch/master/graph/badge.svg)](https://codecov.io/gh/camunda/camunda-bpm-mockito) 
@@ -49,14 +51,14 @@ Just include camunda-bpm-mockito in the test scope of your project:
   <groupId>org.camunda.bpm.extension.mockito</groupId>
   <artifactId>camunda-bpm-mockito</artifactId>
   <scope>test</scope>
-  <version>4.13.0</version>
+  <version>5.14.0</version>
 </dependency>
 ```
 
 gradle (kts):
 
 ```
-   testImplementation("org.camunda.bpm.extension.mockito:camunda-bpm-mockito:4.12.0")
+   testImplementation("org.camunda.bpm.extension.mockito:camunda-bpm-mockito:5.14.0")
 ```
 
 
