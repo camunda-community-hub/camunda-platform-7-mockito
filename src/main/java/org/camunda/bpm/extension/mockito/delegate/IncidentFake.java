@@ -17,8 +17,9 @@ public class IncidentFake implements Incident {
   private final String jobDefinitionId;
   private final String historyConfiguration;
   private final String failedActivityId;
+  private final String annotation;
 
-  public IncidentFake(DelegateExecutionFake execution, String type, String configuration, String message, String jobDefinitionId, String historyConfiguration, String failedActivityId) {
+  public IncidentFake(DelegateExecutionFake execution, String type, String configuration, String message, String jobDefinitionId, String historyConfiguration, String failedActivityId, String annotation) {
     this.execution = execution;
     this.type = type;
     this.configuration = configuration;
@@ -26,6 +27,7 @@ public class IncidentFake implements Incident {
     this.jobDefinitionId = jobDefinitionId;
     this.historyConfiguration = historyConfiguration;
     this.failedActivityId = failedActivityId;
+    this.annotation = annotation;
   }
 
 
@@ -104,6 +106,10 @@ public class IncidentFake implements Incident {
     return historyConfiguration;
   }
 
+  @Override
+  public String getAnnotation() {
+    return annotation;
+  }
 
 
   @Override public String toString() {
@@ -117,6 +123,7 @@ public class IncidentFake implements Incident {
       ", jobDefinitionId='" + jobDefinitionId + '\'' +
       ", historyConfiguration='" + historyConfiguration + '\'' +
       ", failedActivityId='" + failedActivityId + '\'' +
+      ", annotation='" + annotation + '\'' +
       '}';
   }
 }
