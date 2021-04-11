@@ -30,7 +30,7 @@
 
     <!-- plugins -->
     <asciidoctor-maven-plugin.version>1.5.6</asciidoctor-maven-plugin.version>
-    <asciidoctorj.version>1.5.6</asciidoctorj.version>
+    <asciidoctorj.version>2.4.3</asciidoctorj.version>
     <jruby.version>1.7.26</jruby.version>
 
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
