@@ -21,7 +21,7 @@
     <camunda.version>7.15.0</camunda.version>
     <camunda-bpm-data.version>1.2.2</camunda-bpm-data.version>
 
-    <slf4j.version>1.7.25</slf4j.version>
+    <slf4j.version>1.7.30</slf4j.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
 
     <!-- test tools -->
