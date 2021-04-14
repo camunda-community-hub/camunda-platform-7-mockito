@@ -1,5 +1,6 @@
 package org.camunda.bpm.extension.mockito.mock;
 
+import io.holunda.camunda.bpm.data.factory.VariableFactory;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.VariableScope;
 import org.camunda.bpm.engine.variable.VariableMap;
@@ -55,6 +56,17 @@ public abstract class FluentMock<T, P extends VariableScope> {
    */
   public void onExecutionSetVariable(final String key, final Object value) {
     onExecutionSetVariables(Variables.putValue(key, value));
+  }
+
+  /**
+   *
+   * @see #onExecutionSetVariable(String, Object)
+   * @param variable the VariableFactory declartion (name and type of variable)
+   * @param value the value to set. Type safe.
+   * @param <V> the payload type of the variable
+   */
+  public <V> void onExecutionSetVariable(final VariableFactory<V> variable, final V value) {
+    onExecutionSetVariable(variable.getName(), value);
   }
 
   /**

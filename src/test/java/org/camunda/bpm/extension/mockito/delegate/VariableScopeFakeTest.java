@@ -1,6 +1,8 @@
 package org.camunda.bpm.extension.mockito.delegate;
 
 
+import io.holunda.camunda.bpm.data.CamundaBpmData;
+import io.holunda.camunda.bpm.data.factory.VariableFactory;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.engine.variable.value.StringValue;
@@ -12,7 +14,7 @@ import static org.camunda.bpm.engine.variable.Variables.stringValue;
 
 public class VariableScopeFakeTest {
 
-  private final VariableScopeFake variableScope = CamundaMockito.variableScopeFake();
+  private final VariableScopeFake<?> variableScope = CamundaMockito.variableScopeFake();
 
   @Test
   public void create_withVariable() throws Exception {
@@ -30,6 +32,19 @@ public class VariableScopeFakeTest {
     StringValue foo = variableScope.getVariableLocalTyped("foo");
 
     assertThat(foo.getValue()).isEqualTo("bar");
+  }
+
+  @Test
+  public void variable_from_factory() {
+    VariableFactory<String> foo = CamundaBpmData.stringVariable("foo");
+    VariableFactory<Integer> bar = CamundaBpmData.intVariable("bar");
+
+    variableScope
+      .withVariable(foo, "1")
+    .withVariable(bar, 1);
+
+    assertThat(foo.from(variableScope).get()).isEqualTo("1");
+    assertThat(bar.from(variableScope).get()).isEqualTo(1);
   }
 
   @Test
