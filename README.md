@@ -16,6 +16,7 @@
 - [Get started](#get-started)
 - [Mocking of queries](#mocking-of-queries)
 - [Mock Listener and Delegate behavior](#mock-listener-and-delegate-behavior)
+  - [Possible Actions](#possible-actions)
 - [Easy register and verify mocks](#easy-register-and-verify-mocks)
 - [Auto mock all delegates and listeners](#auto-mock-all-delegates-and-listeners)
 - [Delegate[Task|Execution]Fake](#delegatetaskexecutionfake)
@@ -126,6 +127,38 @@ public class FluentJavaDelegateMockTest {
 }
 ```
 
+### Possible Actions
+
+* Set single variable
+
+You can set a single variable on execution with: 
+
+```
+DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
+  .onExecutionSetVariable("key", "value");
+```
+
+* Set multiple varibales
+
+You can set multiple variables on execution with:
+
+```
+DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
+  .onExecutionSetVariables(createVariables()
+    .putValue("foo", "bar")
+    .putValue("foo2", "bar2")
+  );
+```
+
+* Throw bpmn error
+
+You can throw an error on execution with:
+
+```
+DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
+  .onExecutionThrowBpmnError("code", MESSAGE);
+```
+
 ## Easy register and verify mocks
 
 In addition two of the well-known "Mocks.register()" hook, you now have the possibility to register fluent mocks directly:
@@ -142,7 +175,8 @@ To verify the Mock execution, you can use
 ## Auto mock all delegates and listeners
 
 With the autoMock() feature, you can register all Delegates and Listeners at once, without explicitly adding "register"-statements to your testcase.
-If you do need to specify behaviour for the mocks, you can still get the mock via "getRegisteredJavaDelegateMock" (for delegates).
+If you do need to specify behaviour for the mocks, you can still get the mock via `getJavaDelegateMock` for delegates. 
+And `getExecutionListenerMock` / `getTaskListenerMock` for listeners.
 
 ```java
 @Test
