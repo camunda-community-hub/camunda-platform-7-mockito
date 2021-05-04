@@ -59,7 +59,7 @@ Just include camunda-bpm-mockito in the test scope of your project:
 
 gradle (kts):
 
-```
+```kotlin
    testImplementation("org.camunda.bpm.extension.mockito:camunda-bpm-mockito:5.14.0")
 ```
 
@@ -133,7 +133,7 @@ public class FluentJavaDelegateMockTest {
 
 You can set a single variable on execution with: 
 
-```
+```java
 DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
   .onExecutionSetVariable("key", "value");
 ```
@@ -142,7 +142,7 @@ DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
 
 You can set multiple variables on execution with:
 
-```
+```java
 DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
   .onExecutionSetVariables(createVariables()
     .putValue("foo", "bar")
@@ -154,7 +154,7 @@ DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
 
 You can throw an error on execution with:
 
-```
+```java
 DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
   .onExecutionThrowBpmnError("code", MESSAGE);
 ```
@@ -297,7 +297,7 @@ class MyCorrelator {
 
 In order to test those, you can use the following helper:
 
-``` java
+```java
 package org.camunda.bpm.extension.mockito;
 
 import org.camunda.bpm.engine.RuntimeService;
