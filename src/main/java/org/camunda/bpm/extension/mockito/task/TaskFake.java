@@ -1,6 +1,7 @@
 package org.camunda.bpm.extension.mockito.task;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.camunda.bpm.engine.form.CamundaFormRef;
 import org.camunda.bpm.engine.task.DelegationState;
 import org.camunda.bpm.engine.task.Task;
 
@@ -29,17 +30,19 @@ public class TaskFake implements Task {
   private String tenantId;
   private String formKey;
   private DelegationState delegationState;
+  private CamundaFormRef camundaFormRef;
 
   @java.beans.ConstructorProperties({"id", "name", "description", "priority", "owner", "assignee",
     "processDefinitionId", "caseDefinitionId", "executionId", "processInstanceId", "caseInstanceId",
     "caseExecutionId", "createTime", "taskDefinitionKey", "dueDate", "followUpDate", "parentTaskId",
-    "suspended", "tenantId", "formKey", "delegationState"})
+    "suspended", "tenantId", "formKey", "delegationState", "camundaFormRef"})
   TaskFake(final String id, final String name, final String description, final int priority, final String owner,
            final String assignee, final String processDefinitionId, final String caseDefinitionId,
            final String executionId, final String processInstanceId, final String caseInstanceId,
            final String caseExecutionId, final Date createTime, final String taskDefinitionKey,
            final Date dueDate, final Date followUpDate, final String parentTaskId, final boolean suspended,
-           final String tenantId, final String formKey, final DelegationState delegationState) {
+           final String tenantId, final String formKey, final DelegationState delegationState,
+           final CamundaFormRef camundaFormRef) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -61,6 +64,7 @@ public class TaskFake implements Task {
     this.tenantId = tenantId;
     this.formKey = formKey;
     this.delegationState = delegationState;
+    this.camundaFormRef = camundaFormRef;
   }
 
   public static TaskFakeBuilder builder() {
@@ -259,6 +263,15 @@ public class TaskFake implements Task {
     return formKey;
   }
 
+  @Override
+  public CamundaFormRef getCamundaFormRef() {
+    return camundaFormRef;
+  }
+
+  public void setCamundaFormRef(CamundaFormRef camundaFormRef) {
+    this.camundaFormRef = camundaFormRef;
+  }
+
   public void setFormKey(final String formKey) {
     this.formKey = formKey;
   }
@@ -322,6 +335,7 @@ public class TaskFake implements Task {
     private String tenantId;
     private String formKey;
     private DelegationState delegationState;
+    private CamundaFormRef camundaFormRef;
 
     TaskFakeBuilder() {
     }
@@ -431,12 +445,40 @@ public class TaskFake implements Task {
       return this;
     }
 
+    public TaskFakeBuilder camundaFormRef(final CamundaFormRef camundaFormRef) {
+      this.camundaFormRef = camundaFormRef;
+      return this;
+    }
+
     public TaskFake build() {
-      return new TaskFake(id, name, description, priority, owner, assignee, processDefinitionId, caseDefinitionId, executionId, processInstanceId, caseInstanceId, caseExecutionId, createTime, taskDefinitionKey, dueDate, followUpDate, parentTaskId, suspended, tenantId, formKey, delegationState);
+      return new TaskFake(id, name, description, priority, owner, assignee, processDefinitionId, caseDefinitionId, executionId, processInstanceId, caseInstanceId, caseExecutionId, createTime, taskDefinitionKey, dueDate, followUpDate, parentTaskId, suspended, tenantId, formKey, delegationState, camundaFormRef);
     }
 
     public String toString() {
-      return "TaskFake.TaskFakeBuilder(id=" + this.id + ", name=" + this.name + ", description=" + this.description + ", priority=" + this.priority + ", owner=" + this.owner + ", assignee=" + this.assignee + ", processDefinitionId=" + this.processDefinitionId + ", caseDefinitionId=" + this.caseDefinitionId + ", executionId=" + this.executionId + ", processInstanceId=" + this.processInstanceId + ", caseInstanceId=" + this.caseInstanceId + ", caseExecutionId=" + this.caseExecutionId + ", createTime=" + this.createTime + ", taskDefinitionKey=" + this.taskDefinitionKey + ", dueDate=" + this.dueDate + ", followUpDate=" + this.followUpDate + ", parentTaskId=" + this.parentTaskId + ", suspended=" + this.suspended + ", tenantId=" + this.tenantId + ", formKey=" + this.formKey + ", delegationState=" + this.delegationState + ")";
+      return "TaskFake.TaskFakeBuilder(" +
+        "id=" + this.id + ", " +
+        "name=" + this.name + ", " +
+        "description=" + this.description + ", " +
+        "priority=" + this.priority + ", " +
+        "owner=" + this.owner + ", " +
+        "assignee=" + this.assignee + ", " +
+        "processDefinitionId=" + this.processDefinitionId + ", " +
+        "caseDefinitionId=" + this.caseDefinitionId + ", " +
+        "executionId=" + this.executionId + ", " +
+        "processInstanceId=" + this.processInstanceId + ", " +
+        "caseInstanceId=" + this.caseInstanceId + ", " +
+        "caseExecutionId=" + this.caseExecutionId + ", " +
+        "createTime=" + this.createTime + ", " +
+        "taskDefinitionKey=" + this.taskDefinitionKey + ", " +
+        "dueDate=" + this.dueDate + ", " +
+        "followUpDate=" + this.followUpDate + ", " +
+        "parentTaskId=" + this.parentTaskId + ", " +
+        "suspended=" + this.suspended + ", " +
+        "tenantId=" + this.tenantId + ", " +
+        "formKey=" + this.formKey + ", " +
+        "delegationState=" + this.delegationState + ", " +
+        "camundaFormRef=" + this.camundaFormRef +
+        ")";
     }
   }
 }
