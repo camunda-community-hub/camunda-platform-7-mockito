@@ -11,3 +11,5 @@ pom.xml.versionsBackup
 
 # site
 src/site/
+
+.mvn/wrapper/maven-wrapper.jar
