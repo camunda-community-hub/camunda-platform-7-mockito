@@ -1,6 +1,0 @@
-## 2.0
-
-* switch to camunda 7.2
-* remove org.camunda.bpm.extension.util.ProcessVariableMaps -> use Variables instead
-* remove dependencies to cdi (you will have to add them again to use the extension with cdi/ejb)
-* add support for spring expressions

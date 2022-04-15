@@ -1,3 +1,0 @@
-## 2.2.0
-
-* add support for asc() and desc() query methods (see #26)
