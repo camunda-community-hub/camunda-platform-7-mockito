@@ -20,6 +20,6 @@ If you would like to submit a pull request make sure to
 
 _Perform the following steps to get a development setup up and running._
 
-- `git clone https://github.com/camunda/camunda-bpm-mockito.git`
-- `cd camunda-bpm-mockito`
+- `git clone https://github.com/camunda/camunda-platform-7-mockito.git`
+- `cd camunda-platform-7-mockito`
 - `mvn clean package`

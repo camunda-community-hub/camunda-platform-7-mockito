@@ -1,16 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.camunda.community</groupId>
     <artifactId>community-hub-release-parent</artifactId>
     <version>1.2.2</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <groupId>org.camunda.bpm.extension.mockito</groupId>
-  <artifactId>camunda-bpm-mockito</artifactId>
-  <version>5.16.1-SNAPSHOT</version>
+  <artifactId>camunda-platform-7-mockito</artifactId>
+  <version>6.17.0-SNAPSHOT</version>
 
   <properties>
     <!-- Avoid the message "[WARNING] Using platform encoding (UTF-8 actually) ... also for the failsafe plugin -->
@@ -167,11 +168,11 @@
         </configuration>
       </plugin>
       <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-javadoc-plugin</artifactId>
-	<configuration>
-	  <source>8</source>
-	</configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -239,7 +240,7 @@
             </goals>
             <configuration>
               <target name="copy markdown files to site">
-                <copy file="${basedir}/README.md" tofile="${basedir}/src/site/markdown/index.md" />
+                <copy file="${basedir}/README.md" tofile="${basedir}/src/site/markdown/index.md"/>
               </target>
             </configuration>
           </execution>
@@ -284,9 +285,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:camunda/camunda-bpm-mockito.git</connection>
-    <url>scm:git:git@github.com:camunda/camunda-bpm-mockito.git</url>
-    <developerConnection>scm:git:git@github.com:camunda/camunda-bpm-mockito.git</developerConnection>
+    <connection>scm:git:git@github.com:camunda/camunda-platform-7-mockito.git</connection>
+    <url>scm:git:git@github.com:camunda/camunda-platform-7-mockito.git</url>
+    <developerConnection>scm:git:git@github.com:camunda/camunda-platform-7-mockito.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
@@ -332,20 +333,20 @@
             <artifactId>maven-gpg-plugin</artifactId>
             <version>3.0.1</version>
             <executions>
-                <execution>
-                    <id>sign-artifacts</id>
-                    <phase>verify</phase>
-                    <goals>
-                        <goal>sign</goal>
-                    </goals>
-                </execution>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
             </executions>
             <configuration>
-                <!-- Prevent gpg from using pinentry programs -->
-                <gpgArguments>
-                    <arg>--pinentry-mode</arg>
-                    <arg>loopback</arg>
-                </gpgArguments>
+              <!-- Prevent gpg from using pinentry programs -->
+              <gpgArguments>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
             </configuration>
           </plugin>
         </plugins>

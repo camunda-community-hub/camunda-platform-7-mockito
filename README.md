@@ -1,13 +1,12 @@
-# camunda-bpm-mockito
+# camunda-platform-7-mockito
 
 [![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
 [![camunda platform 7](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%207-26d07c)
 [![](https://img.shields.io/badge/Lifecycle-Stable-brightgreen)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#stable-)
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-bpm-mockito)
-[![Build Status](https://travis-ci.org/camunda/camunda-bpm-mockito.svg?branch=master)](https://travis-ci.org/camunda/camunda-bpm-mockito)
-[![codecov](https://codecov.io/gh/camunda/camunda-bpm-mockito/branch/master/graph/badge.svg)](https://codecov.io/gh/camunda/camunda-bpm-mockito) 
-[![Project Stats](https://www.openhub.net/p/camunda-bpm-mockito/widgets/project_thin_badge.gif)](https://www.openhub.net/p/camunda-bpm-mockito)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-platform-7-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-platform-7-mockito)
+[![Build Status](https://travis-ci.org/camunda/camunda-platform-7-mockito.svg?branch=master)](https://travis-ci.org/camunda/camunda-platform-7-mockito)
+[![codecov](https://codecov.io/gh/camunda/camunda-platform-7-mockito/branch/master/graph/badge.svg)](https://codecov.io/gh/camunda/camunda-platform-7-mockito) 
  [![Apache License V.2](https://img.shields.io/badge/license-Apache%20V.2-blue.svg)](./LICENSE)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -33,7 +32,7 @@
 
 **simplify process mocking and testing**
 
-camunda-bpm-mockito is a community extension for the Camunda BPM process engine that aims to simplify and 
+camunda-platform-7-mockito is a community extension for the Camunda BPM process engine that aims to simplify and 
 automate mocking of process applications.
 
 **Features:**
@@ -47,14 +46,14 @@ automate mocking of process applications.
 
 ## Get started
 
-Just include camunda-bpm-mockito in the test scope of your project:
+Just include camunda-platform-7-mockito in the test scope of your project:
 
 ```xml
 <dependency>
   <groupId>org.camunda.bpm.extension.mockito</groupId>
-  <artifactId>camunda-bpm-mockito</artifactId>
+  <artifactId>camunda-platform-7-mockito</artifactId>
   <scope>test</scope>
-  <version>5.15.0</version>
+  <version>6.17.0</version>
 </dependency>
 ```
 
@@ -338,7 +337,7 @@ public class MessageCorrelationMockExample {
 
 ## Release Notes
 
-see https://camunda.github.io/camunda-bpm-mockito/release-notes/
+see https://camunda.github.io/camunda-platform-7-mockito/release-notes/
 
 ## Limitations
 
@@ -352,8 +351,8 @@ This might and probably will change with future versions, it just has to be impl
 
 ## Resources
 
-* [Issue Tracker](https://github.com/camunda/camunda-bpm-mockito/issues)
-* [Contributing](https://github.com/camunda/camunda-bpm-mockito/blob/master/CONTRIBUTING.md) 
+* [Issue Tracker](https://github.com/camunda/camunda-platform-7-mockito/issues)
+* [Contributing](https://github.com/camunda/camunda-platform-7-mockito/blob/master/CONTRIBUTING.md) 
 * [openhub](https://www.openhub.net/p/camunda-bpm-mockito)
 
 ## Maintainer
