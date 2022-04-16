@@ -11,7 +11,7 @@
 
 | Important                                                                                                                                                                            |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| With camunda 8 released, we renamed this extension to clarify that it is only supposed to work with the Camunda BPM 7 platform, beginning with 6.17.x the maven coordinates changed! |
+| With camunda 8 released, we renamed this extension to clarify that it is only supposed to work with the Camunda BPM 7 platform, beginning with 6.17.x the maven coordinates changed!  This will also require that you change your imports to `org.camunda.community.mockito`. We are sorry for the inconvenience. |
 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
