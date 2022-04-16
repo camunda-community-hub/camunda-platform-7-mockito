@@ -9,6 +9,11 @@
 [![codecov](https://codecov.io/gh/camunda/camunda-platform-7-mockito/branch/master/graph/badge.svg)](https://codecov.io/gh/camunda/camunda-platform-7-mockito) 
  [![Apache License V.2](https://img.shields.io/badge/license-Apache%20V.2-blue.svg)](./LICENSE)
 
+| Important                                                                                                                                                                            |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| With camunda 8 released, we renamed this extension to clarify that it is only supposed to work with the Camunda BPM 7 platform, beginning with 6.17.x the maven coordinates changed! |
+
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
@@ -60,7 +65,7 @@ Just include camunda-platform-7-mockito in the test scope of your project:
 gradle (kts):
 
 ```kotlin
-   testImplementation("org.camunda.bpm.extension.mockito:camunda-bpm-mockito:5.14.0")
+   testImplementation("org.camunda.bpm.extension.mockito:camunda-platform-7-mockito:6.17.0")
 ```
 
 
