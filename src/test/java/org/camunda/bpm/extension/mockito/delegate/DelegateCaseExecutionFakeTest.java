@@ -1,8 +1,8 @@
-package org.camunda.bpm.extension.mockito.delegate;
+package org.camunda.community.mockito.delegate;
 
 import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.impl.cmmn.execution.CaseExecutionState;
-import org.camunda.bpm.extension.mockito.CamundaMockito;
+import org.camunda.community.mockito.CamundaMockito;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

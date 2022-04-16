@@ -4,7 +4,7 @@
 [![camunda platform 7](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%207-26d07c)
 [![](https://img.shields.io/badge/Lifecycle-Stable-brightgreen)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#stable-)
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-platform-7-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.mockito/camunda-platform-7-mockito)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.community.mockito/camunda-platform-7-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.community.mockito/camunda-platform-7-mockito)
 [![Build Status](https://travis-ci.org/camunda/camunda-platform-7-mockito.svg?branch=master)](https://travis-ci.org/camunda/camunda-platform-7-mockito)
 [![codecov](https://codecov.io/gh/camunda/camunda-platform-7-mockito/branch/master/graph/badge.svg)](https://codecov.io/gh/camunda/camunda-platform-7-mockito) 
  [![Apache License V.2](https://img.shields.io/badge/license-Apache%20V.2-blue.svg)](./LICENSE)
@@ -55,7 +55,7 @@ Just include camunda-platform-7-mockito in the test scope of your project:
 
 ```xml
 <dependency>
-  <groupId>org.camunda.bpm.extension.mockito</groupId>
+  <groupId>org.camunda.community.mockito</groupId>
   <artifactId>camunda-platform-7-mockito</artifactId>
   <scope>test</scope>
   <version>6.17.0</version>
@@ -65,7 +65,7 @@ Just include camunda-platform-7-mockito in the test scope of your project:
 gradle (kts):
 
 ```kotlin
-   testImplementation("org.camunda.bpm.extension.mockito:camunda-platform-7-mockito:6.17.0")
+   testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:6.17.0")
 ```
 
 
@@ -303,7 +303,7 @@ class MyCorrelator {
 In order to test those, you can use the following helper:
 
 ```java
-package org.camunda.bpm.extension.mockito;
+package org.camunda.community.mockito;
 
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.runtime.MessageCorrelationBuilder;

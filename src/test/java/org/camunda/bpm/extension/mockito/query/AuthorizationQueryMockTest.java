@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.mockito.query;
+package org.camunda.community.mockito.query;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -7,7 +7,7 @@ import static org.mockito.Mockito.verify;
 import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.authorization.Authorization;
 import org.camunda.bpm.engine.authorization.AuthorizationQuery;
-//import org.camunda.bpm.extension.mockito.QueryMocks1;
+//import org.camunda.community.mockito.QueryMocks1;
 import org.junit.Ignore;
 import org.junit.Test;
 

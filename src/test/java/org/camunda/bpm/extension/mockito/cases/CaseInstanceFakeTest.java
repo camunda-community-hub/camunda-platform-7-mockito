@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.mockito.cases;
+package org.camunda.community.mockito.cases;
 
 import org.camunda.bpm.engine.CaseService;
 import org.camunda.bpm.engine.runtime.CaseInstance;

@@ -1,11 +1,11 @@
-package org.camunda.bpm.extension.mockito;
+package org.camunda.community.mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.autoMock;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.verifyExecutionListenerMock;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.verifyJavaDelegateMock;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.verifyTaskListenerMock;
-import static org.camunda.bpm.extension.mockito.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
+import static org.camunda.community.mockito.DelegateExpressions.autoMock;
+import static org.camunda.community.mockito.DelegateExpressions.verifyExecutionListenerMock;
+import static org.camunda.community.mockito.DelegateExpressions.verifyJavaDelegateMock;
+import static org.camunda.community.mockito.DelegateExpressions.verifyTaskListenerMock;
+import static org.camunda.community.mockito.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
 
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;

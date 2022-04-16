@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.mockito;
+package org.camunda.community.mockito;
 
 
 import org.camunda.bpm.engine.ProcessEngineConfiguration;

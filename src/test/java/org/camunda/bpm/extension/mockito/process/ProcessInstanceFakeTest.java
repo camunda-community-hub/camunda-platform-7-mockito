@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.mockito.process;
+package org.camunda.community.mockito.process;
 
 import org.junit.Test;
 

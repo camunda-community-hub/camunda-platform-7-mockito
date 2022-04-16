@@ -1,8 +1,8 @@
-package org.camunda.bpm.extension.mockito.function;
+package org.camunda.community.mockito.function;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.camunda.bpm.extension.mockito.function.NameForType.juelNameFor;
+import static org.camunda.community.mockito.function.NameForType.juelNameFor;
 import static org.mockito.Mockito.mock;
 
 import javax.inject.Named;
@@ -81,23 +81,23 @@ public class NameForExpressionTypeTest {
      assertThat(NameForType.GET_VALUE.apply(BarComponentBean.class.getAnnotation(Component.class))).isEqualTo("bar");
      assertThat(NameForType.GET_VALUE.apply(ComponentBean.class.getAnnotation(Component.class))).isEqualTo("");
   }
-  
+
   @Test
   public void gets_value_from_service() {
      assertThat(NameForType.GET_VALUE.apply(BarServiceBean.class.getAnnotation(Service.class))).isEqualTo("bar");
      assertThat(NameForType.GET_VALUE.apply(ServiceBean.class.getAnnotation(Service.class))).isEqualTo("");
   }
-  
+
   @Test
   public void gets_name_for_mock_byClass() throws Exception {
     assertThat(NameForType.juelNameFor(mock(NamedBean.class))).isEqualTo("namedBean");
   }
-  
+
   @Test
   public void gets_name_for_mock_byAnnotation() throws Exception {
     assertThat(NameForType.juelNameFor(mock(BarNamedBean.class))).isEqualTo("bar");
   }
-  
+
   @Test
   public void getTypeOfMock() throws Exception {
     assertThat(NameForType.typeOf(mock(BarNamedBean.class)).getSimpleName()).isEqualTo(BarNamedBean.class.getSimpleName());

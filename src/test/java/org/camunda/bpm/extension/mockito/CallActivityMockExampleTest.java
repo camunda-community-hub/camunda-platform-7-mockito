@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.mockito;
+package org.camunda.community.mockito;
 
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.camunda.bpm.engine.impl.persistence.entity.TimerEntity;
@@ -7,7 +7,7 @@ import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.JobQuery;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
-import org.camunda.bpm.extension.mockito.function.DeployProcess;
+import org.camunda.community.mockito.function.DeployProcess;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.junit.Before;
@@ -22,8 +22,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.camunda.bpm.engine.variable.Variables.createVariables;
-import static org.camunda.bpm.extension.mockito.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
-import static org.camunda.bpm.extension.mockito.ProcessExpressions.registerCallActivityMock;
+import static org.camunda.community.mockito.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
+import static org.camunda.community.mockito.ProcessExpressions.registerCallActivityMock;
 
 public class CallActivityMockExampleTest {
 

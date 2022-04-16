@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.mockito.spring;
+package org.camunda.community.mockito.spring;
 
 import static org.assertj.core.api.Assertions.fail;
 

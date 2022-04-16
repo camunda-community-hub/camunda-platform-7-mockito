@@ -1,10 +1,10 @@
-package org.camunda.bpm.extension.mockito.mock;
+package org.camunda.community.mockito.mock;
 
 import io.holunda.camunda.bpm.data.CamundaBpmData;
 import io.holunda.camunda.bpm.data.factory.VariableFactory;
 import org.camunda.bpm.engine.delegate.BpmnError;
-import org.camunda.bpm.extension.mockito.DelegateExpressions;
-import org.camunda.bpm.extension.mockito.delegate.DelegateExecutionFake;
+import org.camunda.community.mockito.DelegateExpressions;
+import org.camunda.community.mockito.delegate.DelegateExecutionFake;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

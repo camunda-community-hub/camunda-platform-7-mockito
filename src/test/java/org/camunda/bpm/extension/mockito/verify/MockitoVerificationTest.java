@@ -1,11 +1,11 @@
-package org.camunda.bpm.extension.mockito.verify;
+package org.camunda.community.mockito.verify;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.bpm.extension.mockito.DelegateExpressions;
-import org.camunda.bpm.extension.mockito.mock.FluentJavaDelegateMock;
+import org.camunda.community.mockito.DelegateExpressions;
+import org.camunda.community.mockito.mock.FluentJavaDelegateMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

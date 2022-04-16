@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.mockito.function;
+package org.camunda.community.mockito.function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,9 +1,9 @@
-package org.camunda.bpm.extension.mockito.delegate;
+package org.camunda.community.mockito.delegate;
 
 import io.holunda.camunda.bpm.data.factory.VariableFactory;
 import org.camunda.bpm.engine.runtime.Incident;
 import org.camunda.bpm.engine.variable.Variables;
-import org.camunda.bpm.extension.mockito.CamundaMockito;
+import org.camunda.community.mockito.CamundaMockito;
 import org.junit.Test;
 
 import static io.holunda.camunda.bpm.data.CamundaBpmData.stringVariable;

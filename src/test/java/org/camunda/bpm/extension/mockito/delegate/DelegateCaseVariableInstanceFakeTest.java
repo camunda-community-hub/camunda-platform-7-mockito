@@ -1,11 +1,11 @@
-package org.camunda.bpm.extension.mockito.delegate;
+package org.camunda.community.mockito.delegate;
 
 import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.delegate.CaseVariableListener;
 import org.camunda.bpm.engine.variable.impl.value.AbstractTypedValue;
 import org.camunda.bpm.engine.variable.type.ValueType;
 import org.camunda.bpm.engine.variable.value.TypedValue;
-import org.camunda.bpm.extension.mockito.CamundaMockito;
+import org.camunda.community.mockito.CamundaMockito;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

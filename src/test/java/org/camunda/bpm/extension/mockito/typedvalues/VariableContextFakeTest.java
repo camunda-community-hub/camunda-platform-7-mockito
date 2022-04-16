@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.mockito.typedvalues;
+package org.camunda.community.mockito.typedvalues;
 
 
 import org.camunda.bpm.engine.variable.VariableMap;

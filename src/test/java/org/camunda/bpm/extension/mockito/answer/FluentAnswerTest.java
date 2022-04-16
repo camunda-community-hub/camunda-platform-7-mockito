@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.mockito.answer;
+package org.camunda.community.mockito.answer;
 
 import org.camunda.bpm.engine.query.Query;
 import org.junit.Before;

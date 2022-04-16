@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.mockito.delegate;
+package org.camunda.community.mockito.delegate;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineServices;

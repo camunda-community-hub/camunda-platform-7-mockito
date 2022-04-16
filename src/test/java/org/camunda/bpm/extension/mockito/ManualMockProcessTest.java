@@ -1,23 +1,23 @@
-package org.camunda.bpm.extension.mockito;
+package org.camunda.community.mockito;
 
 import static org.camunda.bpm.engine.variable.Variables.createVariables;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.getExecutionListenerMock;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.getJavaDelegateMock;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.getTaskListenerMock;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.registerExecutionListenerMock;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.registerJavaDelegateMock;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.registerTaskListenerMock;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.verifyExecutionListenerMock;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.verifyJavaDelegateMock;
-import static org.camunda.bpm.extension.mockito.DelegateExpressions.verifyTaskListenerMock;
-import static org.camunda.bpm.extension.mockito.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
+import static org.camunda.community.mockito.DelegateExpressions.getExecutionListenerMock;
+import static org.camunda.community.mockito.DelegateExpressions.getJavaDelegateMock;
+import static org.camunda.community.mockito.DelegateExpressions.getTaskListenerMock;
+import static org.camunda.community.mockito.DelegateExpressions.registerExecutionListenerMock;
+import static org.camunda.community.mockito.DelegateExpressions.registerJavaDelegateMock;
+import static org.camunda.community.mockito.DelegateExpressions.registerTaskListenerMock;
+import static org.camunda.community.mockito.DelegateExpressions.verifyExecutionListenerMock;
+import static org.camunda.community.mockito.DelegateExpressions.verifyJavaDelegateMock;
+import static org.camunda.community.mockito.DelegateExpressions.verifyTaskListenerMock;
+import static org.camunda.community.mockito.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
 import static org.junit.Assert.assertThat;
 
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
-import org.camunda.bpm.extension.mockito.mock.FluentJavaDelegateMock;
+import org.camunda.community.mockito.mock.FluentJavaDelegateMock;
 import org.hamcrest.CoreMatchers;
 import org.junit.Rule;
 import org.junit.Test;

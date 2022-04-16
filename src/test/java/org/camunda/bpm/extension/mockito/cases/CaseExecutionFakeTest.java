@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.mockito.cases;
+package org.camunda.community.mockito.cases;
 
 import org.junit.Test;
 
