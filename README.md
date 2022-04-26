@@ -250,6 +250,7 @@ With ProcessExpressions.registerCallActivityMock() you can easily register a moc
 * onExecutionWaitForMessage ... the MockProcess will wait for the given message
 * onExecutionRunIntoError ... the MockProcess will throw the given Throwable as RuntimeException
 * onExecutionDo ... the MockProcess will execute the given consumer
+* onExecutionThrowEscalation ... the MockProcess will throw escalation with the given code at the end event
 
 All of those methods could be combined on the fluent sub process mock builder. 
 
@@ -267,7 +268,7 @@ The following example will e.g. register a process mock which does the following
       .deploy(rule);
 ```
 
-More examples could be found in the following class `SubprocessMockExample`.
+More examples could be found in the following class `CallActivityMockExampleTest`.
 
 ## Mocking of message correlation builder
 
