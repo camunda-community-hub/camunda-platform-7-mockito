@@ -6,6 +6,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.repository.Deployment;
 import org.camunda.bpm.engine.variable.VariableMap;
+import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.community.mockito.function.DeployProcess;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.builder.AbstractFlowNodeBuilder;
@@ -21,7 +22,8 @@ import java.util.function.Consumer;
 import static org.camunda.bpm.engine.variable.Variables.createVariables;
 import static org.camunda.community.mockito.Expressions.registerInstance;
 
-public class CallActivityMock {
+public class CallActivityMock implements DeployProcess.BpmnModelInstanceResource {
+
 
   /**
    * Interface used as a callback to set some attributes of the mocked process model (e.g. versionTag, name etc.)
@@ -34,6 +36,8 @@ public class CallActivityMock {
   private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
   private final String processId;
   private AbstractFlowNodeBuilder<?, ?> flowNodeBuilder;
+
+  private BpmnModelInstance modelInstance = null;
   private String escalation;
 
   public CallActivityMock(final String processId, final MockedModelConfigurer modelConfigurer) {
@@ -236,17 +240,32 @@ public class CallActivityMock {
    * This will deploy the mock process.
    */
   public Deployment deploy(final RepositoryService repositoryService) {
-    EndEventBuilder endEvent = flowNodeBuilder.endEvent("end");
-
-    if (this.escalation != null) {
-      endEvent = endEvent.escalation(this.escalation);
-    }
-
-    return new DeployProcess(repositoryService).apply(processId, endEvent.done());
+    return new DeployProcess(repositoryService).apply(processId, getModelInstance());
   }
 
   public Deployment deploy(final ProcessEngineServices processEngineServices) {
     return this.deploy(processEngineServices.getRepositoryService());
+  }
+
+
+  @Override
+  public String getResourceName() {
+    return processId + ".bpmn";
+  }
+
+  @Override
+  public BpmnModelInstance getModelInstance() {
+    if (modelInstance == null) {
+      EndEventBuilder endEvent = flowNodeBuilder.endEvent("end");
+
+      if (this.escalation != null) {
+        endEvent = endEvent.escalation(this.escalation);
+      }
+
+      modelInstance = endEvent.done();
+    }
+
+    return modelInstance;
   }
 
   private String randomUUID() {
