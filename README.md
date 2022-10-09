@@ -58,14 +58,14 @@ Just include camunda-platform-7-mockito in the test scope of your project:
   <groupId>org.camunda.community.mockito</groupId>
   <artifactId>camunda-platform-7-mockito</artifactId>
   <scope>test</scope>
-  <version>6.17.1</version>
+  <version>6.18.0</version>
 </dependency>
 ```
 
 gradle (kts):
 
 ```kotlin
-   testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:6.17.1")
+   testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:6.18.0")
 ```
 
 
