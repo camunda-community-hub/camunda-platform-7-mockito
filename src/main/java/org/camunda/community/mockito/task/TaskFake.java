@@ -22,6 +22,7 @@ public class TaskFake implements Task {
   private String caseInstanceId;
   private String caseExecutionId;
   private Date createTime;
+  private Date lastUpdated;
   private String taskDefinitionKey;
   private Date dueDate;
   private Date followUpDate;
@@ -34,12 +35,12 @@ public class TaskFake implements Task {
 
   @java.beans.ConstructorProperties({"id", "name", "description", "priority", "owner", "assignee",
     "processDefinitionId", "caseDefinitionId", "executionId", "processInstanceId", "caseInstanceId",
-    "caseExecutionId", "createTime", "taskDefinitionKey", "dueDate", "followUpDate", "parentTaskId",
+    "caseExecutionId", "createTime", "lastUpdated", "taskDefinitionKey", "dueDate", "followUpDate", "parentTaskId",
     "suspended", "tenantId", "formKey", "delegationState", "camundaFormRef"})
   TaskFake(final String id, final String name, final String description, final int priority, final String owner,
            final String assignee, final String processDefinitionId, final String caseDefinitionId,
            final String executionId, final String processInstanceId, final String caseInstanceId,
-           final String caseExecutionId, final Date createTime, final String taskDefinitionKey,
+           final String caseExecutionId, final Date createTime, final Date lastUpdated, final String taskDefinitionKey,
            final Date dueDate, final Date followUpDate, final String parentTaskId, final boolean suspended,
            final String tenantId, final String formKey, final DelegationState delegationState,
            final CamundaFormRef camundaFormRef) {
@@ -58,6 +59,7 @@ public class TaskFake implements Task {
     this.createTime = createTime;
     this.taskDefinitionKey = taskDefinitionKey;
     this.dueDate = dueDate;
+    this.lastUpdated = lastUpdated;
     this.followUpDate = followUpDate;
     this.parentTaskId = parentTaskId;
     this.suspended = suspended;
@@ -206,6 +208,15 @@ public class TaskFake implements Task {
   }
 
   @Override
+  public Date getLastUpdated() {
+    return lastUpdated;
+  }
+
+  public void setLastUpdated(final Date lastUpdated) {
+    this.lastUpdated = lastUpdated;
+  }
+
+  @Override
   public String getTaskDefinitionKey() {
     return taskDefinitionKey;
   }
@@ -302,6 +313,7 @@ public class TaskFake implements Task {
       ", caseInstanceId='" + caseInstanceId + '\'' +
       ", caseExecutionId='" + caseExecutionId + '\'' +
       ", createTime=" + createTime +
+      ", lastUpdated=" + lastUpdated +
       ", taskDefinitionKey='" + taskDefinitionKey + '\'' +
       ", dueDate=" + dueDate +
       ", followUpDate=" + followUpDate +
@@ -327,6 +339,7 @@ public class TaskFake implements Task {
     private String caseInstanceId;
     private String caseExecutionId;
     private Date createTime;
+    private Date lastUpdated;
     private String taskDefinitionKey;
     private Date dueDate;
     private Date followUpDate;
@@ -405,6 +418,11 @@ public class TaskFake implements Task {
       return this;
     }
 
+    public TaskFakeBuilder lastUpdated(final Date lastUpdated) {
+      this.lastUpdated = lastUpdated;
+      return this;
+    }
+
     public TaskFakeBuilder taskDefinitionKey(final String taskDefinitionKey) {
       this.taskDefinitionKey = taskDefinitionKey;
       return this;
@@ -451,7 +469,7 @@ public class TaskFake implements Task {
     }
 
     public TaskFake build() {
-      return new TaskFake(id, name, description, priority, owner, assignee, processDefinitionId, caseDefinitionId, executionId, processInstanceId, caseInstanceId, caseExecutionId, createTime, taskDefinitionKey, dueDate, followUpDate, parentTaskId, suspended, tenantId, formKey, delegationState, camundaFormRef);
+      return new TaskFake(id, name, description, priority, owner, assignee, processDefinitionId, caseDefinitionId, executionId, processInstanceId, caseInstanceId, caseExecutionId, createTime, lastUpdated, taskDefinitionKey, dueDate, followUpDate, parentTaskId, suspended, tenantId, formKey, delegationState, camundaFormRef);
     }
 
     public String toString() {
@@ -469,6 +487,7 @@ public class TaskFake implements Task {
         "caseInstanceId=" + this.caseInstanceId + ", " +
         "caseExecutionId=" + this.caseExecutionId + ", " +
         "createTime=" + this.createTime + ", " +
+        "lastUpdated=" + this.lastUpdated + ", " +
         "taskDefinitionKey=" + this.taskDefinitionKey + ", " +
         "dueDate=" + this.dueDate + ", " +
         "followUpDate=" + this.followUpDate + ", " +
