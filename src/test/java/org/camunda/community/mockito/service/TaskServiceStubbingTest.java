@@ -9,63 +9,66 @@ import java.util.UUID;
 
 import static io.holunda.camunda.bpm.data.CamundaBpmData.booleanVariable;
 import static io.holunda.camunda.bpm.data.CamundaBpmData.stringVariable;
-import static org.camunda.bpm.model.xml.test.assertions.ModelAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
+/**
+ * Test to for task service variable access.
+ */
 public class TaskServiceStubbingTest {
   private static final VariableFactory<String> ORDER_ID = stringVariable("orderId");
   private static final VariableFactory<Boolean> ORDER_FLAG = booleanVariable("orderFlag");
 
   private final TaskService taskService = mock(TaskService.class);
-  private final TaskServiceAwareService testee = new TaskServiceAwareService(taskService);
+  private final MyTaskRestController myTaskRestController = new MyTaskRestController(taskService);
 
   @Test
   public void stubs_variable_access() {
 
-    String executionId = UUID.randomUUID().toString();
+    String taskId = UUID.randomUUID().toString();
 
     ServiceExpressions.taskServiceVariableStubBuilder(taskService)
       .defineAndInitializeLocal(ORDER_ID, "initial-Value")
       .define(ORDER_FLAG)
       .build();
 
-    testee.writeLocalId(executionId, "4712");
-    String orderId = testee.readLocalId(executionId);
+    myTaskRestController.writeLocalId(taskId, "4712");
+    String orderId = myTaskRestController.readLocalId(taskId);
     assertThat(orderId).isEqualTo("4712");
 
-    assertThat(testee.flagExists(executionId)).isFalse();
-    testee.writeFlag(executionId, true);
-    assertThat(testee.flagExists(executionId)).isTrue();
-    Boolean orderFlag = testee.readFlag(executionId);
+    assertThat(myTaskRestController.flagExists(taskId)).isFalse();
+    myTaskRestController.writeFlag(taskId, true);
+    assertThat(myTaskRestController.flagExists(taskId)).isTrue();
+    Boolean orderFlag = myTaskRestController.readFlag(taskId);
     assertThat(orderFlag).isEqualTo(true);
   }
 
 
-  static class TaskServiceAwareService {
+  static class MyTaskRestController {
     private final TaskService taskService;
 
-    TaskServiceAwareService(TaskService taskService) {
+    MyTaskRestController(TaskService taskService) {
       this.taskService = taskService;
     }
 
-    public String readLocalId(String execution) {
-      return ORDER_ID.from(taskService, execution).getLocal();
+    public String readLocalId(String taskId) {
+      return ORDER_ID.from(taskService, taskId).getLocal();
     }
 
-    public void writeLocalId(String execution, String value) {
-      ORDER_ID.on(taskService, execution).setLocal(value);
+    public void writeLocalId(String taskId, String value) {
+      ORDER_ID.on(taskService, taskId).setLocal(value);
     }
 
-    public void writeFlag(String execution, Boolean value) {
-      ORDER_FLAG.on(taskService, execution).set(value);
+    public void writeFlag(String taskId, Boolean value) {
+      ORDER_FLAG.on(taskService, taskId).set(value);
     }
 
-    public Boolean readFlag(String execution) {
-      return ORDER_FLAG.from(taskService, execution).get();
+    public Boolean readFlag(String taskId) {
+      return ORDER_FLAG.from(taskService, taskId).get();
     }
 
-    public Boolean flagExists(String execution) {
-      return taskService.getVariables(execution).containsKey(ORDER_FLAG.getName());
+    public Boolean flagExists(String taskId) {
+      return taskService.getVariables(taskId).containsKey(ORDER_FLAG.getName());
     }
   }
 }

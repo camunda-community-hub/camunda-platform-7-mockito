@@ -73,4 +73,89 @@ public class CaseServiceVerifierTest {
     verifier.verifyNoMoreInteractions();
   }
 
+  @Test
+  public void verifySet() {
+    ServiceExpressions.caseServiceVariableStubBuilder(caseService).define(VAR).build();
+    CaseServiceVerification verifier = ServiceExpressions.caseServiceVerification(caseService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(caseService, executionId).set("value");
+    verifier.verifySet(VAR, "value", executionId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifySetTimes() {
+    ServiceExpressions.caseServiceVariableStubBuilder(caseService).define(VAR).build();
+    CaseServiceVerification verifier = ServiceExpressions.caseServiceVerification(caseService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(caseService, executionId).set("value");
+    VAR.on(caseService, executionId).set("value");
+    verifier.verifySet(VAR, "value", executionId, times(2));
+    verifier.verifyNoMoreInteractions();
+  }
+
+
+  @Test
+  public void verifySetLocal() {
+    ServiceExpressions.caseServiceVariableStubBuilder(caseService).define(VAR).build();
+    CaseServiceVerification verifier = ServiceExpressions.caseServiceVerification(caseService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(caseService, executionId).setLocal("value");
+    verifier.verifySetLocal(VAR, "value", executionId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifySetTimesLocal() {
+    ServiceExpressions.caseServiceVariableStubBuilder(caseService).define(VAR).build();
+    CaseServiceVerification verifier = ServiceExpressions.caseServiceVerification(caseService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(caseService, executionId).setLocal("value");
+    VAR.on(caseService, executionId).setLocal("value");
+    verifier.verifySetLocal(VAR, "value", executionId, times(2));
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyRemove() {
+    ServiceExpressions.caseServiceVariableStubBuilder(caseService).define(VAR).build();
+    CaseServiceVerification verifier = ServiceExpressions.caseServiceVerification(caseService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(caseService, executionId).remove();
+    verifier.verifyRemove(VAR, executionId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyRemoveTimes() {
+    ServiceExpressions.caseServiceVariableStubBuilder(caseService).define(VAR).build();
+    CaseServiceVerification verifier = ServiceExpressions.caseServiceVerification(caseService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(caseService, executionId).remove();
+    VAR.on(caseService, executionId).remove();
+    verifier.verifyRemove(VAR, executionId, times(2));
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyRemoveLocal() {
+    ServiceExpressions.caseServiceVariableStubBuilder(caseService).define(VAR).build();
+    CaseServiceVerification verifier = ServiceExpressions.caseServiceVerification(caseService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(caseService, executionId).removeLocal();
+    verifier.verifyRemoveLocal(VAR, executionId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyRemoveLocalTimes() {
+    ServiceExpressions.caseServiceVariableStubBuilder(caseService).define(VAR).build();
+    CaseServiceVerification verifier = ServiceExpressions.caseServiceVerification(caseService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(caseService, executionId).removeLocal();
+    VAR.on(caseService, executionId).removeLocal();
+    verifier.verifyRemoveLocal(VAR, executionId, times(2));
+    verifier.verifyNoMoreInteractions();
+  }
+
 }

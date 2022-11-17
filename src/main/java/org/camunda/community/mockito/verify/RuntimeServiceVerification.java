@@ -117,10 +117,67 @@ public class RuntimeServiceVerification {
   }
 
   /**
+   * Verifies if the variable has been removed from a global scope.
+   * @param variableFactory factory defining the variable.
+   * @param executionId execution id.
+   * @param <T> type of variable.
+   * @param mode verification mode.
+   */
+  public <T> void verifyRemove(VariableFactory<T> variableFactory, String executionId, VerificationMode mode) {
+    verify(runtimeService, mode).removeVariable(executionId, variableFactory.getName());
+  }
+
+  /**
+   * Verifies if the variable has been removed from a global scope.
+   * @param variableFactory factory defining the variable.
+   * @param executionId execution id.
+   * @param <T> type of variable.
+   */
+  public <T> void verifyRemove(VariableFactory<T> variableFactory, String executionId) {
+    verify(runtimeService).removeVariable(executionId, variableFactory.getName());
+  }
+
+  /**
+   * Verifies if the variable has been removed from a local scope.
+   * @param variableFactory factory defining the variable.
+   * @param executionId execution id.
+   * @param <T> type of variable.
+   * @param mode verification mode.
+   */
+  public <T> void verifyRemoveLocal(VariableFactory<T> variableFactory, String executionId, VerificationMode mode) {
+    verify(runtimeService, mode).removeVariableLocal(executionId, variableFactory.getName());
+  }
+
+  /**
+   * Verifies if the variable has been removed from a local scope.
+   * @param variableFactory factory defining the variable.
+   * @param executionId execution id.
+   * @param <T> type of variable.
+   */
+  public <T> void verifyRemoveLocal(VariableFactory<T> variableFactory, String executionId) {
+    verify(runtimeService).removeVariableLocal(executionId, variableFactory.getName());
+  }
+
+  /**
+   * Verifies retrieval of all process variables.
+   * @param executionId execution id.
+   * @param mode verification mode.
+   */
+  public void verifyGetVariables(String executionId, VerificationMode mode) {
+    verify(runtimeService, mode).getVariables(executionId);
+  }
+
+  /**
+   * Verifies retrieval of all process variables.
+   * @param executionId execution id.
+   */
+  public void verifyGetVariables(String executionId) {
+    verify(runtimeService).getVariables(executionId);
+  }
+  /**
    * No further interaction with mock.
    */
   public void verifyNoMoreInteractions() {
     Mockito.verifyNoMoreInteractions(runtimeService);
   }
-
 }

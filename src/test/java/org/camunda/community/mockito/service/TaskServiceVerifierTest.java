@@ -1,7 +1,9 @@
 package org.camunda.community.mockito.service;
 
+import io.holunda.camunda.bpm.data.CamundaBpmData;
 import io.holunda.camunda.bpm.data.factory.VariableFactory;
 import org.camunda.bpm.engine.TaskService;
+import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.community.mockito.ServiceExpressions;
 import org.camunda.community.mockito.verify.TaskServiceVerification;
 import org.junit.Before;
@@ -27,12 +29,12 @@ public class TaskServiceVerifierTest {
   public void verifyGetTimes() {
     ServiceExpressions.taskServiceVariableStubBuilder(taskService).defineAndInitialize(VAR, "value").build();
     TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
-    String executionId = UUID.randomUUID().toString();
+    String taskId = UUID.randomUUID().toString();
 
-    VAR.from(taskService, executionId).get();
-    VAR.from(taskService, executionId).get();
+    VAR.from(taskService, taskId).get();
+    VAR.from(taskService, taskId).get();
 
-    verifier.verifyGet(VAR, executionId, times(2));
+    verifier.verifyGet(VAR, taskId, times(2));
     verifier.verifyNoMoreInteractions();
   }
 
@@ -40,11 +42,11 @@ public class TaskServiceVerifierTest {
   public void verifyGet() {
     ServiceExpressions.taskServiceVariableStubBuilder(taskService).defineAndInitialize(VAR, "value").build();
     TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
-    String executionId = UUID.randomUUID().toString();
+    String taskId = UUID.randomUUID().toString();
 
-    VAR.from(taskService, executionId).get();
+    VAR.from(taskService, taskId).get();
 
-    verifier.verifyGet(VAR, executionId);
+    verifier.verifyGet(VAR, taskId);
     verifier.verifyNoMoreInteractions();
   }
 
@@ -52,12 +54,12 @@ public class TaskServiceVerifierTest {
   public void verifyGetTimesLocal() {
     ServiceExpressions.taskServiceVariableStubBuilder(taskService).defineAndInitializeLocal(VAR, "value").build();
     TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
-    String executionId = UUID.randomUUID().toString();
+    String taskId = UUID.randomUUID().toString();
 
-    VAR.from(taskService, executionId).getLocal();
-    VAR.from(taskService, executionId).getLocal();
+    VAR.from(taskService, taskId).getLocal();
+    VAR.from(taskService, taskId).getLocal();
 
-    verifier.verifyGetLocal(VAR, executionId, times(2));
+    verifier.verifyGetLocal(VAR, taskId, times(2));
     verifier.verifyNoMoreInteractions();
   }
 
@@ -65,11 +67,122 @@ public class TaskServiceVerifierTest {
   public void verifyGetLocal() {
     ServiceExpressions.taskServiceVariableStubBuilder(taskService).defineAndInitializeLocal(VAR, "value").build();
     TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
-    String executionId = UUID.randomUUID().toString();
+    String taskId = UUID.randomUUID().toString();
 
-    VAR.from(taskService, executionId).getLocal();
+    VAR.from(taskService, taskId).getLocal();
 
-    verifier.verifyGetLocal(VAR, executionId);
+    verifier.verifyGetLocal(VAR, taskId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifySet() {
+    ServiceExpressions.taskServiceVariableStubBuilder(taskService).define(VAR).build();
+    TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
+    String taskId = UUID.randomUUID().toString();
+    VAR.on(taskService, taskId).set("value");
+    verifier.verifySet(VAR, "value", taskId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifySetTimes() {
+    ServiceExpressions.taskServiceVariableStubBuilder(taskService).define(VAR).build();
+    TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
+    String taskId = UUID.randomUUID().toString();
+    VAR.on(taskService, taskId).set("value");
+    VAR.on(taskService, taskId).set("value");
+    verifier.verifySet(VAR, "value", taskId, times(2));
+    verifier.verifyNoMoreInteractions();
+  }
+
+
+  @Test
+  public void verifySetLocal() {
+    ServiceExpressions.taskServiceVariableStubBuilder(taskService).define(VAR).build();
+    TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
+    String taskId = UUID.randomUUID().toString();
+    VAR.on(taskService, taskId).setLocal("value");
+    verifier.verifySetLocal(VAR, "value", taskId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifySetTimesLocal() {
+    ServiceExpressions.taskServiceVariableStubBuilder(taskService).define(VAR).build();
+    TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
+    String taskId = UUID.randomUUID().toString();
+    VAR.on(taskService, taskId).setLocal("value");
+    VAR.on(taskService, taskId).setLocal("value");
+    verifier.verifySetLocal(VAR, "value", taskId, times(2));
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyRemove() {
+    ServiceExpressions.taskServiceVariableStubBuilder(taskService).define(VAR).build();
+    TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
+    String taskId = UUID.randomUUID().toString();
+    VAR.on(taskService, taskId).remove();
+    verifier.verifyRemove(VAR, taskId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyRemoveTimes() {
+    ServiceExpressions.taskServiceVariableStubBuilder(taskService).define(VAR).build();
+    TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
+    String taskId = UUID.randomUUID().toString();
+    VAR.on(taskService, taskId).remove();
+    VAR.on(taskService, taskId).remove();
+    verifier.verifyRemove(VAR, taskId, times(2));
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyRemoveLocal() {
+    ServiceExpressions.taskServiceVariableStubBuilder(taskService).define(VAR).build();
+    TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
+    String taskId = UUID.randomUUID().toString();
+    VAR.on(taskService, taskId).removeLocal();
+    verifier.verifyRemoveLocal(VAR, taskId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyRemoveLocalTimes() {
+    ServiceExpressions.taskServiceVariableStubBuilder(taskService).define(VAR).build();
+    TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
+    String taskId = UUID.randomUUID().toString();
+    VAR.on(taskService, taskId).removeLocal();
+    VAR.on(taskService, taskId).removeLocal();
+    verifier.verifyRemoveLocal(VAR, taskId, times(2));
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyComplete() {
+    ServiceExpressions.taskServiceVariableStubBuilder(taskService).define(VAR).build();
+    TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
+    String taskId = UUID.randomUUID().toString();
+    taskService.complete(taskId);
+    verifier.verifyComplete(taskId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyCompleteWithVariables() {
+    ServiceExpressions.taskServiceVariableStubBuilder(taskService).define(VAR).build();
+    TaskServiceVerification verifier = ServiceExpressions.taskServiceVerification(taskService);
+    String taskId = UUID.randomUUID().toString();
+
+    VariableMap vars = CamundaBpmData
+      .builder()
+      .set(VAR, "someValue")
+      .build();
+
+    taskService.complete(taskId, vars);
+    verifier.verifyComplete(vars, taskId);
     verifier.verifyNoMoreInteractions();
   }
 

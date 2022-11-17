@@ -73,4 +73,88 @@ public class RuntimeServiceVerifierTest {
     verifier.verifyNoMoreInteractions();
   }
 
+  @Test
+  public void verifySet() {
+    ServiceExpressions.runtimeServiceVariableStubBuilder(runtimeService).define(VAR).build();
+    RuntimeServiceVerification verifier = ServiceExpressions.runtimeServiceVerification(runtimeService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(runtimeService, executionId).set("value");
+    verifier.verifySet(VAR, "value", executionId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifySetTimes() {
+    ServiceExpressions.runtimeServiceVariableStubBuilder(runtimeService).define(VAR).build();
+    RuntimeServiceVerification verifier = ServiceExpressions.runtimeServiceVerification(runtimeService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(runtimeService, executionId).set("value");
+    VAR.on(runtimeService, executionId).set("value");
+    verifier.verifySet(VAR, "value", executionId, times(2));
+    verifier.verifyNoMoreInteractions();
+  }
+
+
+  @Test
+  public void verifySetLocal() {
+    ServiceExpressions.runtimeServiceVariableStubBuilder(runtimeService).define(VAR).build();
+    RuntimeServiceVerification verifier = ServiceExpressions.runtimeServiceVerification(runtimeService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(runtimeService, executionId).setLocal("value");
+    verifier.verifySetLocal(VAR, "value", executionId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifySetTimesLocal() {
+    ServiceExpressions.runtimeServiceVariableStubBuilder(runtimeService).define(VAR).build();
+    RuntimeServiceVerification verifier = ServiceExpressions.runtimeServiceVerification(runtimeService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(runtimeService, executionId).setLocal("value");
+    VAR.on(runtimeService, executionId).setLocal("value");
+    verifier.verifySetLocal(VAR, "value", executionId, times(2));
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyRemove() {
+    ServiceExpressions.runtimeServiceVariableStubBuilder(runtimeService).define(VAR).build();
+    RuntimeServiceVerification verifier = ServiceExpressions.runtimeServiceVerification(runtimeService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(runtimeService, executionId).remove();
+    verifier.verifyRemove(VAR, executionId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyRemoveTimes() {
+    ServiceExpressions.runtimeServiceVariableStubBuilder(runtimeService).define(VAR).build();
+    RuntimeServiceVerification verifier = ServiceExpressions.runtimeServiceVerification(runtimeService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(runtimeService, executionId).remove();
+    VAR.on(runtimeService, executionId).remove();
+    verifier.verifyRemove(VAR, executionId, times(2));
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyRemoveLocal() {
+    ServiceExpressions.runtimeServiceVariableStubBuilder(runtimeService).define(VAR).build();
+    RuntimeServiceVerification verifier = ServiceExpressions.runtimeServiceVerification(runtimeService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(runtimeService, executionId).removeLocal();
+    verifier.verifyRemoveLocal(VAR, executionId);
+    verifier.verifyNoMoreInteractions();
+  }
+
+  @Test
+  public void verifyRemoveLocalTimes() {
+    ServiceExpressions.runtimeServiceVariableStubBuilder(runtimeService).define(VAR).build();
+    RuntimeServiceVerification verifier = ServiceExpressions.runtimeServiceVerification(runtimeService);
+    String executionId = UUID.randomUUID().toString();
+    VAR.on(runtimeService, executionId).removeLocal();
+    VAR.on(runtimeService, executionId).removeLocal();
+    verifier.verifyRemoveLocal(VAR, executionId, times(2));
+    verifier.verifyNoMoreInteractions();
+  }
 }
