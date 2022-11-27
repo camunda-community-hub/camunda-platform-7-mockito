@@ -193,7 +193,7 @@ public enum DelegateExpressions {
    * instance.
    *
    * @param type the type of the delegate to lookup
-   * @return verifcation for JavaDelegate
+   * @return verification for JavaDelegate
    */
   public static MockitoVerification<DelegateExecution> verifyJavaDelegateMock(final Class<?> type) {
     return verifyJavaDelegateMock(getJavaDelegateMock(type));

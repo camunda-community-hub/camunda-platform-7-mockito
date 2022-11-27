@@ -22,11 +22,12 @@
 - [Mocking of queries](#mocking-of-queries)
 - [Mock Listener and Delegate behavior](#mock-listener-and-delegate-behavior)
   - [Possible Actions](#possible-actions)
-- [Easy register and verify mocks](#easy-register-and-verify-mocks)
-- [Auto mock all delegates and listeners](#auto-mock-all-delegates-and-listeners)
+  - [Easy register and verify mocks](#easy-register-and-verify-mocks)
+  - [Auto mock all delegates and listeners](#auto-mock-all-delegates-and-listeners)
 - [Delegate[Task|Execution]Fake](#delegatetaskexecutionfake)
 - [Mocking of external subprocesses](#mocking-of-external-subprocesses)
 - [Mocking of message correlation builder](#mocking-of-message-correlation-builder)
+- [Stubbing and verifying access to Camunda Java API services to access process variables](#stubbing-and-verifying-access-to-camunda-java-api-services-to-access-process-variables)
 - [Release Notes](#release-notes)
 - [Limitations](#limitations)
 - [Resources](#resources)
@@ -99,8 +100,8 @@ With the QueryMocks extension, you can do all this in just one line of code, see
 ## Mock Listener and Delegate behavior
 
 Mocking void methods using mockito is not very convenient, since you need to 
-use the doAnswer(Answer&lt;T&gt;).when() construct, implement your own answer and pick up the parameter from the 
-invocation context. JavaDelegate and ExecutionListener are providing their basic fuctionality using void methods.  
+use the `doAnswer(Answer<>).when()` construct, implement your own answer and pick up the parameter from the 
+invocation context. JavaDelegate and ExecutionListener are providing their basic functionality using void methods.  
 In general, when working with the Delegate and Listener interfaces, there are basically two things they can do from the 
 point of interaction between the process execution: modify process variables and raise errors. 
 
@@ -164,9 +165,9 @@ DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
   .onExecutionThrowBpmnError("code", MESSAGE);
 ```
 
-## Easy register and verify mocks
+### Easy register and verify mocks
 
-In addition two of the well-known "Mocks.register()" hook, you now have the possibility to register fluent mocks directly:
+In addition to the well-known "Mocks.register()" hook, you now have the possibility to register fluent mocks directly:
 
      registerJavaDelegateMock("name")
      registerMockInstance(YourDelegate.class)
@@ -177,7 +178,7 @@ To verify the Mock execution, you can use
 
     verifyJavaDelegateMock("name").executed(times(2));
 
-## Auto mock all delegates and listeners
+### Auto mock all delegates and listeners
 
 With the autoMock() feature, you can register all Delegates and Listeners at once, without explicitly adding "register"-statements to your testcase.
 If you do need to specify behaviour for the mocks, you can still get the mock via `getJavaDelegateMock` for delegates. 
@@ -203,7 +204,7 @@ And `getExecutionListenerMock` / `getTaskListenerMock` for listeners.
 ## Delegate[Task|Execution]Fake
 
 Unit-testing listeners and JavaDelegates can be difficult, because the methods are void and only
- white-box testing via verify is possible. But most of the times, you just want to 
+ white-box testing via verify is possible. But most of the time, you just want to 
  confirm that a certain variable was set (or a dueDate, a candidate, ...).
   
 In these cases, use the Delegate fakes. The implement the interfaces DelegateTask and DelegateExecution,
@@ -261,11 +262,12 @@ The following example will e.g. register a process mock which does the following
 3) After this, a process variable `foo` is set with a value of `bar
 
 ```java
-    ProcessExpressions.registerSubProcessMock(SUB_PROCESS_ID)
-      .onExecutionWaitForMessage("SomeMessage")
-      .onExecutionWaitForTimerWithDate(waitUntilDate)
-      .onExecutionSetVariables(createVariables().putValue("foo", "bar"))
-      .deploy(rule);
+ProcessExpressions
+  .registerSubProcessMock(SUB_PROCESS_ID)
+  .onExecutionWaitForMessage("SomeMessage")
+  .onExecutionWaitForTimerWithDate(waitUntilDate)
+  .onExecutionSetVariables(createVariables().putValue("foo", "bar"))
+  .deploy(rule);
 ```
 
 More examples could be found in the following class [`CallActivityMockExampleTest`](src/test/java/org/camunda/bpm/extension/mockito/CallActivityMockExampleTest.java).
@@ -340,6 +342,74 @@ public class MessageCorrelationMockExample {
 }
 ```
 
+## Stubbing and verifying access to Camunda Java API services to access process variables 
+
+If you use [camunda-bpm-data](https://github.com/holunda-io/camunda-bpm-data/) library to access process variables, you might 
+want to test that access. If you are testing `DelegateTask` or `DelegateExecution` code, the examples above already gives you
+possibilities to do so. If your code relies on direct access to Camunda Java API services (`RuntimeService`, `TaskService` and
+`CaseService`) you might need to stub them and verify with the help of `ServiceExpressions` helper:
+
+```java
+package org.camunda.community.mockito;
+
+import io.holunda.camunda.bpm.data.factory.VariableFactory;
+import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.community.mockito.ServiceExpressions;
+import org.junit.Test;
+
+import java.util.UUID;
+
+import static io.holunda.camunda.bpm.data.CamundaBpmData.booleanVariable;
+import static io.holunda.camunda.bpm.data.CamundaBpmData.stringVariable;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+
+public class RuntimeServiceAwareServiceTest {
+
+  private static final VariableFactory<String> ORDER_ID = stringVariable("orderId");
+  private static final VariableFactory<Boolean> ORDER_FLAG = booleanVariable("orderFlag");
+
+  @Test
+  public void check_stubbed_access() {
+
+    // setup mock
+    final RuntimeService runtimeService = mock(RuntimeService.class);
+    // stub access
+    ServiceExpressions.runtimeServiceVariableStubBuilder(runtimeService)
+                      .defineAndInitializeLocal(ORDER_ID, "initial-Value")
+                      .define(ORDER_FLAG)
+                      .build();
+    // setup service
+    final RuntimeServiceAwareService serviceUnderTest = new RuntimeServiceAwareService(runtimeService);
+    // setup verifier
+    final RuntimeServiceVerification verifier = ServiceExpressions.runtimeServiceVerification(runtimeService);
+
+    String executionId = UUID.randomUUID().toString();
+
+    // execute service calls and check results
+    serviceUnderTest.writeLocalId(executionId, "4712");
+    String orderId = serviceUnderTest.readLocalId(executionId);
+    assertThat(orderId).isEqualTo("4712");
+
+    assertThat(serviceUnderTest.flagExists(executionId)).isFalse();
+    serviceUnderTest.writeFlag(executionId, true);
+    assertThat(serviceUnderTest.flagExists(executionId)).isTrue();
+    Boolean orderFlag = serviceUnderTest.readFlag(executionId);
+    assertThat(orderFlag).isEqualTo(true);
+
+    // verify service access
+    verifier.verifySetLocal(ORDER_ID, "4712", executionId );
+    verifier.verifyGetLocal(ORDER_ID, executionId);
+    verifier.verifyGetVariables(executionId, times(2));
+    verifier.verifySet(ORDER_FLAG, true, executionId);
+    verifier.verifyGet(ORDER_FLAG, executionId);
+    verifier.verifyNoMoreInteractions();
+
+  }
+}
+```
+
+
 
 ## Release Notes
 
@@ -349,7 +419,7 @@ see https://camunda.github.io/camunda-platform-7-mockito/release-notes/
 
 * Though it is possible to use arbitrary beans as expressions (myBean.doSomething()), we solely focus on 
 Listeners (notify()) and Delegates (execute()) here, since this is the only way to apply automatic behavior. If you need
-to mock custom beans, you still can use some of the tools to register the mock, but can not use the fluent mocking or 
+to mock custom beans, you still can use some other tools to register the mock, but can not use the fluent mocking or 
 auto mocking feature. Due to the nature of automatic mocking, this is immanent and will not change.
 * Currently, only expression-delegates (${myDelegate}) are supported (as you do use with CDI/Spring)) but no FQN class names. 
 This might and probably will change with future versions, it just has to be implemented ... 
@@ -366,7 +436,6 @@ This might and probably will change with future versions, it just has to be impl
 * [Jan Galinski](https://github.com/jangalinski)
 * [Simon Zambrovski](https://github.com/zambrovski)
 * ??
-
   
 ## License
 
