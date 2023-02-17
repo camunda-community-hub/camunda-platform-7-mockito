@@ -164,6 +164,18 @@ DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
   .onExecutionThrowBpmnError("code", MESSAGE);
 ```
 
+* Consecutive set variables for multiple delegate executions
+
+You can set different variables on consecutive executions with:
+
+```java
+DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
+  .onExecutionSetVariables(Map.of("foo", "bar"), Map.of("bar", "foo"));
+```
+
+1. invocation of the delegate the variable "foo" with the value "bar" is set
+2. invocation of the delegate the variable "bar" with the value "foo" is set
+
 ### Easy register and verify mocks
 
 In addition to the well-known "Mocks.register()" hook, you now have the possibility to register fluent mocks directly:
