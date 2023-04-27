@@ -81,6 +81,7 @@ public class DelegateTaskFake extends DelegateFake<DelegateTaskFake> implements 
   private String caseExecutionId;
   private String caseDefinitionId;
   private Date createTime;
+  private Date lastUpdated;
   private String taskDefinitionKey;
   private String eventName;
   private String owner;
@@ -228,6 +229,15 @@ public class DelegateTaskFake extends DelegateFake<DelegateTaskFake> implements 
 
   public DelegateTaskFake withCreateTime(Date createTime) {
     this.createTime = createTime;
+    return this;
+  }
+  @Override
+  public Date getLastUpdated() {
+    return null;
+  }
+
+  public DelegateTaskFake withLastUpdated(Date lastUpdated) {
+    this.lastUpdated = lastUpdated;
     return this;
   }
 
@@ -544,6 +554,7 @@ public class DelegateTaskFake extends DelegateFake<DelegateTaskFake> implements 
       ", caseExecutionId='" + caseExecutionId + '\'' +
       ", caseDefinitionId='" + caseDefinitionId + '\'' +
       ", createTime=" + createTime +
+      ", lastUpdated=" + lastUpdated +
       ", taskDefinitionKey='" + taskDefinitionKey + '\'' +
       ", eventName='" + eventName + '\'' +
       ", owner='" + owner + '\'' +
