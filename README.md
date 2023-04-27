@@ -28,6 +28,7 @@
 - [Mocking of message correlation builder](#mocking-of-message-correlation-builder)
 - [Stubbing and verifying access to Camunda Java API services to access process variables](#stubbing-and-verifying-access-to-camunda-java-api-services-to-access-process-variables)
 - [Release Notes](#release-notes)
+  - [Release Process](#release-process)
 - [Limitations](#limitations)
 - [Resources](#resources)
 - [Maintainer](#maintainer)
@@ -58,14 +59,14 @@ Just include camunda-platform-7-mockito in the test scope of your project:
   <groupId>org.camunda.community.mockito</groupId>
   <artifactId>camunda-platform-7-mockito</artifactId>
   <scope>test</scope>
-  <version>6.18.0</version>
+  <version>6.18.1</version>
 </dependency>
 ```
 
 gradle (kts):
 
 ```kotlin
-   testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:6.18.0")
+   testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:6.18.1")
 ```
 
 
@@ -163,6 +164,18 @@ You can throw an error on execution with:
 DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
   .onExecutionThrowBpmnError("code", MESSAGE);
 ```
+
+* Consecutive set variables for multiple delegate executions
+
+You can set different variables on consecutive executions with:
+
+```java
+DelegateExpressions.registerJavaDelegateMock(BEAN_NAME/BEAN_CLASS)
+  .onExecutionSetVariables(Map.of("foo", "bar"), Map.of("bar", "foo"));
+```
+
+1. invocation of the delegate the variable "foo" with the value "bar" is set
+2. invocation of the delegate the variable "bar" with the value "foo" is set
 
 ### Easy register and verify mocks
 
@@ -413,6 +426,16 @@ public class RuntimeServiceAwareServiceTest {
 ## Release Notes
 
 see https://camunda.github.io/camunda-platform-7-mockito/release-notes/
+
+### Release Process
+
+* All issues should be added to a milestone
+* close the milestone to generate a github-release draft, containing all changes
+* publish the github-release (mark as latest release)
+* watch the actions/release pipeline
+* file an issue mentioning camundacommunity/devrel and mark issue with `waitingforcamunda``
+* fingers crossed
+
 
 ## Limitations
 

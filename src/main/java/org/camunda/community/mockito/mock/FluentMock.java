@@ -7,6 +7,8 @@ import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
 import org.mockito.Mockito;
 
+import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -45,10 +47,62 @@ public abstract class FluentMock<T, P extends VariableScope> {
     }
   }
 
+  protected static VariableMap[] combineVariableMaps(VariableMap variableMap, VariableMap... values) {
+    ArrayDeque<VariableMap> combinedVariableMaps = new ArrayDeque<>(Arrays.asList(values));
+    combinedVariableMaps.addFirst(variableMap);
+    return combinedVariableMaps.toArray(VariableMap[]::new);
+  }
+
+
+  protected void setVariablesForMultipleInvocations(
+    VariableMap[] variables,
+    String invocationCountVariableName,
+    VariableScope variableScope
+  ) {
+    Object invocationCount = calculateInvocationCount(invocationCountVariableName, variableScope);
+    if (invocationCount instanceof Integer) {
+      int count = (Integer) invocationCount;
+      variableScope.setVariable(invocationCountVariableName, count + 1);
+      setVariablesForGivenInvocationCount(variables, variableScope, count);
+    }
+  }
+
+  private void setVariablesForGivenInvocationCount(VariableMap[] variables, VariableScope variableScope, int count) {
+    if (count - 1 < variables.length) {
+      setVariables(variableScope, variables[count - 1]);
+    } else {
+      setVariables(variableScope, variables[variables.length - 1]);
+    }
+  }
+
+  private Object calculateInvocationCount(String countVariable, VariableScope variableScope) {
+    Object executionCount = variableScope.getVariable(countVariable);
+    if (executionCount == null) {
+      variableScope.setVariable(countVariable, 1);
+      executionCount = 1;
+    }
+    return executionCount;
+  }
+
   /**
    * @param variableMap the process variables this delegate sets when executed
    */
   public abstract void onExecutionSetVariables(final VariableMap variableMap);
+
+  /**
+   * Sets consecutive return values to be returned when the method is called. E.g:
+   * <pre class="code"><code class="java">
+   * mock.onExecutionSetVariables(variableMap1, variableMap2, variableMap3);
+   * </code></pre>
+   *
+   * Last return value in the sequence (in example: variableMap3) determines the behavior of further consecutive calls.
+   * <p>
+   *
+   * @param variableMap first variables that will be returned
+   * @param values next variables that will be return
+   *
+   */
+  public abstract void onExecutionSetVariables(final VariableMap variableMap, final VariableMap... values);
 
   /**
    * @param key of the process variables this delegate sets when executed
@@ -67,6 +121,24 @@ public abstract class FluentMock<T, P extends VariableScope> {
    */
   public <V> void onExecutionSetVariable(final VariableFactory<V> variable, final V value) {
     onExecutionSetVariable(variable.getName(), value);
+  }
+
+  /**
+   * Sets consecutive return values to be returned when the method is called. E.g:
+   * <pre class="code"><code class="java">
+   * mock.onExecutionSetVariables(Map.of("foo", "bar"), Map.of("bar", "foo"));
+   * </code></pre>
+   *
+   * Last return value in the sequence (in example: Map.of("bar", "foo")) determines the behavior of further consecutive calls.
+   * <p>
+   *
+   * @param variables first variables that will be returned
+   * @param values next variables that will be return
+   *
+   */
+  @SafeVarargs
+  public final void onExecutionSetVariables(final Map<String, Object> variables, final Map<String, Object>... values) {
+    onExecutionSetVariables(Variables.fromMap(variables), Arrays.stream(values).map(Variables::fromMap).toArray(VariableMap[]::new));
   }
 
   /**

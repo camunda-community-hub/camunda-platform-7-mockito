@@ -9,6 +9,8 @@ import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.community.mockito.answer.JavaDelegateAnswer;
 import org.mockito.Mockito;
 
+import java.util.UUID;
+
 public class FluentJavaDelegateMock extends FluentMock<JavaDelegate, DelegateExecution> implements JavaDelegate {
 
   public FluentJavaDelegateMock() {
@@ -29,6 +31,20 @@ public class FluentJavaDelegateMock extends FluentMock<JavaDelegate, DelegateExe
         setVariables(execution, variables);
       }
     });
+  }
+
+  @Override
+  public void onExecutionSetVariables(VariableMap variableMap, VariableMap... values) {
+    try {
+      final String countVariable = UUID.randomUUID().toString();
+      Mockito.doAnswer(
+        new JavaDelegateAnswer(execution -> setVariablesForMultipleInvocations(combineVariableMaps(variableMap, values),
+          countVariable,
+          execution))
+      ).when(mock).execute(any());
+    } catch (final Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

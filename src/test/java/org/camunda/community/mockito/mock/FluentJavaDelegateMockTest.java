@@ -7,6 +7,8 @@ import org.camunda.community.mockito.DelegateExpressions;
 import org.camunda.community.mockito.delegate.DelegateExecutionFake;
 import org.junit.Test;
 
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -57,5 +59,55 @@ public class FluentJavaDelegateMockTest {
 
     assertThat(execution.hasVariable("foo")).isTrue();
     assertThat(foo.from(execution).get()).isEqualTo("bar");
+  }
+
+  @Test
+  public void consecutive_set_variables() throws Exception {
+    delegate.onExecutionSetVariables(Map.of("foo", "bar"), Map.of("bar", "foo"));
+
+    delegate.execute(execution);
+
+    assertThat(execution.hasVariable("foo")).isTrue();
+    assertThat((String) execution.getVariable("foo")).isEqualTo("bar");
+
+    delegate.execute(execution);
+
+    assertThat(execution.hasVariable("bar")).isTrue();
+    assertThat((String) execution.getVariable("bar")).isEqualTo("foo");
+  }
+
+  @Test
+  public void consecutive_set_variables_three_times() throws Exception {
+    delegate.onExecutionSetVariables(Map.of("foo", "bar"), Map.of("bar", "foo"));
+
+    delegate.execute(execution);
+
+    assertThat(execution.hasVariable("foo")).isTrue();
+    assertThat((String) execution.getVariable("foo")).isEqualTo("bar");
+
+    delegate.execute(execution);
+
+    assertThat(execution.hasVariable("bar")).isTrue();
+    assertThat((String) execution.getVariable("bar")).isEqualTo("foo");
+
+    delegate.execute(execution);
+
+    assertThat(execution.hasVariable("bar")).isTrue();
+    assertThat((String) execution.getVariable("bar")).isEqualTo("foo");
+  }
+
+  @Test
+  public void consecutive_set_variables_map() throws Exception {
+    delegate.onExecutionSetVariables(Map.of("foo", "bar"));
+
+    delegate.execute(execution);
+
+    assertThat(execution.hasVariable("foo")).isTrue();
+    assertThat((String) execution.getVariable("foo")).isEqualTo("bar");
+
+    delegate.execute(execution);
+
+    assertThat(execution.hasVariable("foo")).isTrue();
+    assertThat((String) execution.getVariable("foo")).isEqualTo("bar");
   }
 }
