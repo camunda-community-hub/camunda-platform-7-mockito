@@ -28,10 +28,10 @@
 - [Mocking of message correlation builder](#mocking-of-message-correlation-builder)
 - [Stubbing and verifying access to Camunda Java API services to access process variables](#stubbing-and-verifying-access-to-camunda-java-api-services-to-access-process-variables)
 - [Release Notes](#release-notes)
+  - [Release Process](#release-process)
 - [Limitations](#limitations)
 - [Resources](#resources)
 - [Maintainer](#maintainer)
-- [Release Process](#release-process)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
