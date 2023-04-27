@@ -9,6 +9,8 @@ import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.community.mockito.answer.ExecutionListenerAnswer;
 import org.mockito.Mockito;
 
+import java.util.UUID;
+
 public class FluentExecutionListenerMock extends FluentMock<ExecutionListener, DelegateExecution> implements ExecutionListener {
 
   public FluentExecutionListenerMock() {
@@ -24,6 +26,20 @@ public class FluentExecutionListenerMock extends FluentMock<ExecutionListener, D
         setVariables(execution, variables);
       }
     });
+  }
+
+  @Override
+  public void onExecutionSetVariables(VariableMap variableMap, VariableMap... values) {
+    try {
+      final String countVariable = UUID.randomUUID().toString();
+      Mockito.doAnswer(
+        new ExecutionListenerAnswer(execution -> setVariablesForMultipleInvocations(combineVariableMaps(variableMap, values),
+          countVariable,
+          execution))
+      ).when(mock).notify(any());
+    } catch (final Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

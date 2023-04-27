@@ -9,6 +9,8 @@ import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.community.mockito.answer.TaskListenerAnswer;
 import org.mockito.Mockito;
 
+import java.util.UUID;
+
 public class FluentTaskListenerMock extends FluentMock<TaskListener, DelegateTask> implements TaskListener {
 
   public FluentTaskListenerMock() {
@@ -29,6 +31,18 @@ public class FluentTaskListenerMock extends FluentMock<TaskListener, DelegateTas
         setVariables(delegateTask, variables);
       }
     });
+  }
+
+  @Override
+  public void onExecutionSetVariables(VariableMap variableMap, VariableMap... values) {
+    try {
+      final String countVariable = UUID.randomUUID().toString();
+      Mockito.doAnswer(
+        new TaskListenerAnswer(task -> setVariablesForMultipleInvocations(combineVariableMaps(variableMap, values), countVariable, task))
+      ).when(mock).notify(any());
+    } catch (final Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
