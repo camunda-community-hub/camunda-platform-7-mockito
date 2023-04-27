@@ -58,7 +58,7 @@ Just include camunda-platform-7-mockito in the test scope of your project:
   <groupId>org.camunda.community.mockito</groupId>
   <artifactId>camunda-platform-7-mockito</artifactId>
   <scope>test</scope>
-  <version>6.18.0</version>
+  <version>6.18.1</version>
 </dependency>
 ```
 
