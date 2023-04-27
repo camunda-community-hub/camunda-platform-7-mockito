@@ -8,10 +8,10 @@ import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.authorization.Authorization;
 import org.camunda.bpm.engine.authorization.AuthorizationQuery;
 //import org.camunda.community.mockito.QueryMocks1;
+import org.camunda.community.mockito.QueryMocks;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
 public class AuthorizationQueryMockTest {
 
   private final AuthorizationService serviceMock = mock(AuthorizationService.class);
@@ -19,7 +19,8 @@ public class AuthorizationQueryMockTest {
 
   @Test
   public void mock_authorizationQuery() {
-    final AuthorizationQuery query = null; //QueryMocks1.mockAuthorizationQuery(serviceMock).singleResult(authorization);
+    final AuthorizationQuery query = QueryMocks.mockAuthorizationQuery(serviceMock)
+      .singleResult(authorization);
 
     // @formatter:off
     final Authorization result = serviceMock.createAuthorizationQuery()
