@@ -31,6 +31,7 @@
 - [Limitations](#limitations)
 - [Resources](#resources)
 - [Maintainer](#maintainer)
+- [Release Process](#release-process)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
