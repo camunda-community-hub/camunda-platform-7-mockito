@@ -1,11 +1,8 @@
-package org.camunda.bpm.extension.mockito;
+package org.camunda.community.mockito;
 
-import org.assertj.core.api.Assertions;
 import org.camunda.bpm.engine.repository.DeploymentBuilder;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
-import org.camunda.community.mockito.CamundaMockito;
 import org.camunda.community.mockito.process.CallActivityMock;
 import org.junit.Before;
 import org.junit.Rule;
