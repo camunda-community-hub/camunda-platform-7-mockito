@@ -427,6 +427,16 @@ public class RuntimeServiceAwareServiceTest {
 
 see https://camunda.github.io/camunda-platform-7-mockito/release-notes/
 
+### Release Process
+
+* All issues should be added to a milestone
+* close the milestone to generate a github-release draft, containing all changes
+* publish the github-release (mark as latest release)
+* watch the actions/release pipeline
+* file an issue mentioning camundacommunity/devrel and mark issue with `waitingforcamunda``
+* fingers crossed
+
+
 ## Limitations
 
 * Though it is possible to use arbitrary beans as expressions (myBean.doSomething()), we solely focus on 
@@ -448,15 +458,6 @@ This might and probably will change with future versions, it just has to be impl
 * [Jan Galinski](https://github.com/jangalinski)
 * [Simon Zambrovski](https://github.com/zambrovski)
 * ??
-
-## Release Process
-
-* All issues should be added to a milestone
-* close the milestone to generate a github-release draft, containing all changes
-* publish the github-release (mark as latest release)
-* watch the actions/release pipeline
-* file an issue mentioning camundacommunity/devrel and mark issue with `waitingforcamunda``
-* fingers crossed
   
 ## License
 
