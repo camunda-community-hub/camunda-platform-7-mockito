@@ -282,7 +282,7 @@ ProcessExpressions
   .deploy(rule);
 ```
 
-More examples could be found in the following class [`CallActivityMockExampleTest`](src/test/java/org/camunda/bpm/extension/mockito/CallActivityMockExampleTest.java).
+More examples could be found in the following class [`CallActivityMockExampleTest`](src/test/java/org/camunda/community/mockito/CallActivityMockExampleTest.java).
 
 ## Mocking of message correlation builder
 
