@@ -22,7 +22,7 @@
     <camunda-bpm-data.version>1.2.8</camunda-bpm-data.version>
 
     <slf4j.version>2.0.7</slf4j.version>
-    <commons-lang3.version>3.12.0</commons-lang3.version>
+    <commons-lang3.version>3.13.0</commons-lang3.version>
 
     <!-- test tools -->
     <assertj.version>3.24.2</assertj.version>
