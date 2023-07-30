@@ -260,6 +260,36 @@ public class CallActivityMockExampleTest {
     isEnded(processInstance);
     assertEquals(escalationEndId, ((ProcessInstanceWithVariablesImpl) processInstance).getExecutionEntity().getActivityId());
   }
+  
+  @Test
+  public void register_subprocess_mock_throwError() {
+    String errorCode = "SOME_ERROR";
+    String subprocessId = "call_subprocess";
+    String errorEndId = "ErrorEnd";
+    
+    BpmnModelInstance processWithSubProcess = Bpmn.createExecutableProcess(PROCESS_ID)
+        .startEvent("start")
+        .callActivity(subprocessId)
+        .calledElement(SUB_PROCESS_ID)
+        .boundaryEvent()
+        .error(errorCode)
+        .endEvent(errorEndId)
+        .moveToActivity(subprocessId)
+        .userTask(TASK_USERTASK)
+        .endEvent("end")
+        .done();
+    
+    camunda.manageDeployment(new DeployProcess(camunda).apply(PROCESS_ID, processWithSubProcess));
+    
+    camunda.manageDeployment(registerCallActivityMock(SUB_PROCESS_ID)
+        .onExecutionThrowError(errorCode)
+        .deploy(camunda));
+    
+    ProcessInstance processInstance = startProcess(PROCESS_ID);
+    
+    isEnded(processInstance);
+    assertEquals(errorEndId, ((ProcessInstanceWithVariablesImpl) processInstance).getExecutionEntity().getActivityId());
+  }
 
   private void prepareProcessWithOneSubprocess() {
     final BpmnModelInstance processWithSubProcess = Bpmn.createExecutableProcess(PROCESS_ID)
