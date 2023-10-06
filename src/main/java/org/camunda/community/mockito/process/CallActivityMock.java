@@ -43,7 +43,8 @@ public class CallActivityMock implements DeployProcess.BpmnModelInstanceResource
 
   public CallActivityMock(final String processId, final MockedModelConfigurer modelConfigurer) {
     this.processId = processId;
-    ProcessBuilder processBuilder = Bpmn.createExecutableProcess(processId);
+    ProcessBuilder processBuilder = Bpmn.createExecutableProcess(processId)
+      .camundaHistoryTimeToLive(1);
     if (modelConfigurer != null) {
       modelConfigurer.setProcessModelAttributes(processBuilder);
     }
@@ -236,13 +237,13 @@ public class CallActivityMock implements DeployProcess.BpmnModelInstanceResource
     this.escalation = escalationCode;
     return this;
   }
-  
+
   /**
    * On execution, the MockProcess will throw error for the given code when no escalation is set
    *
    * If called multiple times, this method adds only the last error to the end event.
    *
-   * @param escalationCode the escalation code
+   * @param errorCode the errorCode
    * @return self
    */
   public CallActivityMock onExecutionThrowError(final String errorCode) {

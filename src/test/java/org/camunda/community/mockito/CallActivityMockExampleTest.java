@@ -8,9 +8,9 @@ import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.JobQuery;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
-import org.camunda.community.mockito.function.DeployProcess;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.community.mockito.function.DeployProcess;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,9 +22,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.camunda.bpm.engine.variable.Variables.createVariables;
+import static org.camunda.bpm.model.xml.test.assertions.ModelAssertions.assertThat;
 import static org.camunda.community.mockito.MostUsefulProcessEngineConfiguration.mostUsefulProcessEngineConfiguration;
 import static org.camunda.community.mockito.ProcessExpressions.registerCallActivityMock;
-import static org.camunda.bpm.model.xml.test.assertions.ModelAssertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 public class CallActivityMockExampleTest {
@@ -114,6 +114,7 @@ public class CallActivityMockExampleTest {
 
     final String waitForMessageId = "waitForMessage";
     final BpmnModelInstance waitForMessage = Bpmn.createExecutableProcess(waitForMessageId)
+      .camundaHistoryTimeToLive(1)
       .startEvent("start")
       .intermediateCatchEvent("waitForMessageCatchEvent")
       .message(MESSAGE_DOIT)
@@ -169,6 +170,7 @@ public class CallActivityMockExampleTest {
   @Test
   public void register_subprocesses_mocks_withVariables() {
     final BpmnModelInstance processWithSubProcess = Bpmn.createExecutableProcess(PROCESS_ID)
+      .camundaHistoryTimeToLive(1)
       .startEvent("start")
       .callActivity("call_subprocess")
       .camundaOut("foo", "foo")
@@ -238,6 +240,7 @@ public class CallActivityMockExampleTest {
     String escalationEndId = "EscalationEnd";
 
     BpmnModelInstance processWithSubProcess = Bpmn.createExecutableProcess(PROCESS_ID)
+      .camundaHistoryTimeToLive(1)
       .startEvent("start")
       .callActivity(subprocessId)
       .calledElement(SUB_PROCESS_ID)
@@ -260,39 +263,41 @@ public class CallActivityMockExampleTest {
     isEnded(processInstance);
     assertEquals(escalationEndId, ((ProcessInstanceWithVariablesImpl) processInstance).getExecutionEntity().getActivityId());
   }
-  
+
   @Test
   public void register_subprocess_mock_throwError() {
     String errorCode = "SOME_ERROR";
     String subprocessId = "call_subprocess";
     String errorEndId = "ErrorEnd";
-    
+
     BpmnModelInstance processWithSubProcess = Bpmn.createExecutableProcess(PROCESS_ID)
-        .startEvent("start")
-        .callActivity(subprocessId)
-        .calledElement(SUB_PROCESS_ID)
-        .boundaryEvent()
-        .error(errorCode)
-        .endEvent(errorEndId)
-        .moveToActivity(subprocessId)
-        .userTask(TASK_USERTASK)
-        .endEvent("end")
-        .done();
-    
+      .camundaHistoryTimeToLive(1)
+      .startEvent("start")
+      .callActivity(subprocessId)
+      .calledElement(SUB_PROCESS_ID)
+      .boundaryEvent()
+      .error(errorCode)
+      .endEvent(errorEndId)
+      .moveToActivity(subprocessId)
+      .userTask(TASK_USERTASK)
+      .endEvent("end")
+      .done();
+
     camunda.manageDeployment(new DeployProcess(camunda).apply(PROCESS_ID, processWithSubProcess));
-    
+
     camunda.manageDeployment(registerCallActivityMock(SUB_PROCESS_ID)
-        .onExecutionThrowError(errorCode)
-        .deploy(camunda));
-    
+      .onExecutionThrowError(errorCode)
+      .deploy(camunda));
+
     ProcessInstance processInstance = startProcess(PROCESS_ID);
-    
+
     isEnded(processInstance);
     assertEquals(errorEndId, ((ProcessInstanceWithVariablesImpl) processInstance).getExecutionEntity().getActivityId());
   }
 
   private void prepareProcessWithOneSubprocess() {
     final BpmnModelInstance processWithSubProcess = Bpmn.createExecutableProcess(PROCESS_ID)
+      .camundaHistoryTimeToLive(1)
       .startEvent("start")
       .callActivity("call_subprocess")
       .camundaOut("foo", "foo")
