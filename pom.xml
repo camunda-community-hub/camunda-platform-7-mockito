@@ -15,14 +15,15 @@
   <properties>
     <!-- Avoid the message "[WARNING] Using platform encoding (UTF-8 actually) ... also for the failsafe plugin -->
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <version.java>11</version.java>
+    <version.java>17</version.java>
     <java.version>${version.java}</java.version>
 
-    <camunda.version>7.19.0</camunda.version>
-    <camunda-bpm-data.version>1.2.8</camunda-bpm-data.version>
+    <camunda.version>7.20.0</camunda.version>
+    <camunda-bpm-data.version>1.4.0</camunda-bpm-data.version>
 
-    <slf4j.version>2.0.9</slf4j.version>
     <commons-lang3.version>3.13.0</commons-lang3.version>
+    <slf4j.version>2.0.9</slf4j.version>
+    <spring.version>6.0.12</spring.version>
 
     <!-- test tools -->
     <assertj.version>3.24.2</assertj.version>
@@ -148,7 +149,14 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.23</version>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <version>${spring.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -177,7 +185,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <source>11</source>
+          <source>17</source>
         </configuration>
       </plugin>
       <plugin>
