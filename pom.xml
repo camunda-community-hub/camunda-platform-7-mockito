@@ -10,7 +10,7 @@
 
   <groupId>org.camunda.community.mockito</groupId>
   <artifactId>camunda-platform-7-mockito</artifactId>
-  <version>6.19.2-SNAPSHOT</version>
+  <version>7.20.0</version>
 
   <properties>
     <!-- Avoid the message "[WARNING] Using platform encoding (UTF-8 actually) ... also for the failsafe plugin -->
