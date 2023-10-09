@@ -213,14 +213,14 @@
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:camunda/camunda-platform-7-mockito.git</connection>
-    <url>scm:git:git@github.com:camunda/camunda-platform-7-mockito.git</url>
-    <developerConnection>scm:git:git@github.com:camunda/camunda-platform-7-mockito.git</developerConnection>
+    <connection>scm:git:git@github.com:camunda-community-hub/camunda-platform-7-mockito.git</connection>
+    <url>scm:git:git@github.com:camunda-community-hub/camunda-platform-7-mockito.git</url>
+    <developerConnection>scm:git:git@github.com:camunda-community-hub/camunda-platform-7-mockito.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
