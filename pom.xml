@@ -22,7 +22,7 @@
     <camunda-bpm-data.version>1.4.0</camunda-bpm-data.version>
 
     <commons-lang3.version>3.13.0</commons-lang3.version>
-    <slf4j.version>2.0.9</slf4j.version>
+    <slf4j.version>2.0.10</slf4j.version>
     <spring.version>6.0.13</spring.version>
 
     <!-- test tools -->
