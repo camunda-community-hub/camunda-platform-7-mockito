@@ -27,7 +27,7 @@
 
     <!-- test tools -->
     <assertj.version>3.25.2</assertj.version>
-    <mockito.version>5.8.0</mockito.version>
+    <mockito.version>5.10.0</mockito.version>
     <hamcrest.version>2.2</hamcrest.version>
 
     <!-- plugins -->
