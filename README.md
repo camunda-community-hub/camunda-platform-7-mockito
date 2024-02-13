@@ -24,7 +24,7 @@
   - [Possible Actions](#possible-actions)
   - [Easy register and verify mocks](#easy-register-and-verify-mocks)
   - [Auto mock all delegates and listeners](#auto-mock-all-delegates-and-listeners)
-- [Delegate[Task|Execution]Fake](#delegatetaskexecutionfake)
+- [Delegate&#91;Task|Execution&#93;Fake](#delegatetaskexecutionfake)
 - [Mocking of external subprocesses](#mocking-of-external-subprocesses)
 - [Mocking of message correlation builder](#mocking-of-message-correlation-builder)
 - [Stubbing and verifying access to Camunda Java API services to access process variables](#stubbing-and-verifying-access-to-camunda-java-api-services-to-access-process-variables)
