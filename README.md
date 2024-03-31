@@ -220,7 +220,7 @@ Unit-testing listeners and JavaDelegates can be difficult, because the methods a
  white-box testing via verify is possible. But most of the time, you just want to 
  confirm that a certain variable was set (or a dueDate, a candidate, ...).
   
-In these cases, use the Delegate fakes. The implement the interfaces DelegateTask and DelegateExecution,
+In these cases, use the Delegate fakes. They implement the interfaces DelegateTask and DelegateExecution,
 but are implemented as plain, fluent-styled Pojos.
 
 So to test if your TaskListener
