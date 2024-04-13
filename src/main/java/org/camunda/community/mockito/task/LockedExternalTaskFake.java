@@ -6,6 +6,7 @@ import org.camunda.bpm.engine.externaltask.LockedExternalTask;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +38,8 @@ public class LockedExternalTaskFake implements LockedExternalTask {
   private String tenantId;
   private long priority;
   private String businessKey;
+
+  private Date createTime;
   private Map<String, String> extensionProperties = new HashMap<>();
 
   @java.beans.ConstructorProperties({"id", "topicName", "workerId",
@@ -45,9 +48,9 @@ public class LockedExternalTaskFake implements LockedExternalTask {
     "processDefinitionKey", "processDefinitionVersionTag", "retries",
     "errorMessage", "errorDetails", "variables",
     "tenantId", "priority", "businessKey",
-    "extensionProperties"
+    "extensionProperties", "createTime"
   })
-  LockedExternalTaskFake(String id, String topicName, String workerId, String processInstanceId, String executionId, Date lockExpirationTime, String activityId, String activityInstanceId, String processDefinitionId, String processDefinitionKey, String processDefinitionVersionTag, Integer retries, String errorMessage, String errorDetails, VariableMap variables, String tenantId, long priority, String businessKey, Map<String, String> extensionProperties) {
+  LockedExternalTaskFake(String id, String topicName, String workerId, String processInstanceId, String executionId, Date lockExpirationTime, String activityId, String activityInstanceId, String processDefinitionId, String processDefinitionKey, String processDefinitionVersionTag, Integer retries, String errorMessage, String errorDetails, VariableMap variables, String tenantId, long priority, String businessKey, Map<String, String> extensionProperties, Date createTime) {
     this.id = id;
     this.topicName = topicName;
     this.workerId = workerId;
@@ -67,6 +70,7 @@ public class LockedExternalTaskFake implements LockedExternalTask {
     this.priority = priority;
     this.businessKey = businessKey;
     this.extensionProperties = extensionProperties;
+    this.createTime = createTime;
   }
 
   @Override
@@ -87,6 +91,11 @@ public class LockedExternalTaskFake implements LockedExternalTask {
   @Override
   public Date getLockExpirationTime() {
     return lockExpirationTime;
+  }
+
+  @Override
+  public Date getCreateTime() {
+    return createTime;
   }
 
   @Override
@@ -300,6 +309,8 @@ public class LockedExternalTaskFake implements LockedExternalTask {
     private String businessKey;
     private Map<String, String> extensionProperties = new HashMap<>();
 
+    private Date createTime;
+
     LockedExternalTaskFakeBuilder() {
     }
 
@@ -399,6 +410,17 @@ public class LockedExternalTaskFake implements LockedExternalTask {
       return this;
     }
 
+
+    public LockedExternalTaskFakeBuilder createTime(Instant createTime) {
+      return createTime(Date.from(createTime));
+    }
+
+
+    public LockedExternalTaskFakeBuilder createTime(Date createTime) {
+      this.createTime = createTime;
+      return this;
+    }
+
     public <T> LockedExternalTaskFakeBuilder variable(VariableFactory<T> factory, T value) {
       if (variables == null) {
         variables(Variables.createVariables());
@@ -417,7 +439,7 @@ public class LockedExternalTaskFake implements LockedExternalTask {
         processDefinitionKey, processDefinitionVersionTag, retries,
         errorMessage, errorDetails, variables,
         tenantId, priority, businessKey,
-        extensionProperties
+        extensionProperties, createTime
       );
     }
 
