@@ -28,7 +28,7 @@
     <!-- test tools -->
     <assertj.version>3.26.3</assertj.version>
     <mockito.version>5.12.0</mockito.version>
-    <hamcrest.version>2.2</hamcrest.version>
+    <hamcrest.version>3.0</hamcrest.version>
 
     <!-- plugins -->
     <asciidoctor-maven-plugin.version>2.2.2</asciidoctor-maven-plugin.version>
