@@ -32,6 +32,9 @@ public class TaskFake implements Task {
   private String formKey;
   private DelegationState delegationState;
   private CamundaFormRef camundaFormRef;
+  private String taskState = "";
+  private boolean hasAttachment = false;
+  private boolean hasComment = false;
 
   @java.beans.ConstructorProperties({"id", "name", "description", "priority", "owner", "assignee",
     "processDefinitionId", "caseDefinitionId", "executionId", "processInstanceId", "caseInstanceId",
@@ -42,8 +45,13 @@ public class TaskFake implements Task {
            final String executionId, final String processInstanceId, final String caseInstanceId,
            final String caseExecutionId, final Date createTime, final Date lastUpdated, final String taskDefinitionKey,
            final Date dueDate, final Date followUpDate, final String parentTaskId, final boolean suspended,
-           final String tenantId, final String formKey, final DelegationState delegationState,
-           final CamundaFormRef camundaFormRef) {
+           final String tenantId, final String formKey,
+           final DelegationState delegationState,
+           final CamundaFormRef camundaFormRef,
+           final String taskState,
+           final boolean hasAttachment,
+           final boolean hasComment
+  ) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -67,6 +75,9 @@ public class TaskFake implements Task {
     this.formKey = formKey;
     this.delegationState = delegationState;
     this.camundaFormRef = camundaFormRef;
+    this.taskState = taskState;
+    this.hasAttachment = hasAttachment;
+    this.hasComment = hasComment;
   }
 
   public static TaskFakeBuilder builder() {
@@ -298,6 +309,26 @@ public class TaskFake implements Task {
   }
 
   @Override
+  public String getTaskState() {
+    return taskState;
+  }
+
+  @Override
+  public void setTaskState(String taskState) {
+    this.taskState = taskState;
+  }
+
+  @Override
+  public boolean hasAttachment() {
+    return hasAttachment;
+  }
+
+  @Override
+  public boolean hasComment() {
+    return hasComment;
+  }
+
+  @Override
   public String toString() {
     return "TaskFake{" +
       "id='" + id + '\'' +
@@ -322,6 +353,9 @@ public class TaskFake implements Task {
       ", tenantId='" + tenantId + '\'' +
       ", formKey='" + formKey + '\'' +
       ", delegationState=" + delegationState +
+      ", taskState='" + taskState + '\'' +
+      ", hasAttachment=" + hasAttachment +
+      ", hasComment=" + hasComment +
       '}';
   }
 
@@ -349,6 +383,10 @@ public class TaskFake implements Task {
     private String formKey;
     private DelegationState delegationState;
     private CamundaFormRef camundaFormRef;
+    private String taskState = "";
+    private boolean hasAttachment = false;
+    private boolean hasComment = false;
+
 
     TaskFakeBuilder() {
     }
@@ -468,35 +506,80 @@ public class TaskFake implements Task {
       return this;
     }
 
+    public TaskFakeBuilder taskState(final String taskState) {
+      this.taskState = taskState;
+      return this;
+    }
+
+    public TaskFakeBuilder hasAttachment(final boolean hasAttachment) {
+      this.hasAttachment = hasAttachment;
+      return this;
+    }
+
+    public TaskFakeBuilder hasComment(final boolean hasComment) {
+      this.hasComment = hasComment;
+      return this;
+    }
+
     public TaskFake build() {
-      return new TaskFake(id, name, description, priority, owner, assignee, processDefinitionId, caseDefinitionId, executionId, processInstanceId, caseInstanceId, caseExecutionId, createTime, lastUpdated, taskDefinitionKey, dueDate, followUpDate, parentTaskId, suspended, tenantId, formKey, delegationState, camundaFormRef);
+      return new TaskFake(
+        id,
+        name,
+        description,
+        priority,
+        owner,
+        assignee,
+        processDefinitionId,
+        caseDefinitionId,
+        executionId,
+        processInstanceId,
+        caseInstanceId,
+        caseExecutionId,
+        createTime,
+        lastUpdated,
+        taskDefinitionKey,
+        dueDate,
+        followUpDate,
+        parentTaskId,
+        suspended,
+        tenantId,
+        formKey,
+        delegationState,
+        camundaFormRef,
+        taskState,
+        hasAttachment,
+        hasComment
+      );
     }
 
     public String toString() {
       return "TaskFake.TaskFakeBuilder(" +
-        "id=" + this.id + ", " +
-        "name=" + this.name + ", " +
-        "description=" + this.description + ", " +
-        "priority=" + this.priority + ", " +
-        "owner=" + this.owner + ", " +
-        "assignee=" + this.assignee + ", " +
-        "processDefinitionId=" + this.processDefinitionId + ", " +
-        "caseDefinitionId=" + this.caseDefinitionId + ", " +
-        "executionId=" + this.executionId + ", " +
-        "processInstanceId=" + this.processInstanceId + ", " +
-        "caseInstanceId=" + this.caseInstanceId + ", " +
-        "caseExecutionId=" + this.caseExecutionId + ", " +
-        "createTime=" + this.createTime + ", " +
-        "lastUpdated=" + this.lastUpdated + ", " +
-        "taskDefinitionKey=" + this.taskDefinitionKey + ", " +
-        "dueDate=" + this.dueDate + ", " +
-        "followUpDate=" + this.followUpDate + ", " +
-        "parentTaskId=" + this.parentTaskId + ", " +
-        "suspended=" + this.suspended + ", " +
-        "tenantId=" + this.tenantId + ", " +
-        "formKey=" + this.formKey + ", " +
-        "delegationState=" + this.delegationState + ", " +
-        "camundaFormRef=" + this.camundaFormRef +
+        "id=" + this.id +
+        ", name=" + this.name +
+        ", description=" + this.description +
+        ", priority=" + this.priority +
+        ", owner=" + this.owner +
+        ", assignee=" + this.assignee +
+        ", processDefinitionId=" + this.processDefinitionId +
+        ", caseDefinitionId=" + this.caseDefinitionId +
+        ", executionId=" + this.executionId +
+        ", processInstanceId=" + this.processInstanceId +
+        ", caseInstanceId=" + this.caseInstanceId +
+        ", caseExecutionId=" + this.caseExecutionId +
+        ", createTime=" + this.createTime +
+        ", lastUpdated=" + this.lastUpdated +
+        ", taskDefinitionKey=" + this.taskDefinitionKey +
+        ", dueDate=" + this.dueDate +
+        ", followUpDate=" + this.followUpDate +
+        ", parentTaskId=" + this.parentTaskId +
+        ", suspended=" + this.suspended +
+        ", tenantId=" + this.tenantId +
+        ", formKey=" + this.formKey +
+        ", delegationState=" + this.delegationState +
+        ", camundaFormRef=" + this.camundaFormRef +
+        ", taskState=" + this.taskState +
+        ", hasAttachment=" + this.hasAttachment +
+        ", hasComment=" + this.hasComment +
         ")";
     }
   }
