@@ -18,7 +18,7 @@
     <version.java>17</version.java>
     <java.version>${version.java}</java.version>
 
-    <camunda.version>7.22.0</camunda.version>
+    <camunda.version>7.23.0</camunda.version>
     <camunda-bpm-data.version>1.6.1</camunda-bpm-data.version>
 
     <commons-lang3.version>3.17.0</commons-lang3.version>
