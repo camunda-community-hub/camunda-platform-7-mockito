@@ -233,7 +233,7 @@ public class DelegateTaskFake extends DelegateFake<DelegateTaskFake> implements 
   }
   @Override
   public Date getLastUpdated() {
-    return null;
+    return lastUpdated;
   }
 
   public DelegateTaskFake withLastUpdated(Date lastUpdated) {
