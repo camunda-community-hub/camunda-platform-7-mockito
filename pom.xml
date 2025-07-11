@@ -11,6 +11,8 @@
   <groupId>org.camunda.community.mockito</groupId>
   <artifactId>camunda-platform-7-mockito</artifactId>
   <version>7.23.3-SNAPSHOT</version>
+  <name>camunda-platform-7-mockito</name>
+  <description>Supports various mocking strategies in camunda 7 process tests.</description>
 
   <properties>
     <!-- Avoid the message "[WARNING] Using platform encoding (UTF-8 actually) ... also for the failsafe plugin -->
