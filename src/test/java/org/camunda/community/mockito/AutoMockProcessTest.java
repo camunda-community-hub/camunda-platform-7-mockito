@@ -37,11 +37,12 @@ public class AutoMockProcessTest {
 
   @Test
   @Deployment(resources = "MockProcess.bpmn")
-  public void register_mocks_for_all_listeners_and_delegates() throws Exception {
+  public void register_mocks_for_all_listeners_and_delegates() {
     autoMock("MockProcess.bpmn");
 
     assertThat(Mocks.get("loadData")).isNotNull();
     assertThat(Mocks.get("saveData")).isNotNull();
+    assertThat(Mocks.get("report")).isNotNull();
 
     final ProcessInstance processInstance = processEngineRule.getRuntimeService().startProcessInstanceByKey("process_mock_dummy");
 
@@ -54,7 +55,7 @@ public class AutoMockProcessTest {
 
   @Test
   @Deployment(resources = "MockProcess_withoutNS.bpmn")
-  public void register_mocks_for_all_listeners_and_delegates_noNS() throws Exception {
+  public void register_mocks_for_all_listeners_and_delegates_noNS() {
     autoMock("MockProcess_withoutNS.bpmn");
 
     assertThat(Mocks.get("loadData")).isNotNull();
@@ -74,6 +75,7 @@ public class AutoMockProcessTest {
     verifyExecutionListenerMock("startProcess").executed();
     verifyJavaDelegateMock("loadData").executed();
     verifyJavaDelegateMock("saveData").executed();
+    verifyJavaDelegateMock("report").executed();
     verifyExecutionListenerMock("beforeLoadData").executed();
   }
 
