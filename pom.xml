@@ -28,7 +28,7 @@
     <spring.version>6.2.9</spring.version>
 
     <!-- test tools -->
-    <assertj.version>3.27.3</assertj.version>
+    <assertj.version>3.27.4</assertj.version>
     <mockito.version>5.18.0</mockito.version>
     <hamcrest.version>3.0</hamcrest.version>
 
