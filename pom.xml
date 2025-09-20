@@ -29,7 +29,7 @@
 
     <!-- test tools -->
     <assertj.version>3.27.5</assertj.version>
-    <mockito.version>5.19.0</mockito.version>
+    <mockito.version>5.20.0</mockito.version>
     <hamcrest.version>3.0</hamcrest.version>
 
     <!-- plugins -->
