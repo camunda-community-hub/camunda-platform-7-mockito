@@ -10,7 +10,7 @@
 
   <groupId>org.camunda.community.mockito</groupId>
   <artifactId>camunda-platform-7-mockito</artifactId>
-  <version>7.23.5-SNAPSHOT</version>
+  <version>7.24.0-SNAPSHOT</version>
   <name>camunda-platform-7-mockito</name>
   <description>Supports various mocking strategies in camunda 7 process tests.</description>
 
