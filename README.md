@@ -60,7 +60,7 @@ Just include camunda-platform-7-mockito in the test scope of your project:
   <groupId>org.camunda.community.mockito</groupId>
   <artifactId>camunda-platform-7-mockito</artifactId>
   <scope>test</scope>
-  <version>7.23.4</version>
+  <version>7.24.0</version>
 </dependency>
 ```
 
