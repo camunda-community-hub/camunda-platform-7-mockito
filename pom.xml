@@ -47,6 +47,7 @@
     <relocation>
       <groupId>io.holunda.c7</groupId>
       <artifactId>c7-mockito</artifactId>
+      <version>2025.12.1</version>
       <message>
         This artifact has moved: please use io.holunda.c7:c7-mockito.
         The org.camunda.community.mockito:camunda-platform-7-mockito 7.24.x line is final; update your dependency coordinates.
