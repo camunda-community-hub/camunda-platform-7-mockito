@@ -1,13 +1,21 @@
 # camunda-platform-7-mockito
 
 [![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
-[![Camunda 7.22](https://img.shields.io/badge/Camunda%20Version-7.23-orange.svg)]([https://github.com/holisticon#open-source-lifecycle](https://docs.camunda.org/manual/7.23/))
+[![Camunda 7.24](https://img.shields.io/badge/Camunda%20Version-7.24-orange.svg)]([https://github.com/holisticon#open-source-lifecycle](https://docs.camunda.org/manual/7.23/))
 ![](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%207-26d07c)
 [![](https://img.shields.io/badge/Lifecycle-Stable-brightgreen)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#stable-)
+[![](https://img.shields.io/badge/Lifecycle-Deprecated-yellowgreen)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#deprecated-)
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.community.mockito/camunda-platform-7-mockito/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.community.mockito/camunda-platform-7-mockito)
-[![codecov](https://codecov.io/gh/camunda/camunda-platform-7-mockito/branch/master/graph/badge.svg)](https://codecov.io/gh/camunda/camunda-platform-7-mockito) 
+[![Maven Central](https://img.shields.io/maven-central/v/org.camunda.community.mockito/camunda-platform-7-mockito)](https://central.sonatype.com/artifact/org.camunda.community.mockito/camunda-platform-7-mockito)
 [![Apache License V.2](https://img.shields.io/badge/license-Apache%20V.2-blue.svg)](./LICENSE)
+
+> [!WARNING]
+> ### Discontinued/Moved
+> Due to the end of live of Camunda 7 CE with 7.24, we decided to discontinue this extension and archive the repository.
+> The Release 7.24.1 will be the last one.
+> 
+> However, we included the current state of the extension into the [holunda-io/c7]() repository, where we will maintain it together with other extensions and keep it working for future C7-EE releases.
+
 
 | Important                                                                                                                                                                            |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
